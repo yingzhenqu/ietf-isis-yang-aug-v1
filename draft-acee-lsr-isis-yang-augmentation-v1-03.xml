@@ -40,7 +40,7 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="info" docName="draft-acee-lsr-isis-yang-augmentation-v1-02" ipr="trust200902">
+<rfc category="info" docName="draft-acee-lsr-isis-yang-augmentation-v1-03" ipr="trust200902">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
      you can add the attributes updates="NNNN" and obsoletes="NNNN" 
@@ -339,7 +339,7 @@ module: ietf-isis-link-attr
         <t>
     <figure>
       <artwork><![CDATA[
-  <CODE BEGINS> file "ietf-isis-link-attr@2020-07-12.yang"
+  <CODE BEGINS> file "ietf-isis-link-attr@2020-10-29.yang"
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -402,7 +402,7 @@ module ietf-isis-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2020-07-12 {
+  revision 2020-10-29 {
     description
       "Initial version";
     reference
@@ -492,8 +492,11 @@ module ietf-isis-link-attr {
       list asla-sub-tlvs {
         uses application-identifier-bit-mask;
         uses isis:unknown-tlvs;
-
+        description
+          "List of application specific link attributes sub-tlvs.";
       }
+      description
+        "Application specific link attributes sub-tlv.";
     }
   }
 
@@ -594,7 +597,12 @@ module ietf-isis-link-attr {
               "SRLG value of the link.";
           }
         }
+
+        description
+          "List of application specific SRLG tlvs.";
       }
+      description
+        "Application specific SRLG tlv.";
     }
   }
 
@@ -684,7 +692,6 @@ module ietf-isis-link-attr {
    
     uses application-specific-srlg-tlv;
   }
-
 }
   <CODE ENDS>
       ]]></artwork>

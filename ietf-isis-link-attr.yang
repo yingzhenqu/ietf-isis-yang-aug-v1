@@ -60,7 +60,7 @@ module ietf-isis-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2020-07-12 {
+  revision 2020-10-29 {
     description
       "Initial version";
     reference
@@ -150,8 +150,11 @@ module ietf-isis-link-attr {
       list asla-sub-tlvs {
         uses application-identifier-bit-mask;
         uses isis:unknown-tlvs;
-
+        description
+          "List of application specific link attributes sub-tlvs.";
       }
+      description
+        "Application specific link attributes sub-tlv.";
     }
   }
 
@@ -252,7 +255,12 @@ module ietf-isis-link-attr {
               "SRLG value of the link.";
           }
         }
+
+        description
+          "List of application specific SRLG tlvs.";
       }
+      description
+        "Application specific SRLG tlv.";
     }
   }
 
