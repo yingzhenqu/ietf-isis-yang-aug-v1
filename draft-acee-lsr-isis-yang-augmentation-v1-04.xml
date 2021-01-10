@@ -20,16 +20,18 @@
       'http://xml.resource.org/public/rfc/bibxml/reference.RFC.7950.xml'>
     <!ENTITY RFC7987 PUBLIC '' 
       'http://xml.resource.org/public/rfc/bibxml/reference.RFC.7987.xml'>
-    <!ENTITY RFC8022 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8022.xml'>
     <!ENTITY RFC8040 PUBLIC '' 
       'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8040.xml'>
+    <!ENTITY RFC8174 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml'>      
+    <!ENTITY RFC8340 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8340.xml'>   
     <!ENTITY RFC8349 PUBLIC '' 
       'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8349.xml'>
+    <!ENTITY RFC8919 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8919.xml'>
     <!ENTITY I-D.ietf-isis-yang-isis-cfg PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.ietf-isis-yang-isis-cfg'>
-    <!ENTITY I-D.ietf-isis-te-app PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.ietf-isis-te-app'>  
+      'http://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.ietf-isis-yang-isis-cfg'> 
     ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <?rfc strict="no" ?>
@@ -40,7 +42,7 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="info" docName="draft-acee-lsr-isis-yang-augmentation-v1-03" ipr="trust200902">
+<rfc category="std" docName="draft-acee-lsr-isis-yang-augmentation-v1-04" ipr="trust200902">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
      you can add the attributes updates="NNNN" and obsoletes="NNNN" 
@@ -120,7 +122,8 @@
     <abstract>
       <t>This document defines YANG data modules augmenting the IETF IS-IS YANG
       model to provide support for IS-IS Minimum Remaining Lifetime
-       as defined in RFC 7987. </t>
+      as defined in RFC 7987, and IS-IS Application-Specific Link Attributes as
+      defined in RFC 8919. </t>
     </abstract>
   </front>
 
@@ -142,19 +145,26 @@
       operational state for the following IS-IS features:
         <list style="hanging">
         <t hangText="RFC7987:">IS-IS Minimum Remaining Lifetime<xref target="RFC7987"/>.</t> 
+        <t hangText="RFC8919:">IS-IS Application-Specific Link Attributes<xref target="RFC8919"/>.</t> 
         </list>
       </t>
   
       <t>The augmentations defined in this document requires support for the 
         IS-IS base model<xref target="I-D.ietf-isis-yang-isis-cfg"></xref> which defines 
         basic IS-IS configuration and state. The IS-IS YANG model augments the 
-        ietf-routing YANG model defined in <xref target="RFC8022"/>.
+        ietf-routing YANG model defined in <xref target="RFC8349"/>.
       </t>
                
       <section title="Requirements Language">
-        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-        document are to be interpreted as described in <xref target="RFC2119"></xref>.</t>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+        "MAY", and "OPTIONAL" in this document are to be interpreted as
+        described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
+        when, and only when, they appear in all capitals, as shown here.</t>
+      </section>
+      <section anchor="tree-info" title="Tree diagram" toc="default">
+        <t>Tree diagrams used in this document follow the notation defined in
+        <xref target="RFC8340"/>.</t>
       </section>
     </section>
   
@@ -180,7 +190,7 @@ module: ietf-isis-remaining-lifetime
         <t>
     <figure>
       <artwork><![CDATA[
-  <CODE BEGINS> file "ietf-isis-remaining-lifetime@2020-05-06.yang"
+  <CODE BEGINS> file "ietf-isis-remaining-lifetime@2021-01-05.yang"
 module ietf-isis-remaining-lifetime {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-remaining-lifetime";
@@ -199,7 +209,7 @@ module ietf-isis-remaining-lifetime {
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
-                <mailto:yingzhen.qu@futurewei.com>
+                <mailto:yqu@futurewei.com>
       Author:   Acee Lindem
                 <mailto:acee@cisco.com>
       Author:   Stephane Litkowski
@@ -207,10 +217,10 @@ module ietf-isis-remaining-lifetime {
 
   description
     "This YANG module defines the configuration and operational 
-    state for IS-IS Minimum Remaining Lifetime feature as defined 
-    in RFC 7987.
+     state for IS-IS Minimum Remaining Lifetime feature as defined 
+     in RFC 7987.
 
-     Copyright (c) 2019 IETF Trust and the persons identified as
+     Copyright (c) 2021 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -225,7 +235,7 @@ module ietf-isis-remaining-lifetime {
 
   reference "RFC XXXX";
 
-  revision 2020-05-06 {
+  revision 2021-01-05 {
     description
       "Initial version";
     reference
@@ -241,6 +251,7 @@ module ietf-isis-remaining-lifetime {
     description
       "This notification is sent when the system
        detects correpted lifetime of an LSP.";
+    reference "RFC 7987: IS-IS Minimum Remaining Lifetime";
   }
 }
   <CODE ENDS>
@@ -252,7 +263,7 @@ module ietf-isis-remaining-lifetime {
 
   <section title="YANG Module for IS-IS Application-Specific Link Attributes">
     <t>This document defines a YANG module for IS-IS Application-Specific Link
-    Attributes <xref target="I-D.ietf-isis-te-app"/>. It is an augmentation of the IS-IS 
+    Attributes <xref target="RFC8919"/>. It is an augmentation of the IS-IS 
       base model. </t>
 
     <figure align="left">
@@ -339,7 +350,7 @@ module: ietf-isis-link-attr
         <t>
     <figure>
       <artwork><![CDATA[
-  <CODE BEGINS> file "ietf-isis-link-attr@2020-10-29.yang"
+  <CODE BEGINS> file "ietf-isis-link-attr@2021-01-05.yang"
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -376,12 +387,12 @@ module ietf-isis-link-attr {
   description
     "This YANG module defines the configuration and operational 
      state for IS-IS application specific link attributes feature as 
-     defined in RFC xxxx.
+     defined in RFC 8919.
 
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8242.
 
-     Copyright (c) 2020 IETF Trust and the persons identified as
+     Copyright (c) 2021 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -402,7 +413,7 @@ module ietf-isis-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2020-10-29 {
+  revision 2021-01-05 {
     description
       "Initial version";
     reference
@@ -412,6 +423,7 @@ module ietf-isis-link-attr {
   identity sabm-bit {
     description
       "Base identity for sabm bits.";
+    reference "RFC 8919: IS-IS Application-Specific Link Attributes";
   }
 
   identity rsvp-te-bit {
@@ -717,7 +729,13 @@ module ietf-isis-link-attr {
       that are writable/creatable/deletable (i.e., config true, which is the default). 
       These data nodes may be considered sensitive or vulnerable in some network 
       environments. Write operations (e.g., edit-config) to these data nodes without 
-      proper protection can have a negative effect on network operations. </t>  
+      proper protection can have a negative effect on network operations. These correspond
+      to the following schema nodes:
+      <list style="empty">
+        <t>/isis:isis/isis:interfaces/isis:interface/isis-link-attr - Modification 
+          of link attributes operation mode could result in traffic being 
+          redirected or DoS attack.</t>
+      </list></t>  
 
    <t>Some of the readable data nodes in the modules
       may be considered sensitive or vulnerable in some network environments. It is thus 
@@ -726,7 +744,11 @@ module ietf-isis-link-attr {
       expose the detailed topology of the network. This may be undesirable since
       both due to the fact that exposure may facilitate other attacks. Additionally, 
       network operators may consider their topologies to be sensitive confidential
-      data.</t>
+      data.These correspond to the following schema nodes:
+      <list style="empty">
+        <t>/isis:isis/isis:database/isis:levels/isis:lsp/isis:mt-is-neighbor/isis:neighbor/isis:instances/isis:instance/application-specific-link-attributes-sub-tlvs </t>
+        <t>/isis:isis/isis:database/isis:levels/isis:lsp/application-specific-srlg-tlv </t>
+      </list></t>
 
    </section>
 <section title="IANA Considerations">
@@ -740,6 +762,13 @@ module ietf-isis-link-attr {
    XML: N/A, the requested URI is an XML namespace.
    </artwork> 
    </figure>
+   <figure>
+   <artwork>  
+   URI: urn:ietf:params:xml:ns:yang:ietf-isis-link-attr
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   </artwork> 
+   </figure>
 </t>
    <t>This document registers the YANG modules in the YANG Module Names
    registry <xref target="RFC6020"/>.
@@ -748,6 +777,14 @@ module ietf-isis-link-attr {
    name: ietf-isis-remaining-lifetime
    namespace: urn:ietf:params:xml:ns:yang:ietf-isis-remaining-lifetime
    prefix: isis-remaining-lifetime
+   reference: RFC XXXX
+   </artwork> 
+   </figure>
+   <figure>
+   <artwork>  
+   name: ietf-isis-link-attr
+   namespace: urn:ietf:params:xml:ns:yang:ietf-isis-link-attr
+   prefix: isis-link-attr
    reference: RFC XXXX
    </artwork> 
    </figure>
@@ -788,14 +825,15 @@ module ietf-isis-link-attr {
       &RFC6536;
       &RFC7950;
       &RFC7987;
-      &RFC8022;
       &RFC8040;
+      &RFC8174;
       &RFC8349;
+      &RFC8919;
+      &I-D.ietf-isis-yang-isis-cfg;
     </references>
     <references title="Informative References">
       <!-- Here we use entities that we defined at the beginning. -->
-      &I-D.ietf-isis-yang-isis-cfg;
-      &I-D.ietf-isis-te-app;
+      &RFC8340;
     </references>
 
   </back>
