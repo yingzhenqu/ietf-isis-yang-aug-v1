@@ -44,7 +44,7 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-01" ipr="trust200902">
+<rfc category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-02" ipr="trust200902">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
      you can add the attributes updates="NNNN" and obsoletes="NNNN" 
@@ -131,8 +131,7 @@
 
   <middle>
     <section title="Overview">
-      <t>YANG <xref target="RFC6020"></xref>  <xref target="RFC7950"></xref> is a 
-      data definition language 
+      <t>YANG <xref target="RFC7950"></xref> is a data definition language 
       used to define the contents of a conceptual data store 
       that allows networked devices to be managed using NETCONF 
       <xref target="RFC6241"/>.  YANG is proving relevant beyond its 
@@ -193,7 +192,7 @@ module: ietf-isis-remaining-lifetime
         <t>
     <figure>
       <artwork><![CDATA[
-  <CODE BEGINS> file "ietf-isis-remaining-lifetime@2021-01-05.yang"
+  <CODE BEGINS> file "ietf-isis-remaining-lifetime@2021-12-22.yang"
 module ietf-isis-remaining-lifetime {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-remaining-lifetime";
@@ -227,9 +226,9 @@ module ietf-isis-remaining-lifetime {
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
      (http://trustee.ietf.org/license-info).
 
@@ -238,11 +237,11 @@ module ietf-isis-remaining-lifetime {
 
   reference "RFC XXXX";
 
-  revision 2021-01-05 {
+  revision 2021-12-22 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for IS-IS.";
+      "RFC XXXX: A YANG Data Model for IS-IS Minimum Remaining Lifetime.";
   }
 
   notification corrupt-remaining-lifetime {
@@ -253,7 +252,7 @@ module ietf-isis-remaining-lifetime {
     }
     description
       "This notification is sent when the system
-       detects correpted lifetime of an LSP.";
+       detects corrupted lifetime of an LSP.";
     reference "RFC 7987: IS-IS Minimum Remaining Lifetime";
   }
 }
@@ -353,7 +352,7 @@ module: ietf-isis-link-attr
         <t>
     <figure>
       <artwork><![CDATA[
-  <CODE BEGINS> file "ietf-isis-link-attr@2021-01-05.yang"
+  <CODE BEGINS> file "ietf-isis-link-attr@2021-12-22.yang"
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -399,9 +398,9 @@ module ietf-isis-link-attr {
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
      (http://trustee.ietf.org/license-info).
 
@@ -416,11 +415,12 @@ module ietf-isis-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2021-01-05 {
+  revision 2021-12-22 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for IS-IS.";
+      "RFC XXXX: A YANG Data Model for IS-IS Application-Specific Link
+       Attributes.";
   }
 
   identity sabm-bit {
@@ -707,6 +707,7 @@ module ietf-isis-link-attr {
    
     uses application-specific-srlg-tlv;
   }
+
 }
   <CODE ENDS>
       ]]></artwork>
@@ -806,7 +807,7 @@ module: ietf-isis-flex-algo
         <t>
     <figure>
       <artwork><![CDATA[
-  <CODE BEGINS> file "ietf-isis-flex-algo@2021-06-18.yang"
+  <CODE BEGINS> file "ietf-isis-flex-algo@2021-12-22.yang"
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -858,9 +859,9 @@ module ietf-isis-flex-algo {
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
 
@@ -876,7 +877,7 @@ module ietf-isis-flex-algo {
 
   reference "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
 
-  revision 2021-06-18 {
+  revision 2021-12-22 {
     description
       "Initial Version";
     reference "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
