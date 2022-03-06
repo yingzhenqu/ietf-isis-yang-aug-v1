@@ -23,6 +23,10 @@ module ietf-isis-flex-algo {
     prefix "te";
   }
 
+  import ietf-isis-link-attr {
+    prefix "isis-link-attr";
+  }
+
   organization
     "IETF LSR - Link State Routing Working Group";
   contact
@@ -45,7 +49,7 @@ module ietf-isis-flex-algo {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2022 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -67,7 +71,7 @@ module ietf-isis-flex-algo {
 
   reference "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
 
-  revision 2021-12-22 {
+  revision 2022-03-06 {
     description
       "Initial Version";
     reference "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
@@ -110,9 +114,16 @@ module ietf-isis-flex-algo {
   identity m-bit {
     base fad-flags;
     description
-      "M bit, when set, the fex-algo specific prefix and ASBR
+      "M bit, when set, the flex-algo specific prefix and ASBR
        metric MUST be used for inter-area and external prefix
        calculation.";
+  }
+
+  /* Identity augmentation */
+  identity flex-algo-bit {
+    base isis-link-attr:sabm-bit;
+    description
+      "X bit, flexible algorithm.";
   }
 
   /* Groupings */
@@ -273,7 +284,6 @@ module ietf-isis-flex-algo {
     description
       "This augments ISIS protocol configuration
        with flexible algorithm.";
-
 
     container isis-flex-algo {
       list flex-algo {
@@ -454,5 +464,22 @@ module ietf-isis-flex-algo {
                 description
             "This augments ISIS protocol LSDB prefix.";
         uses fapm-sub-tlvs;
+  }
+
+  /* notification */
+
+  notification flex-algo-not-supported {
+    uses isis:notification-instance-hdr;
+    leaf flex-algo-number {
+      type uint8 {
+        range "128..255";
+      }
+      description
+        "Flex-algo identifier which is not supported by the IS-IS
+         instance.";
+    }
+    description
+      "This notification is sent when an IS-IS instance does not
+       support this flex-algo.";
   }
 }
