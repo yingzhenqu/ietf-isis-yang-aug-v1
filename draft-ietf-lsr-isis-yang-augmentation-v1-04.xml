@@ -1,50 +1,19 @@
-<?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-    <!ENTITY RFC2119 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
-    <!ENTITY RFC3688 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.3688.xml'>
-    <!ENTITY RFC5246 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5246.xml'>
-    <!ENTITY RFC5329 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5329.xml'>
-    <!ENTITY RFC6020 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6020.xml'>
-    <!ENTITY RFC6241 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6241.xml'>
-    <!ENTITY RFC6242 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6242.xml'>
-    <!ENTITY RFC6536 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6536.xml'>
-    <!ENTITY RFC7950 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.7950.xml'>
-    <!ENTITY RFC7987 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.7987.xml'>
-    <!ENTITY RFC8040 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8040.xml'>
-    <!ENTITY RFC8174 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml'>      
-    <!ENTITY RFC8340 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8340.xml'>   
-    <!ENTITY RFC8349 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8349.xml'>
-    <!ENTITY RFC8919 PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.8919.xml'>
-    <!ENTITY I-D.ietf-isis-yang-isis-cfg PUBLIC '' 
-      'http://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.ietf-isis-yang-isis-cfg'> 
-    <!ENTITY I-D.ietf-lsr-flex-algo PUBLIC ''
-      'http://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.ietf-lsr-flex-algo'>
-    ]>
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <?rfc strict="no" ?>
 <?rfc toc="yes" ?>
 <?rfc symrefs="yes" ?>
 <?rfc sortrefs="yes"?>
-
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-
-<rfc category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-03" ipr="trust200902">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-03" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3">
+  <!-- xml2rfc v2v3 conversion 3.13.1 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
      you can add the attributes updates="NNNN" and obsoletes="NNNN" 
@@ -57,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="ISIS YANG Augments V1">IS-IS YANG Model Augmentations for Additional Features - Version 1 </title>
-
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-03"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -76,8 +45,8 @@
       <organization>Cisco Systems</organization>
       <address>
         <postal>
-          <street></street>
-          <city></city>
+          <street/>
+          <city/>
         </postal>
         <email>slitkows.ietf@gmail.com</email>
       </address>
@@ -92,12 +61,11 @@
           <code>95050</code>
           <country>USA</country>
         </postal>
-        <phone></phone>
+        <phone/>
         <email>yingzhen.qu@futurewei.com</email>
       </address>
     </author>
     <date/>
-
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
    in the current day and month for you. If the year is not the current one, it is 
@@ -108,9 +76,7 @@
     <!-- Meta-data Declarations -->
 
     <area>General</area>
-
     <workgroup>Internet</workgroup>
-
     <!-- WG name at the upperleft corner of the doc,
          IETF is fine for individual submissions.  
    If this element is not present, the default is "Network Working Group",
@@ -128,55 +94,55 @@
       defined in RFC 8919, and IS-IS Flexible Algorithm. </t>
     </abstract>
   </front>
-
   <middle>
-    <section title="Overview">
-      <t>YANG <xref target="RFC7950"></xref> is a data definition language 
+    <section numbered="true" toc="default">
+      <name>Overview</name>
+      <t>YANG <xref target="RFC7950" format="default"/> is a data definition language 
       used to define the contents of a conceptual data store 
       that allows networked devices to be managed using NETCONF 
-      <xref target="RFC6241"/>.  YANG is proving relevant beyond its 
+      <xref target="RFC6241" format="default"/>.  YANG is proving relevant beyond its 
       initial confines, as bindings to other interfaces (e.g., ReST) and 
       encodings other than XML (e.g., JSON) are being defined.  Furthermore, 
       YANG data models can be used as the basis for implementation of other 
       interfaces, such as CLI and programmatic APIs.</t>
-
       <t>This document defines YANG data modules augmenting the IETF IS-IS 
-      YANG model <xref target="I-D.ietf-isis-yang-isis-cfg"/>, which itself augments 
-      <xref target="RFC8349"/>, to provide support for configuration and
+      YANG model <xref target="I-D.ietf-isis-yang-isis-cfg" format="default"/>, which itself augments 
+      <xref target="RFC8349" format="default"/>, to provide support for configuration and
       operational state for the following IS-IS features:
-        <list style="hanging">
-        <t hangText="RFC7987:">IS-IS Minimum Remaining Lifetime<xref target="RFC7987"/>.</t> 
-        <t hangText="RFC8919:">IS-IS Application-Specific Link Attributes<xref target="RFC8919"/>.</t>
-        <t hangText="RFCxxxx:">IGP Flexible Algorithm <xref target="I-D.ietf-lsr-flex-algo"/>.</t>
-        </list>
       </t>
-  
+      <dl newline="false" spacing="normal">
+        <dt>RFC7987:</dt>
+        <dd>IS-IS Minimum Remaining Lifetime<xref target="RFC7987" format="default"/>.</dd>
+        <dt>RFC8919:</dt>
+        <dd>IS-IS Application-Specific Link Attributes<xref target="RFC8919" format="default"/>.</dd>
+        <dt>RFCxxxx:</dt>
+        <dd>IGP Flexible Algorithm <xref target="I-D.ietf-lsr-flex-algo" format="default"/>.</dd>
+      </dl>
       <t>The augmentations defined in this document requires support for the 
-        IS-IS base model<xref target="I-D.ietf-isis-yang-isis-cfg"></xref> which defines 
+        IS-IS base model<xref target="I-D.ietf-isis-yang-isis-cfg" format="default"/> which defines 
         basic IS-IS configuration and state. The IS-IS YANG model augments the 
-        ietf-routing YANG model defined in <xref target="RFC8349"/>.
+        ietf-routing YANG model defined in <xref target="RFC8349" format="default"/>.
       </t>
-               
-      <section title="Requirements Language">
+      <section numbered="true" toc="default">
+        <name>Requirements Language</name>
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
         NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
         "MAY", and "OPTIONAL" in this document are to be interpreted as
-        described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
+        described in BCP 14 <xref target="RFC2119" format="default"/> <xref target="RFC8174" format="default"/>
         when, and only when, they appear in all capitals, as shown here.</t>
       </section>
-      <section anchor="tree-info" title="Tree diagram" toc="default">
+      <section anchor="tree-info" toc="default" numbered="true">
+        <name>Tree diagram</name>
         <t>Tree diagrams used in this document follow the notation defined in
-        <xref target="RFC8340"/>.</t>
+        <xref target="RFC8340" format="default"/>.</t>
       </section>
     </section>
-  
-  <section title="YANG Module for IS-IS Minimum Remaining Lifetime">
-    <t>This document defines a YANG module for IS-IS Minimum Remaining Lifetime
-      as defined in <xref target="RFC7987"/>. It is an augmentation of the IS-IS 
+    <section numbered="true" toc="default">
+      <name>YANG Module for IS-IS Minimum Remaining Lifetime</name>
+      <t>This document defines a YANG module for IS-IS Minimum Remaining Lifetime
+      as defined in <xref target="RFC7987" format="default"/>. It is an augmentation of the IS-IS 
       base model. </t>
-
-    <figure align="left">
-      <artwork align="left">  
+      <artwork align="left" name="" type="" alt=""><![CDATA[  
 module: ietf-isis-remaining-lifetime
 
   notifications:
@@ -187,12 +153,8 @@ module: ietf-isis-remaining-lifetime
        +--ro isis-level?              level
        +--ro lsp-id?                  isis:lsp-id                                              
 
-      </artwork>
-    </figure> 
-        <t>
-    <figure>
-      <artwork><![CDATA[
-  <CODE BEGINS> file "ietf-isis-remaining-lifetime@2021-12-22.yang"
+      ]]></artwork>
+      <sourcecode name="ietf-isis-remaining-lifetime@2021-12-22.yang" type="" markers="true"><![CDATA[
 module ietf-isis-remaining-lifetime {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-remaining-lifetime";
@@ -256,20 +218,14 @@ module ietf-isis-remaining-lifetime {
     reference "RFC 7987: IS-IS Minimum Remaining Lifetime";
   }
 }
-  <CODE ENDS>
-      ]]></artwork>
-    </figure>
-  </t> 
-  </section>
-
-
-  <section title="YANG Module for IS-IS Application-Specific Link Attributes">
-    <t>This document defines a YANG module for IS-IS Application-Specific Link
-    Attributes <xref target="RFC8919"/>. It is an augmentation of the IS-IS 
+  ]]></sourcecode>
+    </section>
+    <section numbered="true" toc="default">
+      <name>YANG Module for IS-IS Application-Specific Link Attributes</name>
+      <t>This document defines a YANG module for IS-IS Application-Specific Link
+    Attributes <xref target="RFC8919" format="default"/>. It is an augmentation of the IS-IS 
       base model. </t>
-
-    <figure align="left">
-      <artwork align="left">  
+      <artwork align="left" name="" type="" alt=""><![CDATA[  
 module: ietf-isis-link-attr
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/isis:isis/isis:interfaces
@@ -347,12 +303,8 @@ module: ietf-isis-link-attr
           |     +--ro ipv6-neighbor-addr?   inet:ipv6-address
           +--ro srlgs
              +--ro srlg*   uint32                                          
-      </artwork>
-    </figure> 
-        <t>
-    <figure>
-      <artwork><![CDATA[
-  <CODE BEGINS> file "ietf-isis-link-attr@2022-03-06.yang"
+      ]]></artwork>
+      <sourcecode name="ietf-isis-link-attr@2022-03-06.yang" type="" markers="true"><![CDATA[
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -709,18 +661,14 @@ module ietf-isis-link-attr {
   }
 
 }
-  <CODE ENDS>
-      ]]></artwork>
-    </figure>
-  </t> 
-  </section>
-  <section title="YANG Module for IS-IS Flexible Algorithm">
-    <t>This document defines a YANG module for IS-IS Flexible
-      Algorithm <xref target="I-D.ietf-lsr-flex-algo"/>. It is an augmentation of the IS-IS 
+  ]]></sourcecode>
+    </section>
+    <section numbered="true" toc="default">
+      <name>YANG Module for IS-IS Flexible Algorithm</name>
+      <t>This document defines a YANG module for IS-IS Flexible
+      Algorithm <xref target="I-D.ietf-lsr-flex-algo" format="default"/>. It is an augmentation of the IS-IS 
       base model. </t>
-
-    <figure align="left">
-      <artwork align="left">  
+      <artwork align="left" name="" type="" alt=""><![CDATA[  
 module: ietf-isis-flex-algo
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/isis:isis:
@@ -811,12 +759,8 @@ module: ietf-isis-flex-algo
        +--ro isis-level?              level
        +--ro flex-algo-number?        uint8
 
-      </artwork>
-    </figure> 
-        <t>
-    <figure>
-      <artwork><![CDATA[
-  <CODE BEGINS> file "ietf-isis-flex-algo@2022-03-06.yang"
+      ]]></artwork>
+      <sourcecode name="ietf-isis-flex-algo@2022-03-06.yang" type="" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -1302,39 +1246,34 @@ module ietf-isis-flex-algo {
        support this flex-algo.";
   }
 }
-    <CODE ENDS>
-      ]]></artwork>
-    </figure>
-  </t> 
-  </section>
-
-    <section anchor="Security" title="Security Considerations">
-    <t>The YANG modules specified in this document define a schema for 
+    ]]></sourcecode>
+    </section>
+    <section anchor="Security" numbered="true" toc="default">
+      <name>Security Considerations</name>
+      <t>The YANG modules specified in this document define a schema for 
        data that is designed to be accessed via network
-       management protocols such as NETCONF <xref target="RFC6241"/> or
-       RESTCONF <xref target="RFC8040"/>. The lowest NETCONF layer is the secure transport
+       management protocols such as NETCONF <xref target="RFC6241" format="default"/> or
+       RESTCONF <xref target="RFC8040" format="default"/>. The lowest NETCONF layer is the secure transport
        layer, and the mandatory-to-implement secure transport is Secure Shell (SSH)
-       <xref target="RFC6242"/>. The lowest RESTCONF layer is HTTPS, and the
-       mandatory-to-implement secure transport is TLS <xref target="RFC5246"/>.</t>
-
-   <t>The NETCONF access control model <xref target="RFC6536"/> provides the 
+       <xref target="RFC6242" format="default"/>. The lowest RESTCONF layer is HTTPS, and the
+       mandatory-to-implement secure transport is TLS <xref target="RFC5246" format="default"/>.</t>
+      <t>The NETCONF access control model <xref target="RFC6536" format="default"/> provides the 
       means to restrict access for particular NETCONF or RESTCONF users to a
       pre-configured subset of all available NETCONF or RESTCONF protocol 
       operations and content.</t>
-
-   <t>There are a number of data nodes defined in the modules
+      <t>There are a number of data nodes defined in the modules
       that are writable/creatable/deletable (i.e., config true, which is the default). 
       These data nodes may be considered sensitive or vulnerable in some network 
       environments. Write operations (e.g., edit-config) to these data nodes without 
       proper protection can have a negative effect on network operations. These correspond
       to the following schema nodes:
-      <list style="empty">
-        <t>/isis:isis/isis:interfaces/isis:interface/isis-link-attr - Modification 
+      </t>
+      <ul empty="true" spacing="normal">
+        <li>/isis:isis/isis:interfaces/isis:interface/isis-link-attr - Modification 
           of link attributes operation mode could result in traffic being 
-          redirected or DoS attack.</t>
-      </list></t>  
-
-   <t>Some of the readable data nodes in the modules
+          redirected or DoS attack.</li>
+      </ul>
+      <t>Some of the readable data nodes in the modules
       may be considered sensitive or vulnerable in some network environments. It is thus 
       important to control read access (e.g., via get, get-config, or notification)
       to these data nodes. The exposure of the Link State Database (LSDB) will
@@ -1342,73 +1281,62 @@ module ietf-isis-flex-algo {
       both due to the fact that exposure may facilitate other attacks. Additionally, 
       network operators may consider their topologies to be sensitive confidential
       data.These correspond to the following schema nodes:
-      <list style="empty">
-        <t>/isis:isis/isis:database/isis:levels/isis:lsp/isis:mt-is-neighbor/isis:neighbor/isis:instances/isis:instance/application-specific-link-attributes-sub-tlvs </t>
-        <t>/isis:isis/isis:database/isis:levels/isis:lsp/application-specific-srlg-tlv </t>
-      </list></t>
-
-   </section>
-<section title="IANA Considerations">
-<t>This document registers URIs in the IETF XML registry 
-   <xref target="RFC3688"/>.  Following the format in <xref target="RFC3688"/>, 
+      </t>
+      <ul empty="true" spacing="normal">
+        <li>/isis:isis/isis:database/isis:levels/isis:lsp/isis:mt-is-neighbor/isis:neighbor/isis:instances/isis:instance/application-specific-link-attributes-sub-tlvs </li>
+        <li>/isis:isis/isis:database/isis:levels/isis:lsp/application-specific-srlg-tlv </li>
+      </ul>
+    </section>
+    <section numbered="true" toc="default">
+      <name>IANA Considerations</name>
+      <t>This document registers URIs in the IETF XML registry 
+   <xref target="RFC3688" format="default"/>.  Following the format in <xref target="RFC3688" format="default"/>, 
    the following registrations is requested to be made:
-   <figure>
-   <artwork>  
+      </t>
+      <artwork name="" type="" align="left" alt=""><![CDATA[  
    URI: urn:ietf:params:xml:ns:yang:ietf-isis-remaining-lifetime
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
-   </artwork> 
-   </figure>
-   <figure>
-   <artwork>  
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[  
    URI: urn:ietf:params:xml:ns:yang:ietf-isis-link-attr
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
-   </artwork> 
-   </figure>
-   <figure>
-   <artwork>  
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[  
    URI: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
-   </artwork> 
-   </figure>
-</t>
-   <t>This document registers the YANG modules in the YANG Module Names
-   registry <xref target="RFC6020"/>.
-   <figure>
-   <artwork>  
+   ]]></artwork>
+      <t>This document registers the YANG modules in the YANG Module Names
+   registry <xref target="RFC6020" format="default"/>.
+      </t>
+      <artwork name="" type="" align="left" alt=""><![CDATA[  
    name: ietf-isis-remaining-lifetime
    namespace: urn:ietf:params:xml:ns:yang:ietf-isis-remaining-lifetime
    prefix: isis-remaining-lifetime
    reference: RFC XXXX
-   </artwork> 
-   </figure>
-   <figure>
-   <artwork>  
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[  
    name: ietf-isis-link-attr
    namespace: urn:ietf:params:xml:ns:yang:ietf-isis-link-attr
    prefix: isis-link-attr
    reference: RFC XXXX
-   </artwork> 
-   </figure>
-   <figure>
-   <artwork>  
+   ]]></artwork>
+      <artwork name="" type="" align="left" alt=""><![CDATA[  
    name: ietf-isis-flex-algo
    namespace: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
    prefix: isis-flex-algo
    reference: RFC XXXX
-   </artwork> 
-   </figure>
-   </t>
-</section>
-    <section anchor="Acknowledgements" title="Acknowledgements">
+   ]]></artwork>
+    </section>
+    <section anchor="Acknowledgements" numbered="true" toc="default">
+      <name>Acknowledgements</name>
       <t>This document was produced using Marshall Rose's xml2rfc tool.</t>
       <t>The YANG model was developed using the suite of YANG tools written 
          and maintained by numerous authors.</t>
-    </section>   
+    </section>
   </middle>
-
   <!--  *****BACK MATTER ***** -->
 
   <back>
@@ -1425,29 +1353,272 @@ module ietf-isis-flex-algo {
      with a value containing a set of directories to search.  These can be either in the local
      filing system or remote ones accessed by http (http://domain/dir/... ).-->
 
-    <references title="Normative References">
-      <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
-      &RFC2119;
-      &RFC3688;
-      &RFC5246;
-      &RFC5329;
-      &RFC6020;
-      &RFC6241;
-      &RFC6242;
-      &RFC6536;
-      &RFC7950;
-      &RFC7987;
-      &RFC8040;
-      &RFC8174;
-      &RFC8349;
-      &RFC8919;
-      &I-D.ietf-isis-yang-isis-cfg;
-      &I-D.ietf-lsr-flex-algo;
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
+      <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+          <front>
+            <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+            <author fullname="S. Bradner" initials="S." surname="Bradner"/>
+            <date month="March" year="1997"/>
+            <abstract>
+              <t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized.  This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="BCP" value="14"/>
+          <seriesInfo name="RFC" value="2119"/>
+          <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+        </reference>
+        <reference anchor="RFC3688" target="https://www.rfc-editor.org/info/rfc3688" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml">
+          <front>
+            <title>The IETF XML Registry</title>
+            <author fullname="M. Mealling" initials="M." surname="Mealling"/>
+            <date month="January" year="2004"/>
+            <abstract>
+              <t>This document describes an IANA maintained registry for IETF standards which use Extensible Markup Language (XML) related items such as Namespaces, Document Type Declarations (DTDs), Schemas, and Resource Description Framework (RDF) Schemas.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="BCP" value="81"/>
+          <seriesInfo name="RFC" value="3688"/>
+          <seriesInfo name="DOI" value="10.17487/RFC3688"/>
+        </reference>
+        <reference anchor="RFC5246" target="https://www.rfc-editor.org/info/rfc5246" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml">
+          <front>
+            <title>The Transport Layer Security (TLS) Protocol Version 1.2</title>
+            <author fullname="T. Dierks" initials="T." surname="Dierks"/>
+            <author fullname="E. Rescorla" initials="E." surname="Rescorla"/>
+            <date month="August" year="2008"/>
+            <abstract>
+              <t>This document specifies Version 1.2 of the Transport Layer Security (TLS) protocol.  The TLS protocol provides communications security over the Internet.  The protocol allows client/server applications to communicate in a way that is designed to prevent eavesdropping, tampering, or message forgery. [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="5246"/>
+          <seriesInfo name="DOI" value="10.17487/RFC5246"/>
+        </reference>
+        <reference anchor="RFC5329" target="https://www.rfc-editor.org/info/rfc5329" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5329.xml">
+          <front>
+            <title>Traffic Engineering Extensions to OSPF Version 3</title>
+            <author fullname="K. Ishiguro" initials="K." surname="Ishiguro"/>
+            <author fullname="V. Manral" initials="V." surname="Manral"/>
+            <author fullname="A. Davey" initials="A." surname="Davey"/>
+            <author fullname="A. Lindem" initials="A." role="editor" surname="Lindem"/>
+            <date month="September" year="2008"/>
+            <abstract>
+              <t>This document describes extensions to OSPFv3 to support intra-area Traffic Engineering (TE).  This document extends OSPFv2 TE to handle IPv6 networks.  A new TLV and several new sub-TLVs are defined to support IPv6 networks. [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="5329"/>
+          <seriesInfo name="DOI" value="10.17487/RFC5329"/>
+        </reference>
+        <reference anchor="RFC6020" target="https://www.rfc-editor.org/info/rfc6020" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6020.xml">
+          <front>
+            <title>YANG - A Data Modeling Language for the Network Configuration Protocol (NETCONF)</title>
+            <author fullname="M. Bjorklund" initials="M." role="editor" surname="Bjorklund"/>
+            <date month="October" year="2010"/>
+            <abstract>
+              <t>YANG is a data modeling language used to model configuration and state data manipulated by the Network Configuration Protocol (NETCONF), NETCONF remote procedure calls, and NETCONF notifications. [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="6020"/>
+          <seriesInfo name="DOI" value="10.17487/RFC6020"/>
+        </reference>
+        <reference anchor="RFC6241" target="https://www.rfc-editor.org/info/rfc6241" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6241.xml">
+          <front>
+            <title>Network Configuration Protocol (NETCONF)</title>
+            <author fullname="R. Enns" initials="R." role="editor" surname="Enns"/>
+            <author fullname="M. Bjorklund" initials="M." role="editor" surname="Bjorklund"/>
+            <author fullname="J. Schoenwaelder" initials="J." role="editor" surname="Schoenwaelder"/>
+            <author fullname="A. Bierman" initials="A." role="editor" surname="Bierman"/>
+            <date month="June" year="2011"/>
+            <abstract>
+              <t>The Network Configuration Protocol (NETCONF) defined in this document provides mechanisms to install, manipulate, and delete the configuration of network devices.  It uses an Extensible Markup Language (XML)-based data encoding for the configuration data as well as the protocol messages.  The NETCONF protocol operations are realized as remote procedure calls (RPCs).  This document obsoletes RFC 4741. [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="6241"/>
+          <seriesInfo name="DOI" value="10.17487/RFC6241"/>
+        </reference>
+        <reference anchor="RFC6242" target="https://www.rfc-editor.org/info/rfc6242" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6242.xml">
+          <front>
+            <title>Using the NETCONF Protocol over Secure Shell (SSH)</title>
+            <author fullname="M. Wasserman" initials="M." surname="Wasserman"/>
+            <date month="June" year="2011"/>
+            <abstract>
+              <t>This document describes a method for invoking and running the Network Configuration Protocol (NETCONF) within a Secure Shell (SSH) session as an SSH subsystem.  This document obsoletes RFC 4742. [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="6242"/>
+          <seriesInfo name="DOI" value="10.17487/RFC6242"/>
+        </reference>
+        <reference anchor="RFC6536" target="https://www.rfc-editor.org/info/rfc6536" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6536.xml">
+          <front>
+            <title>Network Configuration Protocol (NETCONF) Access Control Model</title>
+            <author fullname="A. Bierman" initials="A." surname="Bierman"/>
+            <author fullname="M. Bjorklund" initials="M." surname="Bjorklund"/>
+            <date month="March" year="2012"/>
+            <abstract>
+              <t>The standardization of network configuration interfaces for use with the Network Configuration Protocol (NETCONF) requires a structured and secure operating environment that promotes human usability and multi-vendor interoperability.  There is a need for standard mechanisms to restrict NETCONF protocol access for particular users to a pre-configured subset of all available NETCONF protocol operations and content.  This document defines such an access control model. [STANDARDS-TRACK]</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="6536"/>
+          <seriesInfo name="DOI" value="10.17487/RFC6536"/>
+        </reference>
+        <reference anchor="RFC7950" target="https://www.rfc-editor.org/info/rfc7950" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml">
+          <front>
+            <title>The YANG 1.1 Data Modeling Language</title>
+            <author fullname="M. Bjorklund" initials="M." role="editor" surname="Bjorklund"/>
+            <date month="August" year="2016"/>
+            <abstract>
+              <t>YANG is a data modeling language used to model configuration data, state data, Remote Procedure Calls, and notifications for network management protocols.  This document describes the syntax and semantics of version 1.1 of the YANG language.  YANG version 1.1 is a maintenance release of the YANG language, addressing ambiguities and defects in the original specification.  There are a small number of backward incompatibilities from YANG version 1.  This document also specifies the YANG mappings to the Network Configuration Protocol (NETCONF).</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="7950"/>
+          <seriesInfo name="DOI" value="10.17487/RFC7950"/>
+        </reference>
+        <reference anchor="RFC7987" target="https://www.rfc-editor.org/info/rfc7987" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7987.xml">
+          <front>
+            <title>IS-IS Minimum Remaining Lifetime</title>
+            <author fullname="L. Ginsberg" initials="L." surname="Ginsberg"/>
+            <author fullname="P. Wells" initials="P." surname="Wells"/>
+            <author fullname="B. Decraene" initials="B." surname="Decraene"/>
+            <author fullname="T. Przygienda" initials="T." surname="Przygienda"/>
+            <author fullname="H. Gredler" initials="H." surname="Gredler"/>
+            <date month="October" year="2016"/>
+            <abstract>
+              <t>Corruption of the Remaining Lifetime field in a Link State Protocol Data Unit (LSP) can go undetected.  In certain scenarios, this may cause or exacerbate flooding storms.  It is also a possible denial-of-service attack vector.  This document defines a backwards-compatible solution to this problem.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="7987"/>
+          <seriesInfo name="DOI" value="10.17487/RFC7987"/>
+        </reference>
+        <reference anchor="RFC8040" target="https://www.rfc-editor.org/info/rfc8040" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8040.xml">
+          <front>
+            <title>RESTCONF Protocol</title>
+            <author fullname="A. Bierman" initials="A." surname="Bierman"/>
+            <author fullname="M. Bjorklund" initials="M." surname="Bjorklund"/>
+            <author fullname="K. Watsen" initials="K." surname="Watsen"/>
+            <date month="January" year="2017"/>
+            <abstract>
+              <t>This document describes an HTTP-based protocol that provides a programmatic interface for accessing data defined in YANG, using the datastore concepts defined in the Network Configuration Protocol (NETCONF).</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="8040"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8040"/>
+        </reference>
+        <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
+          <front>
+            <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
+            <author fullname="B. Leiba" initials="B." surname="Leiba"/>
+            <date month="May" year="2017"/>
+            <abstract>
+              <t>RFC 2119 specifies common key words that may be used in protocol specifications.  This document aims to reduce the ambiguity by clarifying that only UPPERCASE usage of the key words have the defined special meanings.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="BCP" value="14"/>
+          <seriesInfo name="RFC" value="8174"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8174"/>
+        </reference>
+        <reference anchor="RFC8349" target="https://www.rfc-editor.org/info/rfc8349" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8349.xml">
+          <front>
+            <title>A YANG Data Model for Routing Management (NMDA Version)</title>
+            <author fullname="L. Lhotka" initials="L." surname="Lhotka"/>
+            <author fullname="A. Lindem" initials="A." surname="Lindem"/>
+            <author fullname="Y. Qu" initials="Y." surname="Qu"/>
+            <date month="March" year="2018"/>
+            <abstract>
+              <t>This document specifies three YANG modules and one submodule. Together, they form the core routing data model that serves as a framework for configuring and managing a routing subsystem. It is expected that these modules will be augmented by additional YANG modules defining data models for control-plane protocols, route filters, and other functions. The core routing data model provides common building blocks for such extensions -- routes, Routing Information Bases (RIBs), and control-plane protocols.</t>
+              <t>The YANG modules in this document conform to the Network Management Datastore Architecture (NMDA). This document obsoletes RFC 8022.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="8349"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8349"/>
+        </reference>
+        <reference anchor="RFC8919" target="https://www.rfc-editor.org/info/rfc8919" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8919.xml">
+          <front>
+            <title>IS-IS Application-Specific Link Attributes</title>
+            <author fullname="L. Ginsberg" initials="L." surname="Ginsberg"/>
+            <author fullname="P. Psenak" initials="P." surname="Psenak"/>
+            <author fullname="S. Previdi" initials="S." surname="Previdi"/>
+            <author fullname="W. Henderickx" initials="W." surname="Henderickx"/>
+            <author fullname="J. Drake" initials="J." surname="Drake"/>
+            <date month="October" year="2020"/>
+            <abstract>
+              <t>Existing traffic-engineering-related link attribute advertisements have been defined and are used in RSVP-TE deployments.  Since the original RSVP-TE use case was defined, additional applications (e.g., Segment Routing Policy and Loop-Free Alternates) that also make use of the link attribute advertisements have been defined.  In cases where multiple applications wish to make use of these link attributes, the current advertisements do not support application-specific values for a given attribute, nor do they support indication of which applications are using the advertised value for a given link.  This document introduces new link attribute advertisements that address both of these shortcomings.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="RFC" value="8919"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8919"/>
+        </reference>
+        <reference anchor="I-D.ietf-isis-yang-isis-cfg" target="https://www.ietf.org/archive/id/draft-ietf-isis-yang-isis-cfg-42.txt" xml:base="https://bib.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-isis-yang-isis-cfg.xml">
+          <front>
+            <title>YANG Data Model for IS-IS Protocol</title>
+            <author fullname="Stephane Litkowski">
+              <organization>Cisco Systems</organization>
+            </author>
+            <author fullname="Derek Yeung">
+              <organization>Arrcus, Inc</organization>
+            </author>
+            <author fullname="Acee Lindem">
+              <organization>Cisco Systems</organization>
+            </author>
+            <author fullname="Jeffrey Zhang">
+              <organization>Juniper Networks</organization>
+            </author>
+            <author fullname="Ladislav Lhotka">
+              <organization>CZ.NIC</organization>
+            </author>
+            <date day="15" month="October" year="2019"/>
+            <abstract>
+              <t>This document defines a YANG data model that can be used to configure and manage the IS-IS protocol on network elements.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="Internet-Draft" value="draft-ietf-isis-yang-isis-cfg-42"/>
+        </reference>
+        <reference anchor="I-D.ietf-lsr-flex-algo" target="https://www.ietf.org/archive/id/draft-ietf-lsr-flex-algo-21.txt" xml:base="https://bib.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-lsr-flex-algo.xml">
+          <front>
+            <title>IGP Flexible Algorithm</title>
+            <author fullname="Peter Psenak">
+              <organization>Cisco Systems</organization>
+            </author>
+            <author fullname="Shraddha Hegde">
+              <organization>Juniper Networks, Inc.</organization>
+            </author>
+            <author fullname="Clarence Filsfils">
+              <organization>Cisco Systems, Inc.</organization>
+            </author>
+            <author fullname="Ketan Talaulikar">
+              <organization>Arrcus, Inc</organization>
+            </author>
+            <author fullname="Arkadiy Gulko">
+              <organization>Edward Jones</organization>
+            </author>
+            <date day="5" month="September" year="2022"/>
+            <abstract>
+              <t>IGP protocols traditionally compute best paths over the network based on the IGP metric assigned to the links. Many network deployments use RSVP-TE based or Segment Routing based Traffic Engineering to steer traffic over a path that is computed using different metrics or constraints than the shortest IGP path. This document specifies a solution that allows IGPs themselves to compute constraint-based paths over the network. This document also specifies a way of using Segment Routing (SR) Prefix-SIDs and SRv6 locators to steer packets along the constraint-based paths.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-flex-algo-21"/>
+        </reference>
+      </references>
+      <references>
+        <name>Informative References</name>
+        <!-- Here we use entities that we defined at the beginning. -->
+      <reference anchor="RFC8340" target="https://www.rfc-editor.org/info/rfc8340" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8340.xml">
+          <front>
+            <title>YANG Tree Diagrams</title>
+            <author fullname="M. Bjorklund" initials="M." surname="Bjorklund"/>
+            <author fullname="L. Berger" initials="L." role="editor" surname="Berger"/>
+            <date month="March" year="2018"/>
+            <abstract>
+              <t>This document captures the current syntax used in YANG module tree diagrams.  The purpose of this document is to provide a single location for this definition.  This syntax may be updated from time to time based on the evolution of the YANG language.</t>
+            </abstract>
+          </front>
+          <seriesInfo name="BCP" value="215"/>
+          <seriesInfo name="RFC" value="8340"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8340"/>
+        </reference>
+      </references>
     </references>
-    <references title="Informative References">
-      <!-- Here we use entities that we defined at the beginning. -->
-      &RFC8340;
-    </references>
-
   </back>
 </rfc>
