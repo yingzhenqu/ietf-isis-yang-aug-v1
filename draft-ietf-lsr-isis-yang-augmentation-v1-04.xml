@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-03" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-04" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3">
   <!-- xml2rfc v2v3 conversion 3.13.1 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,7 +26,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="ISIS YANG Augments V1">IS-IS YANG Model Augmentations for Additional Features - Version 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-03"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-04"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -203,7 +203,8 @@ module ietf-isis-remaining-lifetime {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for IS-IS Minimum Remaining Lifetime.";
+      "RFC XXXX: A YANG Data Model for IS-IS Minimum Remaining
+                 Lifetime";
   }
 
   notification corrupt-remaining-lifetime {
@@ -1248,6 +1249,215 @@ module ietf-isis-flex-algo {
 }
     ]]></sourcecode>
     </section>
+    <section numbered="true" toc="default">
+      <name>IS-IS MSD</name>
+      <t>This document defines a module for Signaling Maximum SID Depth (MSD)
+        using IS-IS <xref target="RFC8491" format="default"/>.  It is an
+        augmentation of the IS-IS base model.</t>
+      <t>The figure below describes the overall structure of the isis-msd
+      YANG module:</t>
+      <figure align="left">
+      <artwork align="left">
+module: ietf-isis-msd
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/isis:isis/isis:database
+          /isis:levels/isis:lsp/isis:router-capabilities:
+    +--ro node-msd-tlv
+       +--ro node-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/isis:isis/isis:database
+          /isis:levels/isis:lsp/isis:extended-is-neighbor
+          /isis:neighbor:
+    +--ro link-msd-sub-tlv
+       +--ro link-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/isis:isis/isis:database
+          /isis:levels/isis:lsp/isis:mt-is-neighbor/isis:neighbor:
+    +--ro link-msd-sub-tlv
+       +--ro link-msds* [msd-type]
+          +--ro msd-type     identityref
+          +--ro msd-value?   uint8
+                                   
+      </artwork>
+      </figure> 
+      <section title="IS-IS MSD YANG Module">
+      <figure>
+      <artwork><![CDATA[
+<CODE BEGINS> file "ietf-isis-msd@2022-09-05.yang"
+module ietf-isis-msd {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-isis-msd";
+  prefix isis-msd;
+
+  import ietf-routing {
+    prefix rt;
+    reference
+      "RFC 8349: A YANG Data Model for Routing
+       Management (NMDA Version)";
+  }
+  import ietf-isis {
+    prefix isis;
+  }
+  import ietf-mpls-msd {
+    prefix mpls-msd;
+  }
+
+  organization
+    "IETF LSR - LSR Working Group";
+  contact
+    "WG Web:   <https://tools.ietf.org/wg/mpls/>
+     WG List:  <mailto:mpls@ietf.org>
+
+     Author:    Yingzhen Qu
+               <mailto:yingzhen.qu@futurewei.com>
+     Author:    Acee Lindem
+               <mailto:acee@cisco.com>
+     Author:    Stephane Litkowski
+               <mailto:slitkows.ietf@gmail.com>
+     Author:    Jeff Tantsura
+               <mailto:jefftant.ietf@gmail.com>
+     
+    ";
+  description
+    "The YANG module augments the base ISIS model to
+     manage different types of MSDs.
+
+     This YANG model conforms to the Network Management
+     Datastore Architecture (NMDA) as described in RFC 8342.
+
+     Copyright (c) 2022 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX
+     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
+     for full legal notices.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
+  reference
+    "RFC XXXX: YANG Data Model for ISIS MSD";
+
+  revision 2022-09-05 {
+    description
+      "Initial Version";
+    reference
+      "RFC XXXX: YANG Data Model for ISIS MSD.";
+  }
+
+  grouping link-msd-sub-tlv {
+    description
+      "Link Maximum SID Depth (MSD) grouping for an interface.";
+    container link-msd-sub-tlv {
+      list link-msds {
+        key "msd-type";
+        leaf msd-type {
+          type identityref {
+            base mpls-msd:msd-base-type;
+          }
+          description
+            "MSD-Types";
+        }
+        leaf msd-value {
+          type uint8;
+          description
+            "MSD value, in the range of 0-255.";
+        }
+        description
+          "List of link MSDs";
+      }
+      description
+        "Link MSD sub-tlvs.";
+    }
+  }
+
+  /* Node MSD TLV */
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:router-capabilities" {
+    when "derived-from-or-self(../../../../../rt:type, 'isis:isis')" {
+      description
+        "This augment ISIS routing protocol when used";
+    }
+    description
+      "This augments ISIS protocol LSDB router capability.";
+    container node-msd-tlv {
+      list node-msds {
+        key "msd-type";
+        leaf msd-type {
+          type identityref {
+            base mpls-msd:msd-base-type;
+          }
+          description
+            "MSD-Types";
+        }
+        leaf msd-value {
+          type uint8;
+          description
+            "MSD value, in the range of 0-255.";
+        }
+        description
+          "Node MSD is the smallest link MSD supported by
+           the node.";
+      }
+      description
+        "Node MSD is the number of SIDs supported by a node.";
+      reference
+        "RFC 8491: Signaling Maximum SID Depth (MSD) Using IS-IS";
+    }
+  }
+
+  /* link MSD sub-tlv */
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:extended-is-neighbor/isis:neighbor" {
+    when "derived-from-or-self(../../../../../../rt:type,"
+          + "'isis:isis')" {
+      description
+        "This augment ISIS routing protocol when used";
+    }
+    description
+      "This augments ISIS protocol LSDB neighbor with
+       Link MSD sub-TLV.";
+    uses link-msd-sub-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:mt-is-neighbor/isis:neighbor" {
+    when "derived-from-or-self(../../../../../../rt:type,"
+          + "'isis:isis')" {
+      description
+        "This augment ISIS routing protocol when used";
+    }
+    description
+      "This augments ISIS protocol LSDB neighbor.";
+    uses link-msd-sub-tlv;
+  }
+}
+<CODE ENDS>
+      ]]></artwork>
+      </figure>      
+      </section>        
+    </section>
     <section anchor="Security" numbered="true" toc="default">
       <name>Security Considerations</name>
       <t>The YANG modules specified in this document define a schema for 
@@ -1256,8 +1466,8 @@ module ietf-isis-flex-algo {
        RESTCONF <xref target="RFC8040" format="default"/>. The lowest NETCONF layer is the secure transport
        layer, and the mandatory-to-implement secure transport is Secure Shell (SSH)
        <xref target="RFC6242" format="default"/>. The lowest RESTCONF layer is HTTPS, and the
-       mandatory-to-implement secure transport is TLS <xref target="RFC5246" format="default"/>.</t>
-      <t>The NETCONF access control model <xref target="RFC6536" format="default"/> provides the 
+       mandatory-to-implement secure transport is TLS <xref target="RFC8446" format="default"/>.</t>
+      <t>The NETCONF access control model <xref target="RFC8341" format="default"/> provides the 
       means to restrict access for particular NETCONF or RESTCONF users to a
       pre-configured subset of all available NETCONF or RESTCONF protocol 
       operations and content.</t>
@@ -1285,6 +1495,9 @@ module ietf-isis-flex-algo {
       <ul empty="true" spacing="normal">
         <li>/isis:isis/isis:database/isis:levels/isis:lsp/isis:mt-is-neighbor/isis:neighbor/isis:instances/isis:instance/application-specific-link-attributes-sub-tlvs </li>
         <li>/isis:isis/isis:database/isis:levels/isis:lsp/application-specific-srlg-tlv </li>
+        <li>/isis:router-capabilities/node-msd-tlv</li>
+        <li>/isis:isis/isis:database/isis:levels/isis:lsp//isis:extended-is-neighbor/isis:neighbor/link-msd-sub-tlv</li>
+        <li>/isis:isis/isis:database/isis:levels/isis:lsp//isis:mt-is-neighbor/isis:neighbor/link-msd-sub-tlv</li>
       </ul>
     </section>
     <section numbered="true" toc="default">
@@ -1308,6 +1521,11 @@ module ietf-isis-flex-algo {
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
    ]]></artwork>
+     <artwork name="" type="" align="left" alt=""><![CDATA[  
+   URI: urn:ietf:params:xml:ns:yang:ietf-isis-msd
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace
+   ]]></artwork>
       <t>This document registers the YANG modules in the YANG Module Names
    registry <xref target="RFC6020" format="default"/>.
       </t>
@@ -1327,6 +1545,12 @@ module ietf-isis-flex-algo {
    name: ietf-isis-flex-algo
    namespace: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
    prefix: isis-flex-algo
+   reference: RFC XXXX
+   ]]></artwork>
+     <artwork name="" type="" align="left" alt=""><![CDATA[  
+   name: ietf-isis-msd
+   namespace: urn:ietf:params:xml:ns:yang:ietf-isis-msd
+   prefix: isis-msd
    reference: RFC XXXX
    ]]></artwork>
     </section>
@@ -1384,34 +1608,6 @@ module ietf-isis-flex-algo {
           <seriesInfo name="RFC" value="3688"/>
           <seriesInfo name="DOI" value="10.17487/RFC3688"/>
         </reference>
-        <reference anchor="RFC5246" target="https://www.rfc-editor.org/info/rfc5246" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5246.xml">
-          <front>
-            <title>The Transport Layer Security (TLS) Protocol Version 1.2</title>
-            <author fullname="T. Dierks" initials="T." surname="Dierks"/>
-            <author fullname="E. Rescorla" initials="E." surname="Rescorla"/>
-            <date month="August" year="2008"/>
-            <abstract>
-              <t>This document specifies Version 1.2 of the Transport Layer Security (TLS) protocol.  The TLS protocol provides communications security over the Internet.  The protocol allows client/server applications to communicate in a way that is designed to prevent eavesdropping, tampering, or message forgery. [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-          <seriesInfo name="RFC" value="5246"/>
-          <seriesInfo name="DOI" value="10.17487/RFC5246"/>
-        </reference>
-        <reference anchor="RFC5329" target="https://www.rfc-editor.org/info/rfc5329" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5329.xml">
-          <front>
-            <title>Traffic Engineering Extensions to OSPF Version 3</title>
-            <author fullname="K. Ishiguro" initials="K." surname="Ishiguro"/>
-            <author fullname="V. Manral" initials="V." surname="Manral"/>
-            <author fullname="A. Davey" initials="A." surname="Davey"/>
-            <author fullname="A. Lindem" initials="A." role="editor" surname="Lindem"/>
-            <date month="September" year="2008"/>
-            <abstract>
-              <t>This document describes extensions to OSPFv3 to support intra-area Traffic Engineering (TE).  This document extends OSPFv2 TE to handle IPv6 networks.  A new TLV and several new sub-TLVs are defined to support IPv6 networks. [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-          <seriesInfo name="RFC" value="5329"/>
-          <seriesInfo name="DOI" value="10.17487/RFC5329"/>
-        </reference>
         <reference anchor="RFC6020" target="https://www.rfc-editor.org/info/rfc6020" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6020.xml">
           <front>
             <title>YANG - A Data Modeling Language for the Network Configuration Protocol (NETCONF)</title>
@@ -1450,19 +1646,6 @@ module ietf-isis-flex-algo {
           </front>
           <seriesInfo name="RFC" value="6242"/>
           <seriesInfo name="DOI" value="10.17487/RFC6242"/>
-        </reference>
-        <reference anchor="RFC6536" target="https://www.rfc-editor.org/info/rfc6536" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6536.xml">
-          <front>
-            <title>Network Configuration Protocol (NETCONF) Access Control Model</title>
-            <author fullname="A. Bierman" initials="A." surname="Bierman"/>
-            <author fullname="M. Bjorklund" initials="M." surname="Bjorklund"/>
-            <date month="March" year="2012"/>
-            <abstract>
-              <t>The standardization of network configuration interfaces for use with the Network Configuration Protocol (NETCONF) requires a structured and secure operating environment that promotes human usability and multi-vendor interoperability.  There is a need for standard mechanisms to restrict NETCONF protocol access for particular users to a pre-configured subset of all available NETCONF protocol operations and content.  This document defines such an access control model. [STANDARDS-TRACK]</t>
-            </abstract>
-          </front>
-          <seriesInfo name="RFC" value="6536"/>
-          <seriesInfo name="DOI" value="10.17487/RFC6536"/>
         </reference>
         <reference anchor="RFC7950" target="https://www.rfc-editor.org/info/rfc7950" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml">
           <front>
@@ -1506,6 +1689,16 @@ module ietf-isis-flex-algo {
           <seriesInfo name="RFC" value="8040"/>
           <seriesInfo name="DOI" value="10.17487/RFC8040"/>
         </reference>
+        <reference anchor="RFC8341" target="https://www.rfc-editor.org/info/rfc8341" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml">
+          <front>
+            <title>Network Configuration Access Control Model</title>
+            <author fullname="A. Bierman" initials="A." surname="Bierman"/>
+            <author fullname="M. Bjorklund" initials="M." surname="Bjorklund"/>
+            <date month="March" year="2018"/>
+          </front>
+          <seriesInfo name="RFC" value="8341"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8341"/>
+        </reference>
         <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
           <front>
             <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
@@ -1533,6 +1726,23 @@ module ietf-isis-flex-algo {
           </front>
           <seriesInfo name="RFC" value="8349"/>
           <seriesInfo name="DOI" value="10.17487/RFC8349"/>
+        </reference>
+        <reference anchor="RFC8446" target="https://www.rfc-editor.org/info/rfc8446" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml">
+          <front>
+            <title>The Transport Layer Security (TLS) Protocol Version 1.3</title>
+            <author fullname="E. Rescorla" initials="E." surname="Rescorla"/>
+            <date month="August" year="2018"/>
+          </front>
+        </reference>
+        <reference anchor="RFC8491" target="https://www.rfc-editor.org/info/rfc8491" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8491.xml">
+          <front>
+            <title>Signaling Maximum SID Depth (MSD) Using IS-IS</title>
+            <author fullname="J. Tantsura" initials="J." surname="Tantsura"/>
+            <author fullname="U. Chunduri" initials="U." surname="Chunduri"/>
+            <author fullname="S. Aldrin" initials="S." surname="Aldrin"/>
+            <author fullname="L.Ginsberg" initials="L." surname="Ginsberg"/>
+            <date month="November" year="2018"/>
+          </front>
         </reference>
         <reference anchor="RFC8919" target="https://www.rfc-editor.org/info/rfc8919" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8919.xml">
           <front>
