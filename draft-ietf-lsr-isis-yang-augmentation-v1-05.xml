@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-04" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-05" ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3">
   <!-- xml2rfc v2v3 conversion 3.13.1 -->
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -26,19 +26,19 @@
          full title is longer than 39 characters -->
 
   <title abbrev="ISIS YANG Augments V1">IS-IS YANG Model Augmentations for Additional Features - Version 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-04"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-05"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
 
     <author fullname="Acee Lindem" initials="A." surname="Lindem">
-      <organization>Cisco Systems</organization>
+      <organization></organization>
       <address>
         <postal>
           <street>301 Midenhall Way</street>
           <city>Cary, NC 27513</city>
         </postal>
-        <email>acee@cisco.com</email>
+        <email>acee.ietf@gmail.com</email>
       </address>
     </author>
     <author fullname="Stephane Litkowski" initials="S." surname="Litkowski">
@@ -106,7 +106,7 @@
       YANG data models can be used as the basis for implementation of other 
       interfaces, such as CLI and programmatic APIs.</t>
       <t>This document defines YANG data modules augmenting the IETF IS-IS 
-      YANG model <xref target="I-D.ietf-isis-yang-isis-cfg" format="default"/>, which itself augments 
+      YANG model <xref target="RFC9130" format="default"/>, which itself augments 
       <xref target="RFC8349" format="default"/>, to provide support for configuration and
       operational state for the following IS-IS features:
       </t>
@@ -115,11 +115,13 @@
         <dd>IS-IS Minimum Remaining Lifetime<xref target="RFC7987" format="default"/>.</dd>
         <dt>RFC8919:</dt>
         <dd>IS-IS Application-Specific Link Attributes<xref target="RFC8919" format="default"/>.</dd>
-        <dt>RFCxxxx:</dt>
-        <dd>IGP Flexible Algorithm <xref target="I-D.ietf-lsr-flex-algo" format="default"/>.</dd>
+        <dt>RFC9350:</dt>
+        <dd>IGP Flexible Algorithm <xref target="RFC9350" format="default"/>.</dd>
+        <dt>RFC8491:</dt>
+        <dd>Signaling Maximum SID Depth (MSD) Using IS-IS  <xref target="RFC8491" format="default"/>.</dd>
       </dl>
       <t>The augmentations defined in this document requires support for the 
-        IS-IS base model<xref target="I-D.ietf-isis-yang-isis-cfg" format="default"/> which defines 
+        IS-IS base model<xref target="RFC9130" format="default"/> which defines 
         basic IS-IS configuration and state. The IS-IS YANG model augments the 
         ietf-routing YANG model defined in <xref target="RFC8349" format="default"/>.
       </t>
@@ -154,7 +156,7 @@ module: ietf-isis-remaining-lifetime
        +--ro lsp-id?                  isis:lsp-id                                              
 
       ]]></artwork>
-      <sourcecode name="ietf-isis-remaining-lifetime@2021-12-22.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-isis-remaining-lifetime@2023-03-06.yang" type="" markers="true"><![CDATA[
 module ietf-isis-remaining-lifetime {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-remaining-lifetime";
@@ -163,19 +165,21 @@ module ietf-isis-remaining-lifetime {
 
   import ietf-isis {
     prefix "isis";
+    reference
+      "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
 
   organization
     "IETF LSR - Link State Routing Working Group";
 
   contact
-     "WG Web:   <http://tools.ietf.org/wg/lsr>
+     "WG Web:   <http://datatracker.ietf.org/wg/lsr>
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
                 <mailto:yqu@futurewei.com>
       Author:   Acee Lindem
-                <mailto:acee@cisco.com>
+                <mailto:acee.ietf@gmail.com>
       Author:   Stephane Litkowski
                 <mailto:slitkows.ietf@gmail.com>";
 
@@ -184,7 +188,7 @@ module ietf-isis-remaining-lifetime {
      state for IS-IS Minimum Remaining Lifetime feature as defined 
      in RFC 7987.
 
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -199,12 +203,11 @@ module ietf-isis-remaining-lifetime {
 
   reference "RFC XXXX";
 
-  revision 2021-12-22 {
+  revision 2023-03-06 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for IS-IS Minimum Remaining
-                 Lifetime";
+      "RFC XXXX: A YANG Data Model for IS-IS Minimum Remaining Lifetime.";
   }
 
   notification corrupt-remaining-lifetime {
@@ -229,9 +232,8 @@ module ietf-isis-remaining-lifetime {
       <artwork align="left" name="" type="" alt=""><![CDATA[  
 module: ietf-isis-link-attr
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis/isis:interfaces
-          /isis:interface:
-    +--rw isis-link-attr
+          /rt:control-plane-protocol/isis:isis:
+    +--rw isis-link-attr-op
        +--rw (link-attr-op-mode)
           +--:(legacy)
           |  +--rw legacy?         empty
@@ -239,6 +241,16 @@ module: ietf-isis-link-attr
           |  +--rw transition?     empty
           +--:(app-specific)
              +--rw app-specific?   empty
+  augment /rt:routing/rt:control-plane-protocols
+          /rt:control-plane-protocol/isis:isis/isis:interfaces
+          /isis:interface:
+    +--rw isis-asla
+       +--rw interface-asla* [app-id]
+          +--rw app-id                       uint16
+          +--rw unidirectional-link-delay?   uint32
+          +--rw metric-type?                 uint8
+          +--rw metric?                      uint32
+
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/isis:isis/isis:database
           /isis:levels/isis:lsp/isis:extended-is-neighbor
@@ -305,7 +317,7 @@ module: ietf-isis-link-attr
           +--ro srlgs
              +--ro srlg*   uint32                                          
       ]]></artwork>
-      <sourcecode name="ietf-isis-link-attr@2022-03-06.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-isis-link-attr@2023-03-06.yang" type="" markers="true"><![CDATA[
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -319,23 +331,28 @@ module ietf-isis-link-attr {
 
   import ietf-routing {
     prefix "rt";
+    reference
+      "RFC 8349: A YANG Data Model for Routing
+                 Management (NMDA Version)";
   }
 
   import ietf-isis {
     prefix "isis";
+    reference
+      "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
 
   organization
     "IETF LSR - Link State Routing Working Group";
 
   contact
-     "WG Web:   <http://tools.ietf.org/wg/lsr>
+     "WG Web:   <http://datatracker.ietf.org/wg/lsr>
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
                 <mailto:yqu@futurewei.com>
       Author:   Acee Lindem
-                <mailto:acee@cisco.com>
+                <mailto:acee.ietf@gmail.com>
       Author:   Stephane Litkowski
                 <mailto:slitkows.ietf@gmail.com>";
 
@@ -347,7 +364,7 @@ module ietf-isis-link-attr {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2022 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -368,7 +385,7 @@ module ietf-isis-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2022-03-06 {
+  revision 2023-03-06 {
     description
       "Initial version";
     reference
@@ -576,17 +593,17 @@ module ietf-isis-link-attr {
 
   augment "/rt:routing/" +
           "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:interfaces/isis:interface" {
+          "/isis:isis" {
     when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+                 "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used.";
+        "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol configuration
-       with TE attributes per application.";
+       with application specific link attributes.";
 
-    container isis-link-attr {
+    container isis-link-attr-op {
       choice link-attr-op-mode {
         mandatory "true";
         leaf legacy {
@@ -607,8 +624,66 @@ module ietf-isis-link-attr {
         description
           "Link attributes mode";
       }
+
       description
         "Link attributes operation mode.";
+    }
+  }
+
+  augment "/rt:routing/" +
+          "rt:control-plane-protocols/rt:control-plane-protocol"+
+          "/isis:isis/isis:interfaces/isis:interface" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+                     "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+      description
+        "This augment ISIS routing protocol when used.";
+    }
+    description
+      "This augments ISIS interface configuration
+       with application specific link attributes.";
+
+    container isis-asla {
+      list interface-asla {
+        key app-id;
+        
+        leaf app-id {
+          type uint16 {
+            range "0 .. 1023";
+          }
+          description
+            "Application ID. 
+             0 - RSVP TE. 1 - Segment Routing Policy.
+             2 - Loop-Free Alternate.";
+        }
+
+        leaf unidirectional-link-delay {
+            type uint32 {
+              range "0 .. 16777215";
+            }
+            description
+              "This 24-bit field carries the average link delay in
+               microseconds.";
+        }
+
+        leaf metric-type {
+          type uint8;
+          description
+            "IGP metric type.";
+        }
+
+        leaf metric {
+          type uint32 {
+            range "1 .. 16777215";
+          }
+          description
+            "metric value.";
+        }
+
+        description
+          "ASLA interface configuration.";
+      }
+      description
+        "Application specific link attributes configuration.";
     }
   }
 
@@ -660,14 +735,13 @@ module ietf-isis-link-attr {
    
     uses application-specific-srlg-tlv;
   }
-
 }
   ]]></sourcecode>
     </section>
     <section numbered="true" toc="default">
       <name>YANG Module for IS-IS Flexible Algorithm</name>
       <t>This document defines a YANG module for IS-IS Flexible
-      Algorithm <xref target="I-D.ietf-lsr-flex-algo" format="default"/>. It is an augmentation of the IS-IS 
+      Algorithm <xref target="RFC9350" format="default"/>. It is an augmentation of the IS-IS 
       base model. </t>
       <artwork align="left" name="" type="" alt=""><![CDATA[  
 module: ietf-isis-flex-algo
@@ -761,7 +835,7 @@ module: ietf-isis-flex-algo
        +--ro flex-algo-number?        uint8
 
       ]]></artwork>
-      <sourcecode name="ietf-isis-flex-algo@2022-03-06.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-isis-flex-algo@2023-03-06.yang" type="" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -769,8 +843,9 @@ module ietf-isis-flex-algo {
 
   import ietf-routing {
     prefix rt;
-    reference "RFC 8349: A YANG Data Model for Routing
-               Management (NMDA Version)";
+    reference 
+      "RFC 8349: A YANG Data Model for Routing
+                 Management (NMDA Version)";
   }
 
   import ietf-te-types {
@@ -781,6 +856,8 @@ module ietf-isis-flex-algo {
 
   import ietf-isis {
     prefix "isis";
+    reference
+      "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
 
   import ietf-te {
@@ -794,14 +871,14 @@ module ietf-isis-flex-algo {
   organization
     "IETF LSR - Link State Routing Working Group";
   contact
-    "WG Web:   <https://tools.ietf.org/wg/spring/>
+    "WG Web:   <http://datatracker.ietf.org/wg/lsr>
      WG List:  <mailto:spring@ietf.org>
 
 
      Author:    Yingzhen Qu
                <mailto:yingzhen.qu@futurewei.com>
      Author:    Acee Lindem
-               <mailto:acee@cisco.com>
+               <mailto:acee.ietf@gmail.com>
      Author:    Stephane Litkowski
                <mailto:slitkows.ietf@gmail.com>
     ";
@@ -813,7 +890,7 @@ module ietf-isis-flex-algo {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2022 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -835,7 +912,7 @@ module ietf-isis-flex-algo {
 
   reference "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
 
-  revision 2022-03-06 {
+  revision 2023-03-06 {
     description
       "Initial Version";
     reference "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
@@ -1250,7 +1327,7 @@ module ietf-isis-flex-algo {
     ]]></sourcecode>
     </section>
     <section numbered="true" toc="default">
-      <name>IS-IS MSD</name>
+      <name>YANG Module for IS-IS Maximum SID Depth</name>
       <t>This document defines a module for Signaling Maximum SID Depth (MSD)
         using IS-IS <xref target="RFC8491" format="default"/>.  It is an
         augmentation of the IS-IS base model.</t>
@@ -1284,10 +1361,10 @@ module: ietf-isis-msd
                                    
       </artwork>
       </figure> 
-      <section title="IS-IS MSD YANG Module">
+
       <figure>
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-isis-msd@2022-09-05.yang"
+<CODE BEGINS> file "ietf-isis-msd@2023-03-06.yang"
 module ietf-isis-msd {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-msd";
@@ -1301,6 +1378,8 @@ module ietf-isis-msd {
   }
   import ietf-isis {
     prefix isis;
+    reference
+      "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
   import ietf-mpls-msd {
     prefix mpls-msd;
@@ -1309,13 +1388,13 @@ module ietf-isis-msd {
   organization
     "IETF LSR - LSR Working Group";
   contact
-    "WG Web:   <https://tools.ietf.org/wg/mpls/>
+    "WG Web:   <http://datatracker.ietf.org/wg/lsr>
      WG List:  <mailto:mpls@ietf.org>
 
      Author:    Yingzhen Qu
                <mailto:yingzhen.qu@futurewei.com>
      Author:    Acee Lindem
-               <mailto:acee@cisco.com>
+               <mailto:acee.ietf@gmail.com>
      Author:    Stephane Litkowski
                <mailto:slitkows.ietf@gmail.com>
      Author:    Jeff Tantsura
@@ -1329,7 +1408,7 @@ module ietf-isis-msd {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2022 IETF Trust and the persons identified as
+     Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -1351,7 +1430,7 @@ module ietf-isis-msd {
   reference
     "RFC XXXX: YANG Data Model for ISIS MSD";
 
-  revision 2022-09-05 {
+  revision 2023-03-06 {
     description
       "Initial Version";
     reference
@@ -1456,7 +1535,7 @@ module ietf-isis-msd {
 <CODE ENDS>
       ]]></artwork>
       </figure>      
-      </section>        
+      
     </section>
     <section anchor="Security" numbered="true" toc="default">
       <name>Security Considerations</name>
@@ -1760,7 +1839,7 @@ module ietf-isis-msd {
           <seriesInfo name="RFC" value="8919"/>
           <seriesInfo name="DOI" value="10.17487/RFC8919"/>
         </reference>
-        <reference anchor="I-D.ietf-isis-yang-isis-cfg" target="https://www.ietf.org/archive/id/draft-ietf-isis-yang-isis-cfg-42.txt" xml:base="https://bib.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-isis-yang-isis-cfg.xml">
+        <reference anchor="RFC9130" target="https://www.rfc-editor.org/info/rfc9130" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9130.xml">
           <front>
             <title>YANG Data Model for IS-IS Protocol</title>
             <author fullname="Stephane Litkowski">
@@ -1783,9 +1862,10 @@ module ietf-isis-msd {
               <t>This document defines a YANG data model that can be used to configure and manage the IS-IS protocol on network elements.</t>
             </abstract>
           </front>
-          <seriesInfo name="Internet-Draft" value="draft-ietf-isis-yang-isis-cfg-42"/>
+          <seriesInfo name="RFC" value="9130"/>
+          <seriesInfo name="DOI" value="10.17487/RFC9130"/>
         </reference>
-        <reference anchor="I-D.ietf-lsr-flex-algo" target="https://www.ietf.org/archive/id/draft-ietf-lsr-flex-algo-21.txt" xml:base="https://bib.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-lsr-flex-algo.xml">
+        <reference anchor="RFC9350" target="https://www.rfc-editor.org/info/rfc9350" xml:base="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9350.xml">
           <front>
             <title>IGP Flexible Algorithm</title>
             <author fullname="Peter Psenak">
@@ -1808,7 +1888,8 @@ module ietf-isis-msd {
               <t>IGP protocols traditionally compute best paths over the network based on the IGP metric assigned to the links. Many network deployments use RSVP-TE based or Segment Routing based Traffic Engineering to steer traffic over a path that is computed using different metrics or constraints than the shortest IGP path. This document specifies a solution that allows IGPs themselves to compute constraint-based paths over the network. This document also specifies a way of using Segment Routing (SR) Prefix-SIDs and SRv6 locators to steer packets along the constraint-based paths.</t>
             </abstract>
           </front>
-          <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-flex-algo-21"/>
+          <seriesInfo name="RFC" value="9350"/>
+          <seriesInfo name="DOI" value="10.17487/RFC9350"/>
         </reference>
       </references>
       <references>
