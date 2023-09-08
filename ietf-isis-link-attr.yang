@@ -37,8 +37,8 @@ module ietf-isis-link-attr {
                 <mailto:slitkows.ietf@gmail.com>";
 
   description
-    "This YANG module defines the configuration and operational 
-     state for IS-IS application specific link attributes feature as 
+    "This YANG module defines the configuration and operational
+     state for IS-IS application specific link attributes feature as
      defined in RFC 8919.
 
      This YANG model conforms to the Network Management
@@ -69,8 +69,8 @@ module ietf-isis-link-attr {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for IS-IS Application-Specific Link
-       Attributes.";
+      "RFC XXXX: A YANG Data Model for IS-IS Application-Specific
+       Link Attributes.";
   }
 
   identity sabm-bit {
@@ -99,22 +99,22 @@ module ietf-isis-link-attr {
 
   grouping application-identifier-bit-mask {
     description
-      "Identification of the set of applications associated with link
-       attribute advertisements";
+      "Identification of the set of applications associated with
+       link attribute advertisements";
 
     leaf l-flag {
       type boolean;
       description
-        "Legacy Flag. When set, all of the applications 
-         specified in the bit mask MUST use the legacy 
+        "Legacy Flag. When set, all of the applications
+         specified in the bit mask MUST use the legacy
          advertisements.";
-    }    
+    }
     leaf sabm-length {
       type uint8;
-      description 
+      description
         "Standard Application Identifier Bit Mask Length in
          octets.";
-    }     
+    }
     leaf r-flag {
       type boolean;
       default false;
@@ -137,7 +137,7 @@ module ietf-isis-link-attr {
            identities for the bits which are set in the
            SABA bits.";
       }
-      description 
+      description
         "Standard Application Identifier Bit Mask.";
     }
     container udabm {
@@ -150,7 +150,7 @@ module ietf-isis-link-attr {
 
   grouping application-specific-link-attributes-sub-tlv {
     description
-      "Grouping for specification of the applications and 
+      "Grouping for specification of the applications and
        application-specific attribute values.";
 
     container application-specific-link-attributes-sub-tlvs {
@@ -167,7 +167,7 @@ module ietf-isis-link-attr {
 
   grouping application-specific-srlg-tlv {
     description
-      "Grouping of a TLV to advertise application-specific 
+      "Grouping of a TLV to advertise application-specific
        SRLGs for a given link.";
     container application-specific-srlg-tlv {
       list as-srlg-tlvs {
@@ -184,7 +184,7 @@ module ietf-isis-link-attr {
         uses application-identifier-bit-mask;
         leaf length-of-sub-tlvs {
           type uint8;
-          description 
+          description
             "Length of sub-tlvs.";
         }
 
@@ -294,7 +294,8 @@ module ietf-isis-link-attr {
         leaf transition {
           type empty;
           description
-            "Send both application-specific and legacy advertisements.";
+            "Send both application-specific and legacy
+            advertisements.";
         }
         leaf app-specific{
           type empty;
@@ -314,7 +315,8 @@ module ietf-isis-link-attr {
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis/isis:interfaces/isis:interface" {
     when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+                     "rt:control-plane-protocol/"+
+                     "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used.";
     }
@@ -325,13 +327,13 @@ module ietf-isis-link-attr {
     container isis-asla {
       list interface-asla {
         key app-id;
-        
+
         leaf app-id {
           type uint16 {
             range "0 .. 1023";
           }
           description
-            "Application ID. 
+            "Application ID.
              0 - RSVP TE. 1 - Segment Routing Policy.
              2 - Loop-Free Alternate.";
         }
@@ -374,7 +376,7 @@ module ietf-isis-link-attr {
           "/isis:extended-is-neighbor/isis:neighbor"+
           "/isis:instances/isis:instance" {
     when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" { 
+         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
@@ -391,7 +393,7 @@ module ietf-isis-link-attr {
           "/isis:mt-is-neighbor/isis:neighbor"+
           "/isis:instances/isis:instance" {
     when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" { 
+         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
@@ -400,19 +402,19 @@ module ietf-isis-link-attr {
 
        uses application-specific-link-attributes-sub-tlv;
   }
-  
+
   /* application-specific SRLG TLV 238 */
   augment "/rt:routing/" +
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis/isis:database/isis:levels/isis:lsp" {
     when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" { 
+         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol LSDB.";
-   
+
     uses application-specific-srlg-tlv;
   }
 }

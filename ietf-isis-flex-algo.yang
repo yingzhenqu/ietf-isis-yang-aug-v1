@@ -5,7 +5,7 @@ module ietf-isis-flex-algo {
 
   import ietf-routing {
     prefix rt;
-    reference 
+    reference
       "RFC 8349: A YANG Data Model for Routing
                  Management (NMDA Version)";
   }
@@ -72,12 +72,14 @@ module ietf-isis-flex-algo {
      they appear in all capitals, as shown here.";
 
 
-  reference "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
+  reference
+    "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
 
   revision 2023-03-06 {
     description
       "Initial Version";
-    reference "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
+    reference
+       "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
   }
 
   /* Identities */
@@ -152,7 +154,7 @@ module ietf-isis-flex-algo {
           "Extended administrative group as defined in RFC 7308.";
       }
       description
-        "The flex-algo include-any admin group sub-tlv."; 
+        "The flex-algo include-any admin group sub-tlv.";
     }
     description
       "The flex-algo include-any admin group sub-tlv.";
@@ -297,7 +299,7 @@ module ietf-isis-flex-algo {
             range "128..255";
           }
           description
-            "An identifier in the range 128-255 that's associated 
+            "An identifier in the range 128-255 that's associated
             with the Flexible Algorithm Definition.";
         }
 
@@ -317,7 +319,7 @@ module ietf-isis-flex-algo {
                  + "te:named-admin-group/te:name";
             }
             description
-              "Exclude rule used during the flex-algo 
+              "Exclude rule used during the flex-algo
               path computation.";
           }
           leaf-list include-any-admin-groups {
@@ -326,16 +328,16 @@ module ietf-isis-flex-algo {
                  + "te:named-admin-group/te:name";
             }
             description
-              "Include-any rule used during the flex-algo 
+              "Include-any rule used during the flex-algo
               path computation.";
-          }          
+          }
           leaf-list include-all-admin-groups {
             type leafref {
               path "/te:te/te:globals/te:named-admin-groups/"
                  + "te:named-admin-group/te:name";
             }
             description
-              "Include-all rule used during the flex-algo 
+              "Include-all rule used during the flex-algo
               path computation.";
           }
           description
@@ -391,7 +393,7 @@ module ietf-isis-flex-algo {
         description
           "List of flex-algo configurations.";
       }
-      description 
+      description
         "Flexible Algorithm configuration.";
     }
   }
@@ -403,7 +405,8 @@ module ietf-isis-flex-algo {
           "/isis:isis/isis:database/isis:levels/isis:lsp"+
                       "/isis:router-capabilities" {
           when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+                     "rt:control-plane-protocol/"+
+                     "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
@@ -416,9 +419,11 @@ module ietf-isis-flex-algo {
   augment "/rt:routing/" +
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis/isis:database/isis:levels/isis:lsp"+
-                      "/isis:extended-ipv4-reachability/isis:prefixes" {
+                      "/isis:extended-ipv4-reachability/"+
+                      "isis:prefixes" {
                 when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+                     "rt:control-plane-protocol/"+
+                     "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
@@ -426,13 +431,14 @@ module ietf-isis-flex-algo {
             "This augments ISIS protocol LSDB prefix.";
              uses fapm-sub-tlvs;
   }
- 
+
   augment "/rt:routing/" +
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis/isis:database/isis:levels/isis:lsp"+
                 "/isis:mt-extended-ipv4-reachability/isis:prefixes" {
                 when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+                     "rt:control-plane-protocol/"+
+                     "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
@@ -446,7 +452,8 @@ module ietf-isis-flex-algo {
           "/isis:isis/isis:database/isis:levels/isis:lsp"+
                       "/isis:ipv6-reachability/isis:prefixes" {
                 when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+                     "rt:control-plane-protocol/"+
+                     "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
@@ -460,7 +467,8 @@ module ietf-isis-flex-algo {
           "/isis:isis/isis:database/isis:levels/isis:lsp"+
                       "/isis:mt-ipv6-reachability/isis:prefixes" {
                 when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+                     "rt:control-plane-protocol/"+
+                     "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
