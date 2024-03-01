@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-06"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-07"
      ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true"
      sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.13.1 -->
@@ -28,7 +28,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="ISIS YANG Augments V1">IS-IS YANG Model Augmentations for Additional Features - Version 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-06"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-07"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -54,7 +54,7 @@
       </address>
     </author>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
-      <organization>Futurewei</organization>
+      <organization>Futurewei Technologies</organization>
       <address>
         <postal>
           <street>2330 Central Expressway</street>
@@ -64,7 +64,7 @@
           <country>USA</country>
         </postal>
         <phone/>
-        <email>yingzhen.qu@futurewei.com</email>
+        <email>yingzhen.ietf@gmail.com</email>
       </address>
     </author>
     <date/>
@@ -93,7 +93,8 @@
       <t>This document defines YANG data modules augmenting the IETF IS-IS YANG
       model to provide support for IS-IS Minimum Remaining Lifetime
       as defined in RFC 7987, IS-IS Application-Specific Link Attributes as
-      defined in RFC 8919, and IS-IS Flexible Algorithm. </t>
+      defined in RFC 8919, IS-IS Flexible Algorithm as defined in RFC 9350, and
+      Signaling Maximum SID Depth Using IS-IS as defined in RFC 8491. </t>
     </abstract>
   </front>
   <middle>
