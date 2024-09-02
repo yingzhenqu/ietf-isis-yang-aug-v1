@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-07"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-08"
      ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true"
      sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.13.1 -->
@@ -28,7 +28,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="ISIS YANG Augments V1">IS-IS YANG Model Augmentations for Additional Features - Version 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-07"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-08"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -43,6 +43,16 @@
         <email>acee.ietf@gmail.com</email>
       </address>
     </author>
+    <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
+      <organization>Futurewei Technologies</organization>
+      <address>
+        <postal>
+          <country>USA</country>
+        </postal>
+        <phone/>
+        <email>yingzhen.ietf@gmail.com</email>
+      </address>
+    </author>
     <author fullname="Stephane Litkowski" initials="S." surname="Litkowski">
       <organization>Cisco Systems</organization>
       <address>
@@ -51,20 +61,6 @@
           <city/>
         </postal>
         <email>slitkows.ietf@gmail.com</email>
-      </address>
-    </author>
-    <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
-      <organization>Futurewei Technologies</organization>
-      <address>
-        <postal>
-          <street>2330 Central Expressway</street>
-          <city>Santa Clara</city>
-          <region>CA</region>
-          <code>95050</code>
-          <country>USA</country>
-        </postal>
-        <phone/>
-        <email>yingzhen.ietf@gmail.com</email>
       </address>
     </author>
     <date/>
@@ -93,7 +89,7 @@
       <t>This document defines YANG data modules augmenting the IETF IS-IS YANG
       model to provide support for IS-IS Minimum Remaining Lifetime
       as defined in RFC 7987, IS-IS Application-Specific Link Attributes as
-      defined in RFC 8919, IS-IS Flexible Algorithm as defined in RFC 9350, and
+      defined in RFC 9479, IS-IS Flexible Algorithm as defined in RFC 9350, and
       Signaling Maximum SID Depth Using IS-IS as defined in RFC 8491. </t>
     </abstract>
   </front>
@@ -116,15 +112,15 @@
       <dl newline="false" spacing="normal">
         <dt>RFC7987:</dt>
         <dd>IS-IS Minimum Remaining Lifetime<xref target="RFC7987" format="default"/>.</dd>
-        <dt>RFC8919:</dt>
-        <dd>IS-IS Application-Specific Link Attributes<xref target="RFC8919" format="default"/>.</dd>
+        <dt>RFC9479:</dt>
+        <dd>IS-IS Application-Specific Link Attributes<xref target="RFC9479" format="default"/>.</dd>
         <dt>RFC9350:</dt>
         <dd>IGP Flexible Algorithm <xref target="RFC9350" format="default"/>.</dd>
         <dt>RFC8491:</dt>
         <dd>Signaling Maximum SID Depth (MSD) Using IS-IS  <xref target="RFC8491" format="default"/>.</dd>
       </dl>
-      <t>The augmentations defined in this document requires support for the
-        IS-IS base model<xref target="RFC9130" format="default"/> which defines
+      <t>The augmentations defined in this document require support for the
+        IS-IS base model<xref target="RFC9130" format="default"/>, which specifies the
         basic IS-IS configuration and state. The IS-IS YANG model augments the
         ietf-routing YANG model defined in <xref target="RFC8349" format="default"/>.
       </t>
@@ -159,7 +155,7 @@ module: ietf-isis-remaining-lifetime
        +--ro lsp-id?                  isis:lsp-id
 
       ]]></artwork>
-      <sourcecode name="ietf-isis-remaining-lifetime@2023-03-06.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-isis-remaining-lifetime@2024-09-02.yang" type="" markers="true"><![CDATA[
 module ietf-isis-remaining-lifetime {
   yang-version 1.1;
   namespace
@@ -177,22 +173,22 @@ module ietf-isis-remaining-lifetime {
     "IETF LSR - Link State Routing Working Group";
 
   contact
-     "WG Web:   <http://datatracker.ietf.org/wg/lsr>
+     "WG Web:   <https://datatracker.ietf.org/wg/lsr>
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
-                <mailto:yqu@futurewei.com>
+                <mailto:yingzhen.ietf@gmail.com>
       Author:   Acee Lindem
                 <mailto:acee.ietf@gmail.com>
       Author:   Stephane Litkowski
                 <mailto:slitkows.ietf@gmail.com>";
 
   description
-    "This YANG module defines the configuration and operational
-     state for IS-IS Minimum Remaining Lifetime feature as defined
-     in RFC 7987.
+    "This YANG module defines a notification which is sent when the
+     IS-IS system detects corrupted lifetime of an LSP. This is for
+     IS-IS Minimum Remaining Lifetime feature as defined in RFC 7987.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2024 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -207,7 +203,7 @@ module ietf-isis-remaining-lifetime {
 
   reference "RFC XXXX";
 
-  revision 2023-03-06 {
+  revision 2024-09-02 {
     description
       "Initial version";
     reference
@@ -232,7 +228,7 @@ module ietf-isis-remaining-lifetime {
     <section numbered="true" toc="default">
       <name>YANG Module for IS-IS Application-Specific Link Attributes</name>
       <t>This document defines a YANG module for IS-IS Application-Specific Link
-    Attributes <xref target="RFC8919" format="default"/>. It is an augmentation of the IS-IS
+    Attributes <xref target="RFC9479" format="default"/>. It is an augmentation of the IS-IS
       base model. </t>
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-isis-link-attr
@@ -322,7 +318,7 @@ module: ietf-isis-link-attr
           +--ro srlgs
              +--ro srlg*   uint32
       ]]></artwork>
-      <sourcecode name="ietf-isis-link-attr@2023-03-06.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-isis-link-attr@2024-09-02.yang" type="" markers="true"><![CDATA[
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -351,11 +347,11 @@ module ietf-isis-link-attr {
     "IETF LSR - Link State Routing Working Group";
 
   contact
-     "WG Web:   <http://datatracker.ietf.org/wg/lsr>
+     "WG Web:   <https://datatracker.ietf.org/wg/lsr>
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
-                <mailto:yqu@futurewei.com>
+                <mailto:yingzhen.ietf@gmail.com>
       Author:   Acee Lindem
                 <mailto:acee.ietf@gmail.com>
       Author:   Stephane Litkowski
@@ -364,12 +360,12 @@ module ietf-isis-link-attr {
   description
     "This YANG module defines the configuration and operational
      state for IS-IS application specific link attributes feature as
-     defined in RFC 8919.
+     defined in RFC 9479.
 
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2024 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -390,7 +386,7 @@ module ietf-isis-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2023-03-06 {
+  revision 2024-09-02 {
     description
       "Initial version";
     reference
@@ -842,7 +838,7 @@ module: ietf-isis-flex-algo
        +--ro flex-algo-number?        uint8
 
       ]]></artwork>
-      <sourcecode name="ietf-isis-flex-algo@2023-03-06.yang" type="" markers="true"><![CDATA[
+      <sourcecode name="ietf-isis-flex-algo@2024-09-02.yang" type="" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -878,12 +874,12 @@ module ietf-isis-flex-algo {
   organization
     "IETF LSR - Link State Routing Working Group";
   contact
-    "WG Web:   <http://datatracker.ietf.org/wg/lsr>
+    "WG Web:   <https://datatracker.ietf.org/wg/lsr>
      WG List:  <mailto:spring@ietf.org>
 
 
      Author:    Yingzhen Qu
-               <mailto:yingzhen.qu@futurewei.com>
+               <mailto:yingzhen.ietf@gmail.com>
      Author:    Acee Lindem
                <mailto:acee.ietf@gmail.com>
      Author:    Stephane Litkowski
@@ -892,12 +888,12 @@ module ietf-isis-flex-algo {
 
   description
     "The YANG module defines the configuration and operational
-     state for ISIS Flexible Algorithm as defined in RFC xxxx.
+     state for ISIS Flexible Algorithm as defined in RFC 9350.
 
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2024 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -920,7 +916,7 @@ module ietf-isis-flex-algo {
   reference
     "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
 
-  revision 2023-03-06 {
+  revision 2024-09-02 {
     description
       "Initial Version";
     reference
@@ -1379,7 +1375,7 @@ module: ietf-isis-msd
 
       <figure>
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-isis-msd@2023-03-06.yang"
+<CODE BEGINS> file "ietf-isis-msd@2024-09-02.yang"
 module ietf-isis-msd {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-msd";
@@ -1403,18 +1399,18 @@ module ietf-isis-msd {
   organization
     "IETF LSR - LSR Working Group";
   contact
-    "WG Web:   <http://datatracker.ietf.org/wg/lsr>
+    "WG Web:   <https://datatracker.ietf.org/wg/lsr>
      WG List:  <mailto:mpls@ietf.org>
 
      Author:    Yingzhen Qu
-               <mailto:yingzhen.qu@futurewei.com>
+               <mailto:yingzhen.ietf@gmail.com>
      Author:    Acee Lindem
                <mailto:acee.ietf@gmail.com>
      Author:    Stephane Litkowski
                <mailto:slitkows.ietf@gmail.com>
      Author:    Jeff Tantsura
                <mailto:jefftant.ietf@gmail.com>
-
+     
     ";
   description
     "The YANG module augments the base ISIS model to
@@ -1423,7 +1419,7 @@ module ietf-isis-msd {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2024 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -1445,7 +1441,7 @@ module ietf-isis-msd {
   reference
     "RFC XXXX: YANG Data Model for ISIS MSD";
 
-  revision 2023-03-06 {
+  revision 2024-09-02 {
     description
       "Initial Version";
     reference
@@ -1458,18 +1454,7 @@ module ietf-isis-msd {
     container link-msd-sub-tlv {
       list link-msds {
         key "msd-type";
-        leaf msd-type {
-          type identityref {
-            base mpls-msd:msd-base-type;
-          }
-          description
-            "MSD-Types";
-        }
-        leaf msd-value {
-          type uint8;
-          description
-            "MSD value, in the range of 0-255.";
-        }
+        uses mpls-msd:msd-type-value;
         description
           "List of link MSDs";
       }
@@ -1494,18 +1479,7 @@ module ietf-isis-msd {
     container node-msd-tlv {
       list node-msds {
         key "msd-type";
-        leaf msd-type {
-          type identityref {
-            base mpls-msd:msd-base-type;
-          }
-          description
-            "MSD-Types";
-        }
-        leaf msd-value {
-          type uint8;
-          description
-            "MSD value, in the range of 0-255.";
-        }
+        uses mpls-msd:msd-type-value;
         description
           "Node MSD is the smallest link MSD supported by
            the node.";
@@ -1686,7 +1660,7 @@ module ietf-isis-msd {
       <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8349.xml"/>
       <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8446.xml"/>
       <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8491.xml"/>
-      <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8919.xml"/>
+      <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9479.xml"/>
       <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9130.xml"/>
       <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9350.xml"/>
     </references>
