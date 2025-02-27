@@ -6,18 +6,19 @@ module ietf-isis-link-attr {
 
   import ietf-inet-types {
     prefix inet;
-    reference "RFC 6991 - Common YANG Data Types";
+    reference
+      "RFC 6991 - Common YANG Data Types";
   }
 
   import ietf-routing {
-    prefix "rt";
+    prefix rt;
     reference
       "RFC 8349: A YANG Data Model for Routing
                  Management (NMDA Version)";
   }
 
   import ietf-isis {
-    prefix "isis";
+    prefix isis;
     reference
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
@@ -44,7 +45,7 @@ module ietf-isis-link-attr {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2024 IETF Trust and the persons identified as
+     Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -65,7 +66,7 @@ module ietf-isis-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2024-09-02 {
+  revision 2025-02-26 {
     description
       "Initial version";
     reference
@@ -76,7 +77,8 @@ module ietf-isis-link-attr {
   identity sabm-bit {
     description
       "Base identity for sabm bits.";
-    reference "RFC 8919: IS-IS Application-Specific Link Attributes";
+    reference
+      "RFC 8919: IS-IS Application-Specific Link Attributes";
   }
 
   identity rsvp-te-bit {
@@ -153,8 +155,8 @@ module ietf-isis-link-attr {
       "Grouping for specification of the applications and
        application-specific attribute values.";
 
-    container application-specific-link-attributes-sub-tlvs {
-      list asla-sub-tlvs {
+    container asla-sub-tlvs {
+      list asla-sub-tlv {
         uses application-identifier-bit-mask;
         uses isis:unknown-tlvs;
         description
@@ -170,7 +172,7 @@ module ietf-isis-link-attr {
       "Grouping of a TLV to advertise application-specific
        SRLGs for a given link.";
     container application-specific-srlg-tlv {
-      list as-srlg-tlvs {
+      list as-srlg-tlv {
         leaf neighbor-system-id {
           type isis:system-id;
           description
@@ -271,11 +273,12 @@ module ietf-isis-link-attr {
     }
   }
 
+  /* Configuration */
   augment "/rt:routing/" +
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis" {
     when "/rt:routing/rt:control-plane-protocols/"+
-                 "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
@@ -315,8 +318,8 @@ module ietf-isis-link-attr {
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis/isis:interfaces/isis:interface" {
     when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/"+
-                     "rt:type = 'isis:isis'" {
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used.";
     }
@@ -383,7 +386,7 @@ module ietf-isis-link-attr {
     description
       "This augments ISIS protocol LSDB TLV22.";
 
-       uses application-specific-link-attributes-sub-tlv;
+    uses application-specific-link-attributes-sub-tlv;
   }
 
   /* TLV 223 */

@@ -403,78 +403,78 @@ module ietf-isis-flex-algo {
   augment "/rt:routing/" +
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis/isis:database/isis:levels/isis:lsp"+
-                      "/isis:router-capabilities" {
-          when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/"+
-                     "rt:type = 'isis:isis'" {
-      description
-        "This augment ISIS routing protocol when used";
+          "/isis:router-capabilities" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
+    description
+      "This augment ISIS routing protocol when used";
     }
-          description
-            "This augments ISIS protocol LSDB router capability.";
+    description
+      "This augments ISIS protocol LSDB router capability.";
 
-          uses fad-tlvs;
+    uses fad-tlvs;
   }
 
   augment "/rt:routing/" +
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis/isis:database/isis:levels/isis:lsp"+
-                      "/isis:extended-ipv4-reachability/"+
-                      "isis:prefixes" {
-                when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/"+
-                     "rt:type = 'isis:isis'" {
+          "/isis:extended-ipv4-reachability/"+
+          "isis:prefixes" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
-                description
-            "This augments ISIS protocol LSDB prefix.";
-             uses fapm-sub-tlvs;
+      description
+        "This augments ISIS protocol LSDB prefix.";
+         uses fapm-sub-tlvs;
   }
 
   augment "/rt:routing/" +
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis/isis:database/isis:levels/isis:lsp"+
-                "/isis:mt-extended-ipv4-reachability/isis:prefixes" {
-                when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/"+
-                     "rt:type = 'isis:isis'" {
+          "/isis:mt-extended-ipv4-reachability/isis:prefixes" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
-                description
-            "This augments ISIS protocol LSDB prefix.";
-          uses fapm-sub-tlvs;
+      description
+        "This augments ISIS protocol LSDB prefix.";
+         uses fapm-sub-tlvs;
   }
 
   augment "/rt:routing/" +
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis/isis:database/isis:levels/isis:lsp"+
                       "/isis:ipv6-reachability/isis:prefixes" {
-                when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/"+
-                     "rt:type = 'isis:isis'" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
-                description
-            "This augments ISIS protocol LSDB prefix.";
-          uses fapm-sub-tlvs;
+      description
+        "This augments ISIS protocol LSDB prefix.";
+         uses fapm-sub-tlvs;
   }
 
   augment "/rt:routing/" +
           "rt:control-plane-protocols/rt:control-plane-protocol"+
           "/isis:isis/isis:database/isis:levels/isis:lsp"+
                       "/isis:mt-ipv6-reachability/isis:prefixes" {
-                when "/rt:routing/rt:control-plane-protocols/"+
-                     "rt:control-plane-protocol/"+
-                     "rt:type = 'isis:isis'" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
-                description
-            "This augments ISIS protocol LSDB prefix.";
-        uses fapm-sub-tlvs;
+      description
+        "This augments ISIS protocol LSDB prefix.";
+         uses fapm-sub-tlvs;
   }
 
   /* notification */
