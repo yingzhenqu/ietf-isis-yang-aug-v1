@@ -345,12 +345,12 @@ module ietf-isis-flex-algo {
 
         leaf metric-type {
           type identityref {
-            base iana-metric-type:metric-type;;
+            base iana-metric-type:metric-type;
           }
           description
             "Type of metric to be used during the calculation.";
         }
-        
+
         leaf calc-type {
           type identityref {
             base iana-algo-types:algo-type;
@@ -359,14 +359,6 @@ module ietf-isis-flex-algo {
             "Calcuation-type. Value from 0-127 inclusive from the IANA 
              'IGP Algorithm Types' registry defined under the 'Interior
              Gateway Protocol (IGP) Parameters' registry.";
-        }
-
-        leaf metric-type {
-          type identityref {
-            base iana-metric-type:metric-type;
-          }
-          description
-            "Type of metric to be used during the calculation.";
         }
 
         leaf microloop-avoidance {
