@@ -1,0 +1,714 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<?rfc strict="no" ?>
+<?rfc toc="yes" ?>
+<?rfc symrefs="yes" ?>
+<?rfc sortrefs="yes"?>
+<?rfc rfcedstyle="yes" ?>
+<?rfc subcompact="no" ?>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-00" ipr="trust200902" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+  <front>
+    <title abbrev="IS-IS Flex-Algo YANG">YANG Model for IS-IS Flexible Algorithm</title>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-isis-flex-algo-yang-00"/>
+    <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
+      <organization>Futurewei Technologies</organization>
+      <address>
+        <postal>
+          <country>USA</country>
+        </postal>
+        <email>yingzhen.ietf@gmail.com</email>
+      </address>
+    </author>
+    <author fullname="Acee Lindem" initials="A." surname="Lindem">
+      <organization>Arrcus, Inc.</organization>
+      <address>
+        <postal>
+          <country>USA</country>
+        </postal>
+        <email>acee.ietf@gmail.com</email>
+      </address>
+    </author>
+    <author fullname="Stephane Litkowski" initials="S." surname="Litkowski">
+      <organization>Cisco Systems</organization>
+      <address>
+        <postal>
+          <country>France</country>
+        </postal>
+        <email>slitkows.ietf@gmail.com</email>
+      </address>
+    </author>
+    <date/>
+    <area>General</area>
+    <workgroup>Internet</workgroup>
+    <abstract>
+      <t>This document defines a YANG data module to support IS-IS Flexible Algorithm as defined in RFC 9350.
+        The module augments the IETF IS-IS YANG data model to provide IS-IS Flexible Algorithm support. </t>
+    </abstract>
+  </front>
+  <middle>
+    <section numbered="true" toc="default">
+      <name>Overview</name>
+      <t>This document defines a YANG data module augmenting the IETF IS-IS YANG model to provide support for configuration and operational state for IS-IS Flexible Algorithm as defined in RFC 9350.</t>
+      <section numbered="true" toc="default">
+        <name>Requirements Language</name>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.</t>
+      </section>
+    </section>
+    <section numbered="true" toc="default">
+      <name>YANG Module for IS-IS Flexible Algorithm</name>
+      <t>This section provides the YANG module for IS-IS Flexible Algorithm.</t>
+      <artwork align="left" name="" type="" alt=""><![CDATA[
+  module: ietf-isis-flex-algo
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis:
+    +--rw isis-flex-algo
+       +--rw flex-algo* [algo-number]
+          +--rw algo-number             uint8
+          +--rw advertise-definition?   boolean
+          +--rw admin-groups {te-types:extended-admin-groups,te-types:named-extended-admin-groups}?
+          |  +--rw exclude-admin-groups*       -> /te:te/globals/named-admin-groups/named-admin-group/name
+          |  +--rw include-any-admin-groups*   -> /te:te/globals/named-admin-groups/named-admin-group/name
+          |  +--rw include-all-admin-groups*   -> /te:te/globals/named-admin-groups/named-admin-group/name
+          +--rw exclude-srlgs*          -> /te:te/globals/named-srlgs/named-srlg/name {te-types:named-srlg-groups}?
+          +--rw fast-reroute?           boolean
+          +--rw metric-type?            identityref
+          +--rw calc-type?              identityref
+          +--rw microloop-avoidance?    boolean
+          +--rw prefix-metric!
+          +--rw priority?               uint8
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:router-capabilities:
+    +--ro fad-tlvs
+       +--ro fad-tlv* []
+          +--ro flex-algo?              uint8
+          +--ro metric-type?            identityref
+          +--ro calc-type?              uint8
+          +--ro priority?               uint8
+          +--ro fa-ex-ag-sub-tlv
+          |  +--ro extended-admin-groups*   uint64
+          +--ro fa-in-any-ag-sub-tlv
+          |  +--ro extended-admin-groups*   uint64
+          +--ro fa-in-all-ag-sub-tlv
+          |  +--ro extended-admin-groups*   uint64
+          +--ro fad-flags-sub-tlv
+          |  +--ro fad-flags*   identityref
+          +--ro fa-ex-srlg-sub-tlv
+          |  +--ro srlgs*   uint32
+          +--ro unknown-tlvs
+             +--ro unknown-tlv* []
+                +--ro type?     uint16
+                +--ro length?   uint16
+                +--ro value?    yang:hex-string
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:extended-ipv4-reachability/isis:prefixes:
+    +--ro fapm-sub-tlvs
+       +--ro fapm-sub-tlv* []
+          +--ro flex-algo?   uint8
+          +--ro metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:mt-extended-ipv4-reachability/isis:prefixes:
+    +--ro fapm-sub-tlvs
+       +--ro fapm-sub-tlv* []
+          +--ro flex-algo?   uint8
+          +--ro metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:ipv6-reachability/isis:prefixes:
+    +--ro fapm-sub-tlvs
+       +--ro fapm-sub-tlv* []
+          +--ro flex-algo?   uint8
+          +--ro metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:mt-ipv6-reachability/isis:prefixes:
+    +--ro fapm-sub-tlvs
+       +--ro fapm-sub-tlv* []
+          +--ro flex-algo?   uint8
+          +--ro metric?      uint32
+
+  notifications:
+    +---n flex-algo-not-supported
+       +--ro routing-protocol-name?   -> /rt:routing/control-plane-protocols/control-plane-protocol/name
+       +--ro isis-level?              level
+       +--ro flex-algo-number?        uint8
+      ]]></artwork>
+      <sourcecode name="ietf-isis-flex-algo@2025-06-23.yang" type="yang" markers="true"><![CDATA[
+module ietf-isis-flex-algo {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
+  prefix isis-flex-algo;
+
+  import ietf-routing {
+    prefix rt;
+    reference
+      "RFC 8349: A YANG Data Model for Routing
+                 Management (NMDA Version)";
+  }
+
+  import ietf-te-types {
+    prefix te-types;
+    reference
+      "RFC8776: Common YANG Data Types for Traffic Engineering.";
+  }
+
+  import ietf-isis {
+    prefix "isis";
+    reference
+      "RFC 9130: YANG Data Model for the IS-IS Protocol";
+  }
+
+  import ietf-te {
+    prefix "te";
+  }
+
+  import iana-igp-algo-types {
+     prefix iana-algo-types;
+  }
+
+  import iana-igp-metric-types {
+    prefix iana-metric-type;
+  }
+
+  import ietf-isis-link-attr {
+    prefix "isis-link-attr";
+  }
+
+  organization
+    "IETF LSR - Link State Routing Working Group";
+  contact
+    "WG Web:   <https://datatracker.ietf.org/wg/lsr>
+     WG List:  <mailto:spring@ietf.org>
+
+
+     Author:    Yingzhen Qu
+               <mailto:yingzhen.ietf@gmail.com>
+     Author:    Acee Lindem
+               <mailto:acee.ietf@gmail.com>
+     Author:    Stephane Litkowski
+               <mailto:slitkows.ietf@gmail.com>
+    ";
+
+  description
+    "The YANG module defines the configuration and operational
+     state for ISIS Flexible Algorithm as defined in RFC 9350.
+
+     This YANG model conforms to the Network Management
+     Datastore Architecture (NMDA) as described in RFC 8342.
+
+     Copyright (c) 2025 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
+
+
+  reference
+    "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
+
+  revision 2024-09-02 {
+    description
+      "Initial Version";
+    reference
+       "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
+  }
+
+  /* Identities */
+
+  identity fad-flags {
+    description
+      "Base identity for ISIS FAD flags.";
+  }
+
+  identity m-bit {
+    base fad-flags;
+    description
+      "M bit, when set, the flex-algo specific prefix and ASBR
+       metric MUST be used for inter-area and external prefix
+       calculation.";
+  }
+
+  /* Identity augmentation */
+  identity flex-algo-bit {
+    base isis-link-attr:sabm-bit;
+    description
+      "X bit, flexible algorithm.";
+  }
+
+  /* Groupings */
+  grouping fa-ex-ag-sub-tlv {
+    container fa-ex-ag-sub-tlv {
+      leaf-list extended-admin-groups {
+        type uint64;
+        description
+          "Extended administrative group as defined in RFC 7308.";
+      }
+      description
+        "The flex-algo exclude admin group sub-tlv.";
+    }
+    description
+      "The flex-algo exclude admin group sub-tlv.";
+  }
+
+  grouping fa-in-any-ag-sub-tlv {
+    container fa-in-any-ag-sub-tlv {
+      leaf-list extended-admin-groups {
+        type uint64;
+        description
+          "Extended administrative group as defined in RFC 7308.";
+      }
+      description
+        "The flex-algo include-any admin group sub-tlv.";
+    }
+    description
+      "The flex-algo include-any admin group sub-tlv.";
+  }
+
+  grouping fa-in-all-ag-sub-tlv {
+    container fa-in-all-ag-sub-tlv {
+      leaf-list extended-admin-groups {
+        type uint64;
+        description
+          "Extended administrative group as defined in RFC 7308.";
+      }
+      description
+        "The flex-algo include-all admin group sub-tlv.";
+    }
+    description
+      "The flex-algo include-all admin group sub-tlv.";
+  }
+
+  grouping fad-flags-sub-tlv {
+    container fad-flags-sub-tlv {
+      leaf-list fad-flags {
+        type identityref {
+          base fad-flags;
+        }
+        description
+          "Flex-algo definition flags list.";
+      }
+      description
+        "ISIS flex-algo definition flags.";
+    }
+    description
+      "The flex-algo definition flags sub-tlv.";
+  }
+
+  grouping fa-ex-srlg-sub-tlv {
+    container fa-ex-srlg-sub-tlv {
+      leaf-list srlgs {
+        type uint32;
+        description
+          "SRLG value as defined in RFC 4203.";
+      }
+      description
+        "The flex-algo exclude SRLG sub-tlv.";
+    }
+    description
+      "The flex-algo exclude SRLG sub-tlv.";
+  }
+
+  grouping fad-tlvs {
+    container fad-tlvs {
+      list fad-tlv {
+        leaf flex-algo {
+          type uint8;
+          description
+            "Flex-algo number, value between 128 and 255 inclusive.";
+        }
+        leaf metric-type {
+          type identityref {
+            base iana-metric-type:metric-type;
+          }
+            description
+              "Type of metric to be used during the calculation.";
+        }
+        leaf calc-type {
+          type uint8 {
+            range "0..127";
+          }
+          description
+            "IGP algorithm types, value from 0 to 127 as
+            defined under 'Interior Gateway Protocol (IGP)
+            Parameter' by IANA.";
+        }
+        leaf priority {
+          type uint8;
+            description
+              "Priority of the advertisement.";
+        }
+
+        uses fa-ex-ag-sub-tlv;
+        uses fa-in-any-ag-sub-tlv;
+        uses fa-in-all-ag-sub-tlv;
+        uses fad-flags-sub-tlv;
+        uses fa-ex-srlg-sub-tlv;
+        uses isis:unknown-tlvs;
+
+        description
+          "List of flex-algo definition TLVs.";
+      }
+      description
+        "ISIS Flexible Algorithm Definition TLV.";
+    }
+    description
+      "ISIS Flexible Algorithm Definition (FAD) TLV.";
+  }
+
+  grouping fapm-sub-tlvs {
+    container fapm-sub-tlvs {
+      list fapm-sub-tlv {
+        leaf flex-algo {
+          type uint8;
+          description
+            "Flex-algo number, value between 128 and 255
+             inclusive.";
+        }
+        leaf metric {
+          type uint32;
+          description
+            "Prefix metric.";
+        }
+        description
+          "List of flex-algo prefix sub-tlvs.";
+      }
+      description
+        "Flex-algo prefix metric sub-tlvs.";
+    }
+    description
+      "Flexible Algorithm Prefix Metric (FAPM) sub TLVs.";
+  }
+
+
+  /* Configurations */
+
+  augment "/rt:routing/" +
+          "rt:control-plane-protocols/rt:control-plane-protocol"+
+          "/isis:isis" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+                 "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+      description
+        "This augment ISIS routing protocol when used";
+    }
+    description
+      "This augments ISIS protocol configuration
+       with flexible algorithm.";
+
+    container isis-flex-algo {
+      list flex-algo {
+        key "algo-number";
+
+        leaf algo-number {
+          type uint8 {
+            range "128..255";
+          }
+          description
+            "An identifier in the range 128-255 that's associated
+            with the Flexible Algorithm Definition.";
+        }
+
+        leaf advertise-definition {
+          type boolean;
+          default true;
+          description
+            "Enable to advertise the flex-algo definition.";
+        }
+
+        container admin-groups {
+          if-feature "te-types:extended-admin-groups";
+          if-feature "te-types:named-extended-admin-groups";
+          leaf-list exclude-admin-groups {
+            type leafref {
+              path "/te:te/te:globals/te:named-admin-groups/"
+                 + "te:named-admin-group/te:name";
+            }
+            description
+              "Exclude rule used during the flex-algo
+              path computation.";
+          }
+          leaf-list include-any-admin-groups {
+            type leafref {
+              path "/te:te/te:globals/te:named-admin-groups/"
+                 + "te:named-admin-group/te:name";
+            }
+            description
+              "Include-any rule used during the flex-algo
+              path computation.";
+          }
+          leaf-list include-all-admin-groups {
+            type leafref {
+              path "/te:te/te:globals/te:named-admin-groups/"
+                 + "te:named-admin-group/te:name";
+            }
+            description
+              "Include-all rule used during the flex-algo
+              path computation.";
+          }
+          description
+            "Specify links for the flex-algo path computation.";
+        }
+
+        leaf-list exclude-srlgs {
+          if-feature "te-types:named-srlg-groups";
+          type leafref {
+            path "/te:te/te:globals/te:named-srlgs/te:named-srlg/"
+               + "te:name";
+          }
+          description
+            "Shared Risk Link Groups (SRLGs) to be excluded during
+            the flex-algo path computation.";
+        }
+
+        leaf fast-reroute {
+          type boolean;
+          default true;
+          description
+            "Enable fast reroute.";
+        }
+
+        leaf metric-type {
+          type identityref {
+            base iana-metric-type:metric-type;
+          }
+          description
+            "Type of metric to be used during the calculation.";
+        }
+
+        leaf calc-type {
+          type identityref {
+            base iana-algo-types:algo-type;
+          }
+          description
+            "Calcuation-type. Value from 0-127 inclusive from the IANA 
+             'IGP Algorithm Types' registry defined under the 'Interior
+             Gateway Protocol (IGP) Parameters' registry.";
+        }
+
+        leaf microloop-avoidance {
+          type boolean;
+          default true;
+          description
+            "Enable microloop avoidance.";
+        }
+
+        container prefix-metric {
+          presence
+            "Use flex-algo specific prefix metric.";
+          description
+            "Use flex-algo prefix metric.";
+        }
+
+        leaf priority {
+          type uint8;
+          description
+            "Priority of the advertisement.";
+        }
+
+        description
+          "List of flex-algo configurations.";
+      }
+      description
+        "Flexible Algorithm configuration.";
+    }
+  }
+
+  /* Database */
+
+  augment "/rt:routing/" +
+          "rt:control-plane-protocols/rt:control-plane-protocol"+
+          "/isis:isis/isis:database/isis:levels/isis:lsp"+
+          "/isis:router-capabilities" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
+    description
+      "This augment ISIS routing protocol when used";
+    }
+    description
+      "This augments ISIS protocol LSDB router capability.";
+
+    uses fad-tlvs;
+  }
+
+  augment "/rt:routing/" +
+          "rt:control-plane-protocols/rt:control-plane-protocol"+
+          "/isis:isis/isis:database/isis:levels/isis:lsp"+
+          "/isis:extended-ipv4-reachability/"+
+          "isis:prefixes" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
+      description
+        "This augment ISIS routing protocol when used";
+    }
+      description
+        "This augments ISIS protocol LSDB prefix.";
+         uses fapm-sub-tlvs;
+  }
+
+  augment "/rt:routing/" +
+          "rt:control-plane-protocols/rt:control-plane-protocol"+
+          "/isis:isis/isis:database/isis:levels/isis:lsp"+
+          "/isis:mt-extended-ipv4-reachability/isis:prefixes" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
+      description
+        "This augment ISIS routing protocol when used";
+    }
+      description
+        "This augments ISIS protocol LSDB prefix.";
+         uses fapm-sub-tlvs;
+  }
+
+  augment "/rt:routing/" +
+          "rt:control-plane-protocols/rt:control-plane-protocol"+
+          "/isis:isis/isis:database/isis:levels/isis:lsp"+
+                      "/isis:ipv6-reachability/isis:prefixes" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
+      description
+        "This augment ISIS routing protocol when used";
+    }
+      description
+        "This augments ISIS protocol LSDB prefix.";
+         uses fapm-sub-tlvs;
+  }
+
+  augment "/rt:routing/" +
+          "rt:control-plane-protocols/rt:control-plane-protocol"+
+          "/isis:isis/isis:database/isis:levels/isis:lsp"+
+                      "/isis:mt-ipv6-reachability/isis:prefixes" {
+    when "/rt:routing/rt:control-plane-protocols/"+
+         "rt:control-plane-protocol/"+
+         "rt:type = 'isis:isis'" {
+      description
+        "This augment ISIS routing protocol when used";
+    }
+      description
+        "This augments ISIS protocol LSDB prefix.";
+         uses fapm-sub-tlvs;
+  }
+
+  /* notification */
+
+  notification flex-algo-not-supported {
+    uses isis:notification-instance-hdr;
+    leaf flex-algo-number {
+      type uint8 {
+        range "128..255";
+      }
+      description
+        "Flex-algo identifier which is not supported by the IS-IS
+         instance.";
+    }
+    description
+      "This notification is sent when an IS-IS instance does not
+       support this flex-algo.";
+  }
+}
+]]></sourcecode>
+    </section>
+    <section anchor="Security" numbered="true" toc="default">
+      <name>Security Considerations</name>
+      <t>The YANG modules specified in this document define a schema for
+       data that is designed to be accessed via network
+       management protocols such as NETCONF <xref target="RFC6241" format="default"/> or
+       RESTCONF <xref target="RFC8040" format="default"/>. The lowest NETCONF layer is the secure transport
+       layer, and the mandatory-to-implement secure transport is Secure Shell (SSH)
+       <xref target="RFC6242" format="default"/>. The lowest RESTCONF layer is HTTPS, and the
+       mandatory-to-implement secure transport is TLS <xref target="RFC5246" format="default"/>.</t>
+      <t>The NETCONF access control model <xref target="RFC6536" format="default"/> provides the
+      means to restrict access for particular NETCONF or RESTCONF users to a
+      pre-configured subset of all available NETCONF or RESTCONF protocol
+      operations and content.</t>
+      <t>There are a number of data nodes defined in the modules
+      that are writable/creatable/deletable (i.e., config true, which is the default).
+      These data nodes may be considered sensitive or vulnerable in some network
+      environments. Write operations (e.g., edit-config) to these data nodes without
+      proper protection can have a negative effect on network operations. </t>
+      <t>Some of the readable data nodes in the modules
+      may be considered sensitive or vulnerable in some network environments. It is thus
+      important to control read access (e.g., via get, get-config, or notification)
+      to these data nodes. The exposure of the Link State Database (LSDB) will
+      expose the detailed topology of the network. This may be undesirable since
+      both due to the fact that exposure may facilitate other attacks. Additionally,
+      network operators may consider their topologies to be sensitive confidential
+      data.</t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>IANA Considerations</name>
+      <t>This document registers a URI in the IETF XML registry
+        <xref target="RFC3688" format="default"/>.  Following the format in <xref target="RFC3688" format="default"/>,
+        the following registration is requested:
+      </t>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
+URI: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
+Registrant Contact: The IESG.
+XML: N/A, the requested URI is an XML namespace.
+      ]]></artwork>
+      <t>This document registers the YANG module in the YANG Module Names
+        registry <xref target="RFC6020" format="default"/>.
+      </t>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
+name: ietf-isis-flex-algo
+namespace: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
+prefix: isis-flex-algo
+reference: RFC XXXX
+      ]]></artwork>
+    </section>
+    <section anchor="Acknowledgements" numbered="true" toc="default">
+      <name>Acknowledgements</name>
+      <t>This document was produced using Marshall Rose's xml2rfc tool.</t>
+      <t>The YANG model was developed using the suite of YANG tools written
+         and maintained by numerous authors.</t>
+    </section>
+    <section numbered="false" toc="default">
+      <name>Appendix A. Example IS-IS Flex-Algo Configuration</name>
+      <t>
+        The following is an example configuration for IS-IS Flexible Algorithm using the YANG model defined in this document.
+      </t>
+      <artwork name="Example IS-IS Flex-Algo Configuration" type="xml" align="left" alt=""><![CDATA[
+<routing xmlns="urn:ietf:params:xml:ns:yang:ietf-routing">
+  <control-plane-protocols>
+    <control-plane-protocol>
+      <type>isis:isis</type>
+      <name>default</name>
+      <isis xmlns="urn:ietf:params:xml:ns:yang:ietf-isis">
+        <isis-flex-algo xmlns="urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo">
+          <flex-algo>
+            <algo-number>128</algo-number>
+            <advertise-definition>true</advertise-definition>
+            <admin-groups>
+              <exclude-admin-groups>red</exclude-admin-groups>
+              <include-any-admin-groups>blue</include-any-admin-groups>
+              <include-all-admin-groups>green</include-all-admin-groups>
+            </admin-groups>
+            <exclude-srlgs>SRLG1</exclude-srlgs>
+            <fast-reroute>true</fast-reroute>
+            <metric-type>iana-metric-type:igp-metric</metric-type>
+            <calc-type>iana-algo-types:algo-spf</calc-type>
+            <microloop-avoidance>true</microloop-avoidance>
+            <prefix-metric/>
+            <priority>10</priority>
+          </flex-algo>
+        </isis-flex-algo>
+      </isis>
+    </control-plane-protocol>
+  </control-plane-protocols>
+</routing>
+      ]]></artwork>
+    </section>
+  </middle>
+</rfc> 
