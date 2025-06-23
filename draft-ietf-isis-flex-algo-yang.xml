@@ -668,12 +668,6 @@ prefix: isis-flex-algo
 reference: RFC XXXX
       ]]></artwork>
     </section>
-    <section anchor="Acknowledgements" numbered="true" toc="default">
-      <name>Acknowledgements</name>
-      <t>This document was produced using Marshall Rose's xml2rfc tool.</t>
-      <t>The YANG model was developed using the suite of YANG tools written
-         and maintained by numerous authors.</t>
-    </section>
     <section numbered="false" toc="default">
       <name>Appendix A. Example IS-IS Flex-Algo Configuration</name>
       <t>
@@ -709,6 +703,54 @@ reference: RFC XXXX
   </control-plane-protocols>
 </routing>
       ]]></artwork>
+    </section>
+    <section numbered="false" toc="default">
+      <name>Appendix B. Example IS-IS Flex-Algo Configuration (JSON)</name>
+      <t>
+        The following is an example configuration for IS-IS Flexible Algorithm in JSON format using the YANG model defined in this document.
+      </t>
+      <artwork name="Example IS-IS Flex-Algo Configuration (JSON)" type="json" align="left" alt=""><![CDATA[
+{
+  "ietf-routing:routing": {
+    "control-plane-protocols": {
+      "control-plane-protocol": [
+        {
+          "type": "ietf-isis:isis",
+          "name": "default",
+          "ietf-isis:isis": {
+            "ietf-isis-flex-algo:isis-flex-algo": {
+              "flex-algo": [
+                {
+                  "algo-number": 128,
+                  "advertise-definition": true,
+                  "admin-groups": {
+                    "exclude-admin-groups": ["red"],
+                    "include-any-admin-groups": ["blue"],
+                    "include-all-admin-groups": ["green"]
+                  },
+                  "exclude-srlgs": ["SRLG1"],
+                  "fast-reroute": true,
+                  "metric-type": "iana-metric-type:igp-metric",
+                  "calc-type": "iana-algo-types:algo-spf",
+                  "microloop-avoidance": true,
+                  "prefix-metric": {},
+                  "priority": 10
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+      ]]></artwork>
+    </section>
+    <section anchor="Acknowledgements" numbered="true" toc="default">
+      <name>Acknowledgements</name>
+      <t>This document was produced using Marshall Rose's xml2rfc tool.</t>
+      <t>The YANG model was developed using the suite of YANG tools written
+         and maintained by numerous authors.</t>
     </section>
   </middle>
 </rfc> 
