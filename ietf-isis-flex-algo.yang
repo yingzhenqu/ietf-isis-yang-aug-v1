@@ -201,8 +201,8 @@ module ietf-isis-flex-algo {
               "Type of metric to be used during the calculation.";
         }
         leaf calc-type {
-          type uint8 {
-            range "0..127";
+          type identityref {
+            base iana-algo-types:algo-type;
           }
           description
             "IGP algorithm types, value from 0 to 127 as

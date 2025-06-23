@@ -86,7 +86,7 @@
        +--ro fad-tlv* []
           +--ro flex-algo?              uint8
           +--ro metric-type?            identityref
-          +--ro calc-type?              uint8
+          +--ro calc-type?              identityref
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
           |  +--ro extended-admin-groups*   uint64
@@ -334,8 +334,8 @@ module ietf-isis-flex-algo {
               "Type of metric to be used during the calculation.";
         }
         leaf calc-type {
-          type uint8 {
-            range "0..127";
+          type identityref {
+            base iana-algo-types:algo-type;
           }
           description
             "IGP algorithm types, value from 0 to 127 as
