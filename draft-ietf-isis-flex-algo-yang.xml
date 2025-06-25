@@ -1,3 +1,134 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<?rfc strict="no" ?>
+<?rfc toc="yes" ?>
+<?rfc symrefs="yes" ?>
+<?rfc sortrefs="yes"?>
+<?rfc rfcedstyle="yes" ?>
+<?rfc subcompact="no" ?>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-00" ipr="trust200902" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true" sortRefs="true" version="3" consensus="true">
+  <front>
+    <title abbrev="IS-IS Flex-Algo YANG">YANG Model for IS-IS Flexible Algorithm</title>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-isis-flex-algo-yang-00"/>
+    <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
+      <organization>Futurewei Technologies</organization>
+      <address>
+        <postal>
+          <country>USA</country>
+        </postal>
+        <email>yingzhen.ietf@gmail.com</email>
+      </address>
+    </author>
+    <author fullname="Acee Lindem" initials="A." surname="Lindem">
+      <organization>Arrcus, Inc.</organization>
+      <address>
+        <postal>
+          <country>USA</country>
+        </postal>
+        <email>acee.ietf@gmail.com</email>
+      </address>
+    </author>
+    <author fullname="Stephane Litkowski" initials="S." surname="Litkowski">
+      <organization>Cisco Systems</organization>
+      <address>
+        <postal>
+          <country>France</country>
+        </postal>
+        <email>slitkows.ietf@gmail.com</email>
+      </address>
+    </author>
+    <date/>
+    <area>General</area>
+    <workgroup>Internet</workgroup>
+    <abstract>
+      <t>This document defines a YANG data module to support IS-IS Flexible Algorithm as defined in RFC 9350.
+        The module augments the IETF IS-IS YANG data model to provide IS-IS Flexible Algorithm support. </t>
+    </abstract>
+  </front>
+  <middle>
+    <section numbered="true" toc="default">
+      <name>Overview</name>
+      <t>This document defines a YANG data module augmenting the IETF IS-IS YANG model to provide support for configuration and operational state for IS-IS Flexible Algorithm as defined in RFC 9350.</t>
+      <section numbered="true" toc="default">
+        <name>Requirements Language</name>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.</t>
+      </section>
+    </section>
+    <section numbered="true" toc="default">
+      <name>YANG Module for IS-IS Flexible Algorithm</name>
+      <t>This section provides the YANG module for IS-IS Flexible Algorithm.</t>
+      <artwork align="left" name="" type="" alt=""><![CDATA[
+  module: ietf-isis-flex-algo
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis:
+    +--rw isis-flex-algo
+       +--rw flex-algo* [algo-number]
+          +--rw algo-number             uint8
+          +--rw advertise-definition?   boolean
+          +--rw admin-groups {te-types:extended-admin-groups,te-types:named-extended-admin-groups}?
+          |  +--rw exclude-admin-groups*       -> /te:te/globals/named-admin-groups/named-admin-group/name
+          |  +--rw include-any-admin-groups*   -> /te:te/globals/named-admin-groups/named-admin-group/name
+          |  +--rw include-all-admin-groups*   -> /te:te/globals/named-admin-groups/named-admin-group/name
+          +--rw exclude-srlgs*          -> /te:te/globals/named-srlgs/named-srlg/name {te-types:named-srlg-groups}?
+          +--rw metric-type?            identityref
+          +--rw calc-type?              identityref
+          +--rw prefix-metric!
+          +--rw priority?               uint8
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:router-capabilities:
+    +--ro fad-tlvs
+       +--ro fad-tlv* []
+          +--ro flex-algo?              uint8
+          +--ro metric-type?            identityref
+          +--ro calc-type?              identityref
+          +--ro priority?               uint8
+          +--ro fa-ex-ag-sub-tlv
+          |  +--ro extended-admin-groups*   uint64
+          +--ro fa-in-any-ag-sub-tlv
+          |  +--ro extended-admin-groups*   uint64
+          +--ro fa-in-all-ag-sub-tlv
+          |  +--ro extended-admin-groups*   uint64
+          +--ro fad-flags-sub-tlv
+          |  +--ro fad-flags*   identityref
+          +--ro fa-ex-srlg-sub-tlv
+          |  +--ro srlgs*   uint32
+          +--ro unknown-tlvs
+             +--ro unknown-tlv* []
+                +--ro type?     uint16
+                +--ro length?   uint16
+                +--ro value?    yang:hex-string
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:extended-ipv4-reachability/isis:prefixes:
+    +--ro fapm-sub-tlvs
+       +--ro fapm-sub-tlv* []
+          +--ro flex-algo?   uint8
+          +--ro metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:mt-extended-ipv4-reachability/isis:prefixes:
+    +--ro fapm-sub-tlvs
+       +--ro fapm-sub-tlv* []
+          +--ro flex-algo?   uint8
+          +--ro metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:ipv6-reachability/isis:prefixes:
+    +--ro fapm-sub-tlvs
+       +--ro fapm-sub-tlv* []
+          +--ro flex-algo?   uint8
+          +--ro metric?      uint32
+  augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:mt-ipv6-reachability/isis:prefixes:
+    +--ro fapm-sub-tlvs
+       +--ro fapm-sub-tlv* []
+          +--ro flex-algo?   uint8
+          +--ro metric?      uint32
+
+  notifications:
+    +---n flex-algo-not-supported
+       +--ro routing-protocol-name?   -> /rt:routing/control-plane-protocols/control-plane-protocol/name
+       +--ro isis-level?              level
+       +--ro flex-algo-number?        uint8
+      ]]></artwork>
+      <sourcecode name="ietf-isis-flex-algo@2025-06-23.yang" type="yang" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -472,3 +603,135 @@ module ietf-isis-flex-algo {
        support this flex-algo.";
   }
 }
+]]></sourcecode>
+    </section>
+    <section anchor="Security" numbered="true" toc="default">
+      <name>Security Considerations</name>
+      <t>The YANG modules specified in this document define a schema for
+       data that is designed to be accessed via network
+       management protocols such as NETCONF <xref target="RFC6241" format="default"/> or
+       RESTCONF <xref target="RFC8040" format="default"/>. The lowest NETCONF layer is the secure transport
+       layer, and the mandatory-to-implement secure transport is Secure Shell (SSH)
+       <xref target="RFC6242" format="default"/>. The lowest RESTCONF layer is HTTPS, and the
+       mandatory-to-implement secure transport is TLS <xref target="RFC5246" format="default"/>.</t>
+      <t>The NETCONF access control model <xref target="RFC6536" format="default"/> provides the
+      means to restrict access for particular NETCONF or RESTCONF users to a
+      pre-configured subset of all available NETCONF or RESTCONF protocol
+      operations and content.</t>
+      <t>There are a number of data nodes defined in the modules
+      that are writable/creatable/deletable (i.e., config true, which is the default).
+      These data nodes may be considered sensitive or vulnerable in some network
+      environments. Write operations (e.g., edit-config) to these data nodes without
+      proper protection can have a negative effect on network operations. </t>
+      <t>Some of the readable data nodes in the modules
+      may be considered sensitive or vulnerable in some network environments. It is thus
+      important to control read access (e.g., via get, get-config, or notification)
+      to these data nodes. The exposure of the Link State Database (LSDB) will
+      expose the detailed topology of the network. This may be undesirable since
+      both due to the fact that exposure may facilitate other attacks. Additionally,
+      network operators may consider their topologies to be sensitive confidential
+      data.</t>
+    </section>
+    <section numbered="true" toc="default">
+      <name>IANA Considerations</name>
+      <t>This document registers a URI in the IETF XML registry
+        <xref target="RFC3688" format="default"/>.  Following the format in <xref target="RFC3688" format="default"/>,
+        the following registration is requested:
+      </t>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
+URI: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
+Registrant Contact: The IESG.
+XML: N/A, the requested URI is an XML namespace.
+      ]]></artwork>
+      <t>This document registers the YANG module in the YANG Module Names
+        registry <xref target="RFC6020" format="default"/>.
+      </t>
+      <artwork name="" type="" align="left" alt=""><![CDATA[
+name: ietf-isis-flex-algo
+namespace: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
+prefix: isis-flex-algo
+reference: RFC XXXX
+      ]]></artwork>
+    </section>
+    <section numbered="false" toc="default">
+      <name>Appendix A. Example IS-IS Flex-Algo Configuration</name>
+      <t>
+        The following is an example configuration for IS-IS Flexible Algorithm using the YANG model defined in this document.
+      </t>
+      <artwork name="Example IS-IS Flex-Algo Configuration" type="xml" align="left" alt=""><![CDATA[
+<routing xmlns="urn:ietf:params:xml:ns:yang:ietf-routing">
+  <control-plane-protocols>
+    <control-plane-protocol>
+      <type>isis:isis</type>
+      <name>default</name>
+      <isis xmlns="urn:ietf:params:xml:ns:yang:ietf-isis">
+        <isis-flex-algo xmlns="urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo">
+          <flex-algo>
+            <algo-number>128</algo-number>
+            <advertise-definition>true</advertise-definition>
+            <admin-groups>
+              <exclude-admin-groups>red</exclude-admin-groups>
+              <include-any-admin-groups>blue</include-any-admin-groups>
+              <include-all-admin-groups>green</include-all-admin-groups>
+            </admin-groups>
+            <exclude-srlgs>SRLG1</exclude-srlgs>
+            <metric-type>iana-metric-type:igp-metric</metric-type>
+            <calc-type>iana-algo-types:algo-spf</calc-type>
+            <prefix-metric/>
+            <priority>10</priority>
+          </flex-algo>
+        </isis-flex-algo>
+      </isis>
+    </control-plane-protocol>
+  </control-plane-protocols>
+</routing>
+      ]]></artwork>
+    </section>
+    <section numbered="false" toc="default">
+      <name>Appendix B. Example IS-IS Flex-Algo Configuration (JSON)</name>
+      <t>
+        The following is an example configuration for IS-IS Flexible Algorithm in JSON format using the YANG model defined in this document.
+      </t>
+      <artwork name="Example IS-IS Flex-Algo Configuration (JSON)" type="json" align="left" alt=""><![CDATA[
+{
+  "ietf-routing:routing": {
+    "control-plane-protocols": {
+      "control-plane-protocol": [
+        {
+          "type": "ietf-isis:isis",
+          "name": "default",
+          "ietf-isis:isis": {
+            "ietf-isis-flex-algo:isis-flex-algo": {
+              "flex-algo": [
+                {
+                  "algo-number": 128,
+                  "advertise-definition": true,
+                  "admin-groups": {
+                    "exclude-admin-groups": ["red"],
+                    "include-any-admin-groups": ["blue"],
+                    "include-all-admin-groups": ["green"]
+                  },
+                  "exclude-srlgs": ["SRLG1"],
+                  "metric-type": "iana-metric-type:igp-metric",
+                  "calc-type": "iana-algo-types:algo-spf",
+                  "prefix-metric": {},
+                  "priority": 10
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+      ]]></artwork>
+    </section>
+    <section anchor="Acknowledgements" numbered="true" toc="default">
+      <name>Acknowledgements</name>
+      <t>This document was produced using Marshall Rose's xml2rfc tool.</t>
+      <t>The YANG model was developed using the suite of YANG tools written
+         and maintained by numerous authors.</t>
+    </section>
+  </middle>
+</rfc> 
