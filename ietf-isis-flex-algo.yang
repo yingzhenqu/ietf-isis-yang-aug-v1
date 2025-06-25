@@ -336,13 +336,6 @@ module ietf-isis-flex-algo {
             the flex-algo path computation.";
         }
 
-        leaf fast-reroute {
-          type boolean;
-          default true;
-          description
-            "Enable fast reroute.";
-        }
-
         leaf metric-type {
           type identityref {
             base iana-metric-type:metric-type;
@@ -355,17 +348,11 @@ module ietf-isis-flex-algo {
           type identityref {
             base iana-algo-types:algo-type;
           }
+          default iana-algo-types:algo-spf;
           description
             "Calcuation-type. Value from 0-127 inclusive from the IANA 
              'IGP Algorithm Types' registry defined under the 'Interior
              Gateway Protocol (IGP) Parameters' registry.";
-        }
-
-        leaf microloop-avoidance {
-          type boolean;
-          default true;
-          description
-            "Enable microloop avoidance.";
         }
 
         container prefix-metric {

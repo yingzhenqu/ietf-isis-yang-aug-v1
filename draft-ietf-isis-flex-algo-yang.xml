@@ -75,10 +75,8 @@
           |  +--rw include-any-admin-groups*   -> /te:te/globals/named-admin-groups/named-admin-group/name
           |  +--rw include-all-admin-groups*   -> /te:te/globals/named-admin-groups/named-admin-group/name
           +--rw exclude-srlgs*          -> /te:te/globals/named-srlgs/named-srlg/name {te-types:named-srlg-groups}?
-          +--rw fast-reroute?           boolean
           +--rw metric-type?            identityref
           +--rw calc-type?              identityref
-          +--rw microloop-avoidance?    boolean
           +--rw prefix-metric!
           +--rw priority?               uint8
   augment /rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/isis:isis/isis:database/isis:levels/isis:lsp/isis:router-capabilities:
@@ -469,13 +467,6 @@ module ietf-isis-flex-algo {
             the flex-algo path computation.";
         }
 
-        leaf fast-reroute {
-          type boolean;
-          default true;
-          description
-            "Enable fast reroute.";
-        }
-
         leaf metric-type {
           type identityref {
             base iana-metric-type:metric-type;
@@ -488,17 +479,11 @@ module ietf-isis-flex-algo {
           type identityref {
             base iana-algo-types:algo-type;
           }
+          default iana-algo-types:algo-spf;
           description
             "Calcuation-type. Value from 0-127 inclusive from the IANA 
              'IGP Algorithm Types' registry defined under the 'Interior
              Gateway Protocol (IGP) Parameters' registry.";
-        }
-
-        leaf microloop-avoidance {
-          type boolean;
-          default true;
-          description
-            "Enable microloop avoidance.";
         }
 
         container prefix-metric {
@@ -690,10 +675,8 @@ reference: RFC XXXX
               <include-all-admin-groups>green</include-all-admin-groups>
             </admin-groups>
             <exclude-srlgs>SRLG1</exclude-srlgs>
-            <fast-reroute>true</fast-reroute>
             <metric-type>iana-metric-type:igp-metric</metric-type>
             <calc-type>iana-algo-types:algo-spf</calc-type>
-            <microloop-avoidance>true</microloop-avoidance>
             <prefix-metric/>
             <priority>10</priority>
           </flex-algo>
@@ -729,10 +712,8 @@ reference: RFC XXXX
                     "include-all-admin-groups": ["green"]
                   },
                   "exclude-srlgs": ["SRLG1"],
-                  "fast-reroute": true,
                   "metric-type": "iana-metric-type:igp-metric",
                   "calc-type": "iana-algo-types:algo-spf",
-                  "microloop-avoidance": true,
                   "prefix-metric": {},
                   "priority": 10
                 }
