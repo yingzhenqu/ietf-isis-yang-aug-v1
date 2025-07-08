@@ -83,7 +83,7 @@ module ietf-isis-flex-algo {
   reference
     "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
 
-  revision 2024-09-02 {
+  revision 2025-07-06 {
     description
       "Initial Version";
     reference
