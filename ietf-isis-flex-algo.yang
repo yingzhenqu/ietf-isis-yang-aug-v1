@@ -17,13 +17,13 @@ module ietf-isis-flex-algo {
   }
 
   import ietf-isis {
-    prefix "isis";
+    prefix isis;
     reference
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
 
   import ietf-te {
-    prefix "te";
+    prefix te;
   }
 
   import iana-igp-algo-types {
@@ -32,10 +32,6 @@ module ietf-isis-flex-algo {
 
   import iana-igp-metric-types {
     prefix iana-metric-type;
-  }
-
-  import ietf-isis-link-attr {
-    prefix "isis-link-attr";
   }
 
   organization
@@ -51,6 +47,8 @@ module ietf-isis-flex-algo {
                <mailto:acee.ietf@gmail.com>
      Author:    Stephane Litkowski
                <mailto:slitkows.ietf@gmail.com>
+     Author:    Madhavi Joshi
+               <madhavi@arrcus.com>
     ";
 
   description
@@ -103,13 +101,6 @@ module ietf-isis-flex-algo {
       "M bit, when set, the flex-algo specific prefix and ASBR
        metric MUST be used for inter-area and external prefix
        calculation.";
-  }
-
-  /* Identity augmentation */
-  identity flex-algo-bit {
-    base isis-link-attr:sabm-bit;
-    description
-      "X bit, flexible algorithm.";
   }
 
   /* Groupings */

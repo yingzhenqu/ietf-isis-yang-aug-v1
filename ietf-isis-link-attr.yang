@@ -35,7 +35,10 @@ module ietf-isis-link-attr {
       Author:   Acee Lindem
                 <mailto:acee.ietf@gmail.com>
       Author:   Stephane Litkowski
-                <mailto:slitkows.ietf@gmail.com>";
+                <mailto:slitkows.ietf@gmail.com>
+      Author:    Madhavi Joshi
+               <madhavi@arrcus.com>
+     ";
 
   description
     "This YANG module defines the configuration and operational
@@ -66,7 +69,7 @@ module ietf-isis-link-attr {
 
   reference "RFC XXXX";
 
-  revision 2025-02-26 {
+  revision 2025-07-06 {
     description
       "Initial version";
     reference
@@ -97,6 +100,14 @@ module ietf-isis-link-attr {
     base sabm-bit;
     description
       "F bit, Loop Free Alternate (LFA). Includes all LFA types.";
+  }
+
+  identity flex-algo-bit {
+    base sabm-bit;
+    description
+      "X bit, flexible algorithm.";
+    reference
+      "RFC 9350: IGP Flexible Algorithm, Section 12.";
   }
 
   grouping application-identifier-bit-mask {
