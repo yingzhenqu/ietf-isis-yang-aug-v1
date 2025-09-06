@@ -1237,9 +1237,13 @@ reference: RFC XXXX
     </section>
     <section anchor="Acknowledgements" numbered="true" toc="default">
       <name>Acknowledgements</name>
-      <t>This document was produced using Marshall Rose's xml2rfc tool.</t>
-      <t>The YANG model was developed using the suite of YANG tools written
-         and maintained by numerous authors.</t>
+      <t>
+        Thanks to Michal Vasko for his YANG doctors review.
+      </t>
+      <t>
+        The YANG model was developed using the suite of YANG tools written
+        and maintained by numerous authors.
+      </t>
     </section>
   </middle>
 
