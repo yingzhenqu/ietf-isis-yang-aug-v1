@@ -13,14 +13,14 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude" 
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-00" 
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-02" 
   ipr="trust200902" submissionType="IETF" xml:lang="en" 
   tocInclude="true" symRefs="true" sortRefs="true" 
   version="3" consensus="true">
 
   <front>
-    <title abbrev="IS-IS ASLA and Flex-Algo YANG">YANG Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-00"/>
+    <title abbrev="IS-IS ASLA and Flex-Algo YANG">YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-02"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -85,7 +85,7 @@
 module: ietf-isis-link-attr
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/isis:isis:
-    +--rw isis-link-attr-op
+    +--rw isis-link-attr
        +--rw (link-attr-op-mode)
           +--:(legacy)
           |  +--rw legacy?         empty
@@ -169,26 +169,23 @@ module: ietf-isis-link-attr
              +--ro srlg*   uint32
 ]]></artwork>
 
-<sourcecode name="ietf-isis-link-attr@2025-07-06.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-link-attr@2025-09-11.yang" type="" markers="true"><![CDATA[
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
-
   prefix isis-link-attr;
 
   import ietf-inet-types {
     prefix inet;
     reference
-      "RFC 6991 - Common YANG Data Types";
+      "RFC 6991: Common YANG Data Types";
   }
-
   import ietf-routing {
     prefix rt;
     reference
       "RFC 8349: A YANG Data Model for Routing
                  Management (NMDA Version)";
   }
-
   import ietf-isis {
     prefix isis;
     reference
@@ -197,21 +194,19 @@ module ietf-isis-link-attr {
 
   organization
     "IETF LSR - Link State Routing Working Group";
-
   contact
-     "WG Web:   <https://datatracker.ietf.org/wg/lsr>
-      WG List:  <mailto:lsr@ietf.org>
+    "WG Web:   <https://datatracker.ietf.org/wg/lsr>
+     WG List:  <mailto:lsr@ietf.org>
 
-      Author:   Yingzhen Qu
-                <mailto:yingzhen.ietf@gmail.com>
-      Author:   Acee Lindem
-                <mailto:acee.ietf@gmail.com>
-      Author:   Stephane Litkowski
-                <mailto:slitkows.ietf@gmail.com>
-      Author:    Madhavi Joshi
-               <madhavi@arrcus.com>
-     ";
-
+     Author:   Yingzhen Qu
+               <mailto:yingzhen.ietf@gmail.com>
+     Author:   Acee Lindem
+               <mailto:acee.ietf@gmail.com>
+     Author:   Stephane Litkowski
+               <mailto:slitkows.ietf@gmail.com>
+     Author:    Madhavi Joshi
+              <madhavi@arrcus.com>
+    ";
   description
     "This YANG module defines the configuration and operational
      state for IS-IS application specific link attributes feature as
@@ -239,14 +234,12 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  reference "RFC XXXX";
-
-  revision 2025-07-06 {
+  revision 2025-09-11 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for IS-IS Application-Specific
-       Link Attributes.";
+      "RFC XXXX: YANG Data Model for IS-IS Application-Specific
+                 Link Attributes and Flexible Algorithm";
   }
 
   identity sabm-bit {
@@ -286,7 +279,6 @@ module ietf-isis-link-attr {
     description
       "Identification of the set of applications associated with
        link attribute advertisements";
-
     leaf l-flag {
       type boolean;
       description
@@ -302,15 +294,15 @@ module ietf-isis-link-attr {
     }
     leaf r-flag {
       type boolean;
-      default false;
+      default "false";
       description
         "Reserved.";
     }
     leaf udabm-length {
       type uint8;
       description
-      "User Defined Application Identifier Bit Mask Length
-      in octets.";
+        "User Defined Application Identifier Bit Mask Length
+         in octets.";
     }
     container sabm {
       leaf-list sabm-bits {
@@ -337,7 +329,6 @@ module ietf-isis-link-attr {
     description
       "Grouping for specification of the applications and
        application-specific attribute values.";
-
     container asla-sub-tlvs {
       list asla-sub-tlv {
         uses application-identifier-bit-mask;
@@ -372,7 +363,6 @@ module ietf-isis-link-attr {
           description
             "Length of sub-tlvs.";
         }
-
         container link-id-sub-tlvs {
           description
             "Link Identifier sub-TLVs.";
@@ -395,8 +385,8 @@ module ietf-isis-link-attr {
               }
               description
                 "Remote identifier of the link.
-                It could be an IPv4 address or a remotely learned
-                identifier.";
+                 It could be an IPv4 address or a remotely learned
+                 identifier.";
             }
           }
           container ipv4-interface-addr {
@@ -413,7 +403,7 @@ module ietf-isis-link-attr {
               type inet:ipv4-address;
               description
                 "IPv4 address for a neighboring router
-                on this link.";
+                 on this link.";
             }
             description
               "IPv4 neighbor address sub-tlv.";
@@ -432,22 +422,21 @@ module ietf-isis-link-attr {
               type inet:ipv6-address;
               description
                 "IPv6 address for a neighboring router
-                on this link.";
+                 on this link.";
             }
             description
               "IPv6 neighbor address sub-tlv.";
           }
         }
-
         container srlgs {
-          description "List of SRLGs.";
+          description
+            "List of SRLGs.";
           leaf-list srlg {
             type uint32;
             description
               "SRLG value of the link.";
           }
         }
-
         description
           "List of application specific SRLG tlvs.";
       }
@@ -457,21 +446,21 @@ module ietf-isis-link-attr {
   }
 
   /* Configuration */
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol configuration
        with application specific link attributes.";
-
-    container isis-link-attr-op {
+    container isis-link-attr {
       choice link-attr-op-mode {
-        mandatory "true";
+        mandatory true;
         leaf legacy {
           type empty;
           description
@@ -481,9 +470,9 @@ module ietf-isis-link-attr {
           type empty;
           description
             "Send both application-specific and legacy
-            advertisements.";
+             advertisements.";
         }
-        leaf app-specific{
+        leaf app-specific {
           type empty;
           description
             "Only send application-specific advertisements.";
@@ -491,29 +480,26 @@ module ietf-isis-link-attr {
         description
           "Link attributes mode";
       }
-
       description
         "Link attributes operation mode.";
     }
   }
 
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:interfaces/isis:interface" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/"+
-         "rt:type = 'isis:isis'" {
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:interfaces/isis:interface" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/"
+       + "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used.";
     }
     description
       "This augments ISIS interface configuration
        with application specific link attributes.";
-
     container isis-asla {
       list interface-asla {
-        key app-id;
-
+        key "app-id";
         leaf app-id {
           type uint16 {
             range "0 .. 1023";
@@ -523,22 +509,19 @@ module ietf-isis-link-attr {
              0 - RSVP TE. 1 - Segment Routing Policy.
              2 - Loop-Free Alternate.";
         }
-
         leaf unidirectional-link-delay {
-            type uint32 {
-              range "0 .. 16777215";
-            }
-            description
-              "This 24-bit field carries the average link delay in
-               microseconds.";
+          type uint32 {
+            range "0 .. 16777215";
+          }
+          description
+            "This 24-bit field carries the average link delay in
+             microseconds.";
         }
-
         leaf metric-type {
           type uint8;
           description
             "IGP metric type.";
         }
-
         leaf metric {
           type uint32 {
             range "1 .. 16777215";
@@ -546,7 +529,6 @@ module ietf-isis-link-attr {
           description
             "metric value.";
         }
-
         description
           "ASLA interface configuration.";
       }
@@ -556,51 +538,51 @@ module ietf-isis-link-attr {
   }
 
   /* TLV 22 */
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp"+
-          "/isis:extended-is-neighbor/isis:neighbor"+
-          "/isis:instances/isis:instance" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:extended-is-neighbor/isis:neighbor"
+        + "/isis:instances/isis:instance" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol LSDB TLV22.";
-
     uses application-specific-link-attributes-sub-tlv;
   }
 
   /* TLV 223 */
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp"+
-          "/isis:mt-is-neighbor/isis:neighbor"+
-          "/isis:instances/isis:instance" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:mt-is-neighbor/isis:neighbor"
+        + "/isis:instances/isis:instance" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol LSDB TLV223.";
-
-       uses application-specific-link-attributes-sub-tlv;
+    uses application-specific-link-attributes-sub-tlv;
   }
 
   /* application-specific SRLG TLV 238 */
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol LSDB.";
-
     uses application-specific-srlg-tlv;
   }
 }
@@ -699,7 +681,7 @@ module: ietf-isis-flex-algo
        +--ro isis-level?              level
        +--ro flex-algo-number?        uint8  
       ]]></artwork>
-<sourcecode name="ietf-isis-flex-algo@2025-07-06.yang" type="yang" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-flex-algo@2025-09-11.yang" type="yang" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -707,30 +689,26 @@ module ietf-isis-flex-algo {
 
   import ietf-routing {
     prefix rt;
-    reference "RFC 8349: A YANG Data Model for Routing
-              Management (NMDA Version)";
+    reference
+      "RFC 8349: A YANG Data Model for Routing
+                 Management (NMDA Version)";
   }
-
   import ietf-te-types {
     prefix te-types;
-    reference "RFC8776: Common YANG Data Types for 
-               Traffic Engineering.";
+    reference
+      "RFC8776: Common YANG Data Types for Traffic Engineering.";
   }
-
   import ietf-isis {
     prefix isis;
     reference
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
-
   import ietf-te {
     prefix te;
   }
-
   import iana-igp-algo-types {
-     prefix iana-algo-types;
+    prefix iana-algo-types;
   }
-
   import iana-igp-metric-types {
     prefix iana-metric-type;
   }
@@ -739,7 +717,7 @@ module ietf-isis-flex-algo {
     "IETF LSR - Link State Routing Working Group";
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/lsr>
-     WG List:  <mailto:spring@ietf.org>
+     WG List:  <mailto:lsr@ietf.org>
 
 
      Author:    Yingzhen Qu
@@ -751,10 +729,9 @@ module ietf-isis-flex-algo {
      Author:    Madhavi Joshi
                <madhavi@arrcus.com>
     ";
-
   description
     "The YANG module defines the configuration and operational
-     state for ISIS Flexible Algorithm as defined in  RFC 9350.
+     state for ISIS Flexible Algorithm as defined in RFC 9350.
 
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
@@ -770,7 +747,7 @@ module ietf-isis-flex-algo {
      (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX;
-     see the draft itself for full legal notices.
+     see the RFC itself for full legal notices.
 
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
      NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
@@ -778,15 +755,12 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-
-  reference
-    "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
-
-  revision 2025-07-06 {
+  revision 2025-09-11 {
     description
       "Initial Version";
     reference
-       "RFC XXXX: YANG Data Model for ISIS Flexible Algorithm.";
+      "RFC XXXX: YANG Data Model for IS-IS Application-Specific
+                 Link Attributes and Flexible Algorithm";
   }
 
   /* Identities */
@@ -805,6 +779,7 @@ module ietf-isis-flex-algo {
   }
 
   /* Groupings */
+
   grouping fa-ex-ag-sub-tlv {
     container fa-ex-ag-sub-tlv {
       leaf-list extended-admin-groups {
@@ -868,7 +843,7 @@ module ietf-isis-flex-algo {
       leaf-list srlgs {
         type uint32;
         description
-          "SRLG value as defined in  RFC 4203.";
+          "SRLG value as defined in RFC 4203.";
       }
       description
         "The flex-algo exclude SRLG sub-tlv.";
@@ -889,8 +864,8 @@ module ietf-isis-flex-algo {
           type identityref {
             base iana-metric-type:metric-type;
           }
-            description
-              "Type of metric to be used during the calculation.";
+          description
+            "Type of metric to be used during the calculation.";
         }
         leaf calc-type {
           type identityref {
@@ -898,22 +873,20 @@ module ietf-isis-flex-algo {
           }
           description
             "IGP algorithm types, value from 0 to 127 as
-            defined under 'Interior Gateway Protocol (IGP)
-            Parameter' by IANA.";
+             defined under 'Interior Gateway Protocol (IGP)
+             Parameter' by IANA.";
         }
         leaf priority {
           type uint8;
-            description
-              "Priority of the advertisement.";
+          description
+            "Priority of the advertisement.";
         }
-
         uses fa-ex-ag-sub-tlv;
         uses fa-in-any-ag-sub-tlv;
         uses fa-in-all-ag-sub-tlv;
         uses fad-flags-sub-tlv;
         uses fa-ex-srlg-sub-tlv;
         uses isis:unknown-tlvs;
-
         description
           "List of flex-algo definition TLVs.";
       }
@@ -948,41 +921,36 @@ module ietf-isis-flex-algo {
       "Flexible Algorithm Prefix Metric (FAPM) sub TLVs.";
   }
 
-
   /* Configurations */
 
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-                 "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol configuration
        with flexible algorithm.";
-
     container isis-flex-algo {
       list flex-algo {
         key "algo-number";
-
         leaf algo-number {
           type uint8 {
             range "128..255";
           }
           description
             "An identifier in the range 128-255 that's associated
-            with the Flexible Algorithm Definition.";
+             with the Flexible Algorithm Definition.";
         }
-
         leaf advertise-definition {
           type boolean;
-          default true;
+          default "true";
           description
             "Enable to advertise the flex-algo definition.";
         }
-
         container admin-groups {
           if-feature "te-types:extended-admin-groups";
           if-feature "te-types:named-extended-admin-groups";
@@ -993,7 +961,7 @@ module ietf-isis-flex-algo {
             }
             description
               "Exclude rule used during the flex-algo
-              path computation.";
+               path computation.";
           }
           leaf-list include-any-admin-groups {
             type leafref {
@@ -1002,7 +970,7 @@ module ietf-isis-flex-algo {
             }
             description
               "Include-any rule used during the flex-algo
-              path computation.";
+               path computation.";
           }
           leaf-list include-all-admin-groups {
             type leafref {
@@ -1011,12 +979,11 @@ module ietf-isis-flex-algo {
             }
             description
               "Include-all rule used during the flex-algo
-              path computation.";
+               path computation.";
           }
           description
             "Specify links for the flex-algo path computation.";
         }
-
         leaf-list exclude-srlgs {
           if-feature "te-types:named-srlg-groups";
           type leafref {
@@ -1025,9 +992,8 @@ module ietf-isis-flex-algo {
           }
           description
             "Shared Risk Link Groups (SRLGs) to be excluded during
-            the flex-algo path computation.";
+             the flex-algo path computation.";
         }
-
         leaf metric-type {
           type identityref {
             base iana-metric-type:metric-type;
@@ -1035,31 +1001,26 @@ module ietf-isis-flex-algo {
           description
             "Type of metric to be used during the calculation.";
         }
-
         leaf calc-type {
           type identityref {
             base iana-algo-types:algo-type;
           }
-          default iana-algo-types:algo-spf;
+          default "iana-algo-types:algo-spf";
           description
-            "Calcuation-type. Value from 0-127 inclusive from the 
-            IANA 'IGP Algorithm Types' registry defined under the 
-            'Interior Gateway Protocol (IGP) Parameters' registry.";
+            "Calcuation-type. Value from 0-127 inclusive from the
+             IANA 'IGP Algorithm Types' registry defined under the
+             'Interior Gateway Protocol (IGP) Parameters' registry.";
         }
-
         container prefix-metric {
-          presence
-            "Use flex-algo specific prefix metric.";
+          presence "Use flex-algo specific prefix metric.";
           description
             "Use flex-algo prefix metric.";
         }
-
         leaf priority {
           type uint8;
           description
             "Priority of the advertisement.";
         }
-
         description
           "List of flex-algo configurations.";
       }
@@ -1070,81 +1031,80 @@ module ietf-isis-flex-algo {
 
   /* Database */
 
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp"+
-          "/isis:router-capabilities" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/"+
-         "rt:type = 'isis:isis'" {
-    description
-      "This augment ISIS routing protocol when used";
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:router-capabilities" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/"
+       + "rt:type = 'isis:isis'" {
+      description
+        "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol LSDB router capability.";
-
     uses fad-tlvs;
   }
 
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp"+
-          "/isis:extended-ipv4-reachability/"+
-          "isis:prefixes" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/"+
-         "rt:type = 'isis:isis'" {
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:extended-ipv4-reachability/"
+        + "isis:prefixes" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/"
+       + "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
-      description
-        "This augments ISIS protocol LSDB prefix.";
-         uses fapm-sub-tlvs;
+    description
+      "This augments ISIS protocol LSDB prefix.";
+    uses fapm-sub-tlvs;
   }
 
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp"+
-          "/isis:mt-extended-ipv4-reachability/isis:prefixes" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/"+
-         "rt:type = 'isis:isis'" {
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:mt-extended-ipv4-reachability/isis:prefixes" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/"
+       + "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
-      description
-        "This augments ISIS protocol LSDB prefix.";
-         uses fapm-sub-tlvs;
+    description
+      "This augments ISIS protocol LSDB prefix.";
+    uses fapm-sub-tlvs;
   }
 
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp"+
-                      "/isis:ipv6-reachability/isis:prefixes" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/"+
-         "rt:type = 'isis:isis'" {
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:ipv6-reachability/isis:prefixes" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/"
+       + "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
-      description
-        "This augments ISIS protocol LSDB prefix.";
-         uses fapm-sub-tlvs;
+    description
+      "This augments ISIS protocol LSDB prefix.";
+    uses fapm-sub-tlvs;
   }
 
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp"+
-                      "/isis:mt-ipv6-reachability/isis:prefixes" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/"+
-         "rt:type = 'isis:isis'" {
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:mt-ipv6-reachability/isis:prefixes" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/"
+       + "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
-      description
-        "This augments ISIS protocol LSDB prefix.";
-         uses fapm-sub-tlvs;
+    description
+      "This augments ISIS protocol LSDB prefix.";
+    uses fapm-sub-tlvs;
   }
 
   /* notification */
@@ -1169,29 +1129,41 @@ module ietf-isis-flex-algo {
 
     <section anchor="Security" numbered="true" toc="default">
       <name>Security Considerations</name>
-      <t>The YANG modules specified in this document define a schema for
-       data that is designed to be accessed via network
-       management protocols such as 
-       NETCONF <xref target="RFC6241" format="default"/> or
-       RESTCONF <xref target="RFC8040" format="default"/>. 
-       The lowest NETCONF layer is the secure transport
-       layer, and the mandatory-to-implement secure transport is 
-       Secure Shell (SSH) <xref target="RFC6242" format="default"/>. 
-       The lowest RESTCONF layer is HTTPS, and the
-       mandatory-to-implement secure transport is 
-       TLS <xref target="RFC8446" format="default"/>.</t>
-      <t>The NETCONF access control model 
-      <xref target="RFC8341" format="default"/>
-       provides the means to restrict access for particular NETCONF
-       or RESTCONF users to a pre-configured subset of all available 
-       NETCONF or RESTCONF protocol operations and content.</t>
-      <t>There are a number of data nodes defined in the modules
-      that are writable/creatable/deletable 
-      (i.e., config true, which is the default).
-      These data nodes may be considered sensitive or vulnerable
-      in some network environments.
-      Write operations (e.g., edit-config) to these data nodes without
-      proper protection can have a negative effect on network operations. </t>
+ <t>   The YANG modules defined in this document are
+   designed to be accessed via YANG-based management protocols, such as
+   NETCONF <xref target="RFC6241"/> and RESTCONF <xref target="RFC8040"/>.
+   These protocols have to use a secure transport layer (e.g., SSH
+   <xref target="RFC4252"/>, TLS <xref target="RFC8446"/>, and
+   QUIC <xref target="RFC9000"/>) and have to use mutual authentication.</t>
+
+ <t>
+    The Network Configuration Access Control Model (NACM) <xref target="RFC8341"/>
+    provides the means to restrict access for particular NETCONF or
+    RESTCONF users to a preconfigured subset of all available NETCONF or
+    RESTCONF protocol operations and content.
+ </t>
+
+ <t>
+   There are a number of data nodes defined in this YANG module that are
+   writable/creatable/deletable (i.e., "config true", which is the
+   default).  All writable data nodes are likely to be reasonably
+   sensitive or vulnerable in some network environments.  Write
+   operations (e.g., edit-config) and delete operations to these data
+   nodes without proper protection or authentication can have a negative
+   effect on network operations.  The following subtrees and data nodes
+   have particular sensitivities/vulnerabilities:
+ </t>
+  <ul empty="true" spacing="normal">
+   <li>
+    /isis:isis/isis-link-attr/link-attr-op-mode - Modification to the
+    protocol operation mode may result in traffic disruption.
+   </li>
+   <li>
+    /isis:isis/flex-algo - Modification to flex-algo configuration
+    could be used to mount a DoS attack. For example, changing of
+    calc-type may result in routing loops.
+   </li>
+  </ul>
       <t>Some of the readable data nodes in the modules
       may be considered sensitive or vulnerable in some network environments. It is thus
       important to control read access (e.g., via get, get-config, or notification)
@@ -1266,12 +1238,13 @@ reference: RFC XXXX
       <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4252.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6241.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6242.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8040.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9130.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9350.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9479.xml"/>
@@ -1308,33 +1281,48 @@ reference: RFC XXXX
       <t>
         Note: '\' line wrapping per <xref target="RFC8792"/>.</t>
       <artwork name="Example IS-IS Flex-Algo Configuration" type="xml" align="left" alt=""><![CDATA[
-<routing xmlns="urn:ietf:params:xml:ns:yang:ietf-routing">
- <control-plane-protocols>
-  <control-plane-protocol>
-    <type>isis:isis</type>
-   <name>default</name>
-   <isis xmlns="urn:ietf:params:xml:ns:yang:ietf-isis">
-     <isis-flex-algo
-         xmlns="urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo">
-       <flex-algo>
-         <algo-number>128</algo-number>
-         <advertise-definition>true</advertise-definition>
-         <admin-groups>
-           <exclude-admin-groups>red</exclude-admin-groups>
-           <include-any-admin-groups>blue</include-any-admin-groups>
-           <include-all-admin-groups>green</include-all-admin-groups>
-         </admin-groups>
-         <exclude-srlgs>SRLG1</exclude-srlgs>
-         <metric-type>iana-metric-type:igp-metric</metric-type>
-         <calc-type>iana-algo-types:algo-spf</calc-type>
-         <prefix-metric/>
-         <priority>10</priority>
-       </flex-algo>
-     </isis-flex-algo>
-   </isis>
-  </control-plane-protocol>
- </control-plane-protocols>
-</routing>
+<?xml version='1.0' encoding='UTF-8'?>
+  <te xmlns="urn:ietf:params:xml:ns:yang:ietf-te">
+    <enable>true</enable>
+    <globals>
+      <named-admin-groups>
+        <named-admin-group>
+          <name>blue</name>
+        </named-admin-group>
+      </named-admin-groups>
+    </globals>
+  </te>
+  <routing xmlns="urn:ietf:params:xml:ns:yang:ietf-routing">
+    <router-id>1.1.1.1</router-id>
+    <control-plane-protocols>
+      <control-plane-protocol>
+        <type xmlns:isis="urn:ietf:params:xml:ns:yang:ietf-isis">\
+          isis:isis</type>
+        <name>isis</name>
+        <isis xmlns="urn:ietf:params:xml:ns:yang:ietf-isis">
+          <system-id>1111.2222.3333</system-id>
+          <area-address>49.0001.0000.0000.0001</area-address>
+          <isis-flex-algo xmlns="urn:ietf:params:xml:ns:yang:\
+            ietf-isis-flex-algo">
+            <flex-algo> 
+              <algo-number>200</algo-number>
+              <admin-groups>
+                <exclude-admin-groups>blue</exclude-admin-groups>
+              </admin-groups>
+              <metric-type xmlns:iana-metric-types=\
+                "urn:ietf:params:xml:ns:yang:iana-igp-metric-types">\
+                iana-metric-types:igp-metric</metric-type>
+              <calc-type xmlns:iana-algo-types=\
+                "urn:ietf:params:xml:ns:yang:iana-igp-algo-types">\
+                iana-algo-types:algo-spf</calc-type>
+              <prefix-metric/>
+              <priority>100</priority>
+            </flex-algo>
+          </isis-flex-algo>
+        </isis>     
+      </control-plane-protocol>
+    </control-plane-protocols>
+  </routing>
       ]]></artwork>
     </section>
     <section numbered="false" toc="default">
@@ -1346,35 +1334,58 @@ reference: RFC XXXX
       </t>
       <artwork name="Example IS-IS Flex-Algo Configuration (JSON)" type="json" align="left" alt=""><![CDATA[
 {
-  "ietf-routing:routing": {
-    "control-plane-protocols": {
-      "control-plane-protocol": [
-        {
-          "type": "ietf-isis:isis",
-          "name": "default",
-          "ietf-isis:isis": {
-            "ietf-isis-flex-algo:isis-flex-algo": {
-              "flex-algo": [
-                {
-                  "algo-number": 128,
-                  "advertise-definition": true,
-                  "admin-groups": {
-                    "exclude-admin-groups": ["red"],
-                    "include-any-admin-groups": ["blue"],
-                    "include-all-admin-groups": ["green"]
-                  },
-                  "exclude-srlgs": ["SRLG1"],
-                  "metric-type": "iana-metric-type:igp-metric",
-                  "calc-type": "iana-algo-types:algo-spf",
-                  "prefix-metric": {},
-                  "priority": 10
-                }
-              ]
-            }
-          }
+  "te": {
+    "enable": "true",
+    "globals": {
+      "named-admin-groups": {
+        "named-admin-group": {
+          "name": "blue"
         }
-      ]
-    }
+      }
+    },
+    "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-te"
+  }
+}
+{
+  "routing": {
+    "router-id": "1.1.1.1",
+    "control-plane-protocols": {
+      "control-plane-protocol": {
+        "type": {
+          "_xmlns:isis": "urn:ietf:params:xml:ns:yang:ietf-isis",
+          "__text": "isis:isis"
+        },
+        "name": "isis",
+        "isis": {
+          "system-id": "1111.2222.3333",
+          "area-address": "49.0001.0000.0000.0001",
+          "isis-flex-algo": {
+            "flex-algo": {
+              "algo-number": "200",
+              "admin-groups": {
+                "exclude-admin-groups": "blue"
+              },
+              "metric-type": {
+                "_xmlns:iana-metric-types": \
+                "urn:ietf:params:xml:ns:yang:iana-igp-metric-types",
+                "__text": "iana-metric-types:igp-metric"
+              },
+              "calc-type": {
+                "_xmlns:iana-algo-types": \
+                "urn:ietf:params:xml:ns:yang:iana-igp-algo-types",
+                "__text": "iana-algo-types:algo-spf"
+              },
+              "prefix-metric": "",
+              "priority": "100"
+            },
+            "_xmlns": \
+            "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo"
+          },
+          "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-isis"
+        }
+      }
+    },
+    "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-routing"
   }
 }
       ]]></artwork>

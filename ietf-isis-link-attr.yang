@@ -1,22 +1,19 @@
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
-
   prefix isis-link-attr;
 
   import ietf-inet-types {
     prefix inet;
     reference
-      "RFC 6991 - Common YANG Data Types";
+      "RFC 6991: Common YANG Data Types";
   }
-
   import ietf-routing {
     prefix rt;
     reference
       "RFC 8349: A YANG Data Model for Routing
                  Management (NMDA Version)";
   }
-
   import ietf-isis {
     prefix isis;
     reference
@@ -25,21 +22,19 @@ module ietf-isis-link-attr {
 
   organization
     "IETF LSR - Link State Routing Working Group";
-
   contact
-     "WG Web:   <https://datatracker.ietf.org/wg/lsr>
-      WG List:  <mailto:lsr@ietf.org>
+    "WG Web:   <https://datatracker.ietf.org/wg/lsr>
+     WG List:  <mailto:lsr@ietf.org>
 
-      Author:   Yingzhen Qu
-                <mailto:yingzhen.ietf@gmail.com>
-      Author:   Acee Lindem
-                <mailto:acee.ietf@gmail.com>
-      Author:   Stephane Litkowski
-                <mailto:slitkows.ietf@gmail.com>
-      Author:    Madhavi Joshi
-               <madhavi@arrcus.com>
-     ";
-
+     Author:   Yingzhen Qu
+               <mailto:yingzhen.ietf@gmail.com>
+     Author:   Acee Lindem
+               <mailto:acee.ietf@gmail.com>
+     Author:   Stephane Litkowski
+               <mailto:slitkows.ietf@gmail.com>
+     Author:    Madhavi Joshi
+              <madhavi@arrcus.com>
+    ";
   description
     "This YANG module defines the configuration and operational
      state for IS-IS application specific link attributes feature as
@@ -67,14 +62,12 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  reference "RFC XXXX";
-
-  revision 2025-07-06 {
+  revision 2025-09-11 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for IS-IS Application-Specific
-       Link Attributes.";
+      "RFC XXXX: YANG Data Model for IS-IS Application-Specific
+                 Link Attributes and Flexible Algorithm";
   }
 
   identity sabm-bit {
@@ -114,7 +107,6 @@ module ietf-isis-link-attr {
     description
       "Identification of the set of applications associated with
        link attribute advertisements";
-
     leaf l-flag {
       type boolean;
       description
@@ -130,15 +122,15 @@ module ietf-isis-link-attr {
     }
     leaf r-flag {
       type boolean;
-      default false;
+      default "false";
       description
         "Reserved.";
     }
     leaf udabm-length {
       type uint8;
       description
-      "User Defined Application Identifier Bit Mask Length
-      in octets.";
+        "User Defined Application Identifier Bit Mask Length
+         in octets.";
     }
     container sabm {
       leaf-list sabm-bits {
@@ -165,7 +157,6 @@ module ietf-isis-link-attr {
     description
       "Grouping for specification of the applications and
        application-specific attribute values.";
-
     container asla-sub-tlvs {
       list asla-sub-tlv {
         uses application-identifier-bit-mask;
@@ -200,7 +191,6 @@ module ietf-isis-link-attr {
           description
             "Length of sub-tlvs.";
         }
-
         container link-id-sub-tlvs {
           description
             "Link Identifier sub-TLVs.";
@@ -223,8 +213,8 @@ module ietf-isis-link-attr {
               }
               description
                 "Remote identifier of the link.
-                It could be an IPv4 address or a remotely learned
-                identifier.";
+                 It could be an IPv4 address or a remotely learned
+                 identifier.";
             }
           }
           container ipv4-interface-addr {
@@ -241,7 +231,7 @@ module ietf-isis-link-attr {
               type inet:ipv4-address;
               description
                 "IPv4 address for a neighboring router
-                on this link.";
+                 on this link.";
             }
             description
               "IPv4 neighbor address sub-tlv.";
@@ -260,22 +250,21 @@ module ietf-isis-link-attr {
               type inet:ipv6-address;
               description
                 "IPv6 address for a neighboring router
-                on this link.";
+                 on this link.";
             }
             description
               "IPv6 neighbor address sub-tlv.";
           }
         }
-
         container srlgs {
-          description "List of SRLGs.";
+          description
+            "List of SRLGs.";
           leaf-list srlg {
             type uint32;
             description
               "SRLG value of the link.";
           }
         }
-
         description
           "List of application specific SRLG tlvs.";
       }
@@ -285,21 +274,21 @@ module ietf-isis-link-attr {
   }
 
   /* Configuration */
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol configuration
        with application specific link attributes.";
-
-    container isis-link-attr-op {
+    container isis-link-attr {
       choice link-attr-op-mode {
-        mandatory "true";
+        mandatory true;
         leaf legacy {
           type empty;
           description
@@ -309,9 +298,9 @@ module ietf-isis-link-attr {
           type empty;
           description
             "Send both application-specific and legacy
-            advertisements.";
+             advertisements.";
         }
-        leaf app-specific{
+        leaf app-specific {
           type empty;
           description
             "Only send application-specific advertisements.";
@@ -319,29 +308,26 @@ module ietf-isis-link-attr {
         description
           "Link attributes mode";
       }
-
       description
         "Link attributes operation mode.";
     }
   }
 
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:interfaces/isis:interface" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/"+
-         "rt:type = 'isis:isis'" {
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:interfaces/isis:interface" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/"
+       + "rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used.";
     }
     description
       "This augments ISIS interface configuration
        with application specific link attributes.";
-
     container isis-asla {
       list interface-asla {
-        key app-id;
-
+        key "app-id";
         leaf app-id {
           type uint16 {
             range "0 .. 1023";
@@ -351,22 +337,19 @@ module ietf-isis-link-attr {
              0 - RSVP TE. 1 - Segment Routing Policy.
              2 - Loop-Free Alternate.";
         }
-
         leaf unidirectional-link-delay {
-            type uint32 {
-              range "0 .. 16777215";
-            }
-            description
-              "This 24-bit field carries the average link delay in
-               microseconds.";
+          type uint32 {
+            range "0 .. 16777215";
+          }
+          description
+            "This 24-bit field carries the average link delay in
+             microseconds.";
         }
-
         leaf metric-type {
           type uint8;
           description
             "IGP metric type.";
         }
-
         leaf metric {
           type uint32 {
             range "1 .. 16777215";
@@ -374,7 +357,6 @@ module ietf-isis-link-attr {
           description
             "metric value.";
         }
-
         description
           "ASLA interface configuration.";
       }
@@ -384,51 +366,51 @@ module ietf-isis-link-attr {
   }
 
   /* TLV 22 */
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp"+
-          "/isis:extended-is-neighbor/isis:neighbor"+
-          "/isis:instances/isis:instance" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:extended-is-neighbor/isis:neighbor"
+        + "/isis:instances/isis:instance" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol LSDB TLV22.";
-
     uses application-specific-link-attributes-sub-tlv;
   }
 
   /* TLV 223 */
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp"+
-          "/isis:mt-is-neighbor/isis:neighbor"+
-          "/isis:instances/isis:instance" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp"
+        + "/isis:mt-is-neighbor/isis:neighbor"
+        + "/isis:instances/isis:instance" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol LSDB TLV223.";
-
-       uses application-specific-link-attributes-sub-tlv;
+    uses application-specific-link-attributes-sub-tlv;
   }
 
   /* application-specific SRLG TLV 238 */
-  augment "/rt:routing/" +
-          "rt:control-plane-protocols/rt:control-plane-protocol"+
-          "/isis:isis/isis:database/isis:levels/isis:lsp" {
-    when "/rt:routing/rt:control-plane-protocols/"+
-         "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol"
+        + "/isis:isis/isis:database/isis:levels/isis:lsp" {
+    when "/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
         "This augment ISIS routing protocol when used";
     }
     description
       "This augments ISIS protocol LSDB.";
-
     uses application-specific-srlg-tlv;
   }
 }
