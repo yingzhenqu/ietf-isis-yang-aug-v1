@@ -13,14 +13,14 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude" 
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-02" 
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-03" 
   ipr="trust200902" submissionType="IETF" xml:lang="en" 
   tocInclude="true" symRefs="true" sortRefs="true" 
   version="3" consensus="true">
 
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-02"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-03"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -1335,15 +1335,14 @@ reference: RFC XXXX
       <artwork name="Example IS-IS Flex-Algo Configuration (JSON)" type="json" align="left" alt=""><![CDATA[
 {
   "te": {
-    "enable": "true",
+    "enable": true,
     "globals": {
       "named-admin-groups": {
         "named-admin-group": {
           "name": "blue"
         }
       }
-    },
-    "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-te"
+    }
   }
 }
 {
@@ -1351,41 +1350,26 @@ reference: RFC XXXX
     "router-id": "1.1.1.1",
     "control-plane-protocols": {
       "control-plane-protocol": {
-        "type": {
-          "_xmlns:isis": "urn:ietf:params:xml:ns:yang:ietf-isis",
-          "__text": "isis:isis"
-        },
+        "type": "isis:isis",
         "name": "isis",
         "isis": {
           "system-id": "1111.2222.3333",
           "area-address": "49.0001.0000.0000.0001",
           "isis-flex-algo": {
             "flex-algo": {
-              "algo-number": "200",
+              "algo-number": 200,
               "admin-groups": {
                 "exclude-admin-groups": "blue"
               },
-              "metric-type": {
-                "_xmlns:iana-metric-types": \
-                "urn:ietf:params:xml:ns:yang:iana-igp-metric-types",
-                "__text": "iana-metric-types:igp-metric"
-              },
-              "calc-type": {
-                "_xmlns:iana-algo-types": \
-                "urn:ietf:params:xml:ns:yang:iana-igp-algo-types",
-                "__text": "iana-algo-types:algo-spf"
-              },
+              "metric-type": "iana-metric-types:igp-metric",
+              "calc-type": "iana-algo-types:algo-spf",
               "prefix-metric": "",
-              "priority": "100"
-            },
-            "_xmlns": \
-            "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo"
-          },
-          "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-isis"
+              "priority": 100
+            }
+          }
         }
       }
-    },
-    "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-routing"
+    }
   }
 }
       ]]></artwork>
