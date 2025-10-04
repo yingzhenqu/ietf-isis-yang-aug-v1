@@ -12,7 +12,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-10"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-lsr-isis-yang-augmentation-v1-11"
      ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true" symRefs="true"
      sortRefs="true" version="3" consensus="true">
   <!-- xml2rfc v2v3 conversion 3.13.1 -->
@@ -34,7 +34,7 @@
     <!-- Another author who claims to be an editor -->
 
     <author fullname="Acee Lindem" initials="A." surname="Lindem">
-      <organization>LabN Consulting, L.L.C.</organization>
+      <organization>Arrcus, Inc.</organization>
       <address>
         <postal>
           <street>301 Midenhall Way</street>
