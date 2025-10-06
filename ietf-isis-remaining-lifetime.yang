@@ -11,6 +11,12 @@ module ietf-isis-remaining-lifetime {
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
 
+  import ietf-routing {
+    prefix "rt";
+    reference "RFC 8349: A YANG Data Model for Routing
+               Management (NMDA Version)";
+  }
+
   organization
     "IETF LSR - Link State Routing Working Group";
 
@@ -45,12 +51,26 @@ module ietf-isis-remaining-lifetime {
 
   reference "RFC XXXX";
 
-  revision 2024-09-02 {
+  revision 2025-10-05 {
     description
       "Initial version";
     reference
       "RFC XXXX: A YANG Data Model for IS-IS Minimum Remaining
       Lifetime.";
+  }
+
+  augment "/rt:routing/rt:control-plane-protocols/"
+        + "rt:control-plane-protocol/isis:isis/isis:database/"
+        + "isis:levels/isis:lsp" {
+    leaf received-remaining-lifetime {
+      type uint16;
+      units "seconds";
+      description
+        "Remaining lifetime of this LSP at the time it was received.";
+    }
+    description
+      "Preserve the remaining lifetime of this LSP when
+       it was received.";
   }
 
   notification corrupt-remaining-lifetime {

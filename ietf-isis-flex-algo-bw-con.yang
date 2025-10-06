@@ -1,6 +1,7 @@
 module ietf-isis-flex-algo-bw-con {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo-bw-con";
+  namespace "urn:ietf:params:xml:ns:yang:"
+          + "ietf-isis-flex-algo-bw-con";
   prefix isis-flex-algo-bw;
 
   import ietf-routing {
@@ -83,7 +84,7 @@ module ietf-isis-flex-algo-bw-con {
 
   reference "RFC XXXX.";
 
-  revision 2025-07-06 {
+  revision 2025-10-06 {
     description
       "Initial Version";
     reference
@@ -273,9 +274,9 @@ module ietf-isis-flex-algo-bw-con {
         leaf bandwidth-threshold {
           type rt-types:bandwidth-ieee-float32;
           description
-            "Maximum link bandwidth. A 32-bit field specifying the
-             link bandwidth in IEEE floating point format (IEEE754).
-             The units are bytes-per-second.";
+            "Maximum link bandwidth. A 32-bit field specifying
+             the link bandwidth in IEEE floating point format
+             (IEEE754). The units are bytes-per-second.";
         }
 
         leaf threshold-metric {
@@ -366,16 +367,16 @@ module ietf-isis-flex-algo-bw-con {
       }
       container bandwidth-thresholds {
         description
-          "Pre-define non-proportional metric values from the varying
-           ranges of link bandwidth.";
+          "Pre-define non-proportional metric values from the
+           varying ranges of link bandwidth.";
         list bandwidth-threshold {
           key bandwidth-threshold;
           leaf bandwidth-threshold {
             type rt-types:bandwidth-ieee-float32;
             description
-              "Maximum link bandwidth. A 32-bit field specifying the
-               link bandwidth in IEEE floating point format (IEEE754).
-               The units are bytes-per-second.";
+              "Maximum link bandwidth. A 32-bit field specifying
+               the link bandwidth in IEEE floating point format
+               (IEEE754). The units are bytes-per-second.";
           }  
           leaf threshold-metric {
             type rt-types:uint24;

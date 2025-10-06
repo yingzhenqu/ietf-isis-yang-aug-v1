@@ -28,7 +28,7 @@
          full title is longer than 39 characters -->
 
   <title abbrev="ISIS YANG Augments V1">IS-IS YANG Model Augmentations for Additional Features - Release 1 </title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-10"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-yang-augmentation-v1-11"/>
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <!-- Another author who claims to be an editor -->
@@ -141,16 +141,19 @@
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-isis-remaining-lifetime
 
+  augment /rt:routing/rt:control-plane-protocols
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp:
+    +--ro received-remaining-lifetime?   uint16
+
   notifications:
     +---n corrupt-remaining-lifetime
-       +--ro routing-protocol-name?   -> /rt:routing
-                                         /control-plane-protocols
-                                         /control-plane-protocol/name
+       +--ro routing-protocol-name?   leafref
        +--ro isis-level?              level
        +--ro lsp-id?                  isis:lsp-id
+  ]]></artwork>
 
-      ]]></artwork>
-      <sourcecode name="ietf-isis-remaining-lifetime@2024-09-02.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-remaining-lifetime@2025-10-06.yang" type="" markers="true"><![CDATA[
 module ietf-isis-remaining-lifetime {
   yang-version 1.1;
   namespace
@@ -162,6 +165,12 @@ module ietf-isis-remaining-lifetime {
     prefix "isis";
     reference
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
+  }
+
+  import ietf-routing {
+    prefix "rt";
+    reference "RFC 8349: A YANG Data Model for Routing
+               Management (NMDA Version)";
   }
 
   organization
@@ -198,12 +207,27 @@ module ietf-isis-remaining-lifetime {
 
   reference "RFC XXXX";
 
-  revision 2024-09-02 {
+  revision 2025-10-06 {
     description
       "Initial version";
     reference
       "RFC XXXX: A YANG Data Model for IS-IS Minimum Remaining
       Lifetime.";
+  }
+
+  augment "/rt:routing/rt:control-plane-protocols/"
+        + "rt:control-plane-protocol/isis:isis/isis:database/"
+        + "isis:levels/isis:lsp" {
+    leaf received-remaining-lifetime {
+      type uint16;
+      units "seconds";
+      description
+      "Remaining lifetime of this LSP at the time
+       it was received.";
+    }
+    description
+      "Preserve the remaining lifetime of this LSP when
+       it was received.";
   }
 
   notification corrupt-remaining-lifetime {
@@ -218,7 +242,8 @@ module ietf-isis-remaining-lifetime {
     reference "RFC 7987: IS-IS Minimum Remaining Lifetime";
   }
 }
-  ]]></sourcecode>
+
+]]></sourcecode>
     </section>
     <section numbered="true" toc="default">
       <name>YANG Module for IS-IS Flexible Algorithms: Bandwidth,
@@ -231,16 +256,17 @@ module ietf-isis-remaining-lifetime {
 
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-isis-flex-algo-bw-con
+
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis/isis:interfaces
-          /isis:interface:
+            /rt:control-plane-protocol/isis:isis/isis:interfaces
+            /isis:interface:
     +--rw generic-metrics
        +--rw generic-metric* [metric-type]
           +--rw metric-type     identityref
           +--rw metric-value?   uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis
-          /isis-flex-algo:isis-flex-algo:
+            /rt:control-plane-protocol/isis:isis
+            /isis-flex-algo:isis-flex-algo:
     +--rw bandwidth-constraints
     |  +--rw constraint* [constraint-type]
     |     +--rw constraint-type    identityref
@@ -249,73 +275,82 @@ module: ietf-isis-flex-algo-bw-con
     +--rw (metric-derivation-method)?
     |  +--:(reference-bandwidth)
     |  |  +--rw reference-bandwidth
-    |  |     +--rw reference-bandwidth?     rt-types:bandwidth-ieee-float32
-    |  |     +--rw granularity-bandwidth?   rt-types:bandwidth-ieee-float32
+    |  |     +--rw reference-bandwidth?
+    |  |     |       rt-types:bandwidth-ieee-float32
+    |  |     +--rw granularity-bandwidth?
+    |  |             rt-types:bandwidth-ieee-float32
     |  +--:(bandwidth-thresholds)
     |     +--rw bandwidth-thresholds
     |        +--rw bandwidth-threshold* [bandwidth-threshold]
-    |           +--rw bandwidth-threshold    rt-types:bandwidth-ieee-float32
+    |           +--rw bandwidth-threshold
+    |           |       rt-types:bandwidth-ieee-float32
     |           +--rw threshold-metric?      rt-types:uint24
-    +--rw exclude-min-bw?               rt-types:bandwidth-ieee-float32
+    +--rw exclude-min-bw?
+    |       rt-types:bandwidth-ieee-float32
     +--rw exclude-max-delay?            rt-types:uint24
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis/isis:database
-          /isis:levels/isis:lsp/isis:extended-is-neighbor
-          /isis:neighbor/isis:instances/isis:instance:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:extended-is-neighbor
+            /isis:neighbor/isis:instances/isis:instance:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
           +--ro metric-type?   identityref
           +--ro value?         isis:wide-metric
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis/isis:database
-          /isis:levels/isis:lsp/isis:extended-is-neighbor
-          /isis:neighbor/isis:instances/isis:instance
-          /isis-link-attr:asla-sub-tlvs/isis-link-attr:asla-sub-tlv:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:extended-is-neighbor
+            /isis:neighbor/isis:instances/isis:instance
+            /isis-link-attr:asla-sub-tlvs
+            /isis-link-attr:asla-sub-tlv:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
           +--ro metric-type?   identityref
           +--ro value?         isis:wide-metric
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis/isis:database
-          /isis:levels/isis:lsp/isis:mt-is-neighbor/isis:neighbor
-          /isis:instances/isis:instance:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:mt-is-neighbor
+            /isis:neighbor/isis:instances/isis:instance:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
           +--ro metric-type?   identityref
           +--ro value?         isis:wide-metric
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis/isis:database
-          /isis:levels/isis:lsp/isis:mt-is-neighbor/isis:neighbor
-          /isis:instances/isis:instance/isis-link-attr:asla-sub-tlvs
-          /isis-link-attr:asla-sub-tlv:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:mt-is-neighbor
+            /isis:neighbor/isis:instances/isis:instance
+            /isis-link-attr:asla-sub-tlvs
+            /isis-link-attr:asla-sub-tlv:
     +--ro generic-metric-sub-tlvs
        +--ro generic-metric-sub-tlv* []
           +--ro metric-type?   identityref
           +--ro value?         isis:wide-metric
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis/isis:database
-          /isis:levels/isis:lsp/isis:router-capabilities
-          /isis-flex-algo:fad-tlvs/isis-flex-algo:fad-tlv:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:router-capabilities
+            /isis-flex-algo:fad-tlvs/isis-flex-algo:fad-tlv:
     +--ro faemb-sub-tlv
     |  +--ro min-bandwidth?   rt-types:bandwidth-ieee-float32
     +--ro faemd-sub-tlv
     |  +--ro max-link-delay?   rt-types:uint24
     +--ro fadrb-sub-tlv
     |  +--ro fadrb-flags*             identityref
-    |  +--ro reference-bandwidth?     rt-types:bandwidth-ieee-float32
-    |  +--ro granularity-bandwidth?   rt-types:bandwidth-ieee-float32
+    |  +--ro reference-bandwidth?
+    |  |       rt-types:bandwidth-ieee-float32
+    |  +--ro granularity-bandwidth?
+    |          rt-types:bandwidth-ieee-float32
     +--ro fadbt-sub-tlv
        +--ro fadbt-flags*           identityref
        +--ro bandwidth-threshold* []
-          +--ro bandwidth-threshold?   rt-types:bandwidth-ieee-float32
+          +--ro bandwidth-threshold?
+          |       rt-types:bandwidth-ieee-float32
           +--ro threshold-metric?      rt-types:uint24
       ]]></artwork>
-
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-isis-flex-algo-bw-con@2025-07-06.yang"
+<CODE BEGINS> file "ietf-isis-flex-algo-bw-con@2025-10-06.yang"
 module ietf-isis-flex-algo-bw-con {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo-bw-con";
+  namespace "urn:ietf:params:xml:ns:yang:"
+          + "ietf-isis-flex-algo-bw-con";
   prefix isis-flex-algo-bw;
 
   import ietf-routing {
@@ -398,7 +433,7 @@ module ietf-isis-flex-algo-bw-con {
 
   reference "RFC XXXX.";
 
-  revision 2025-07-06 {
+  revision 2025-10-06 {
     description
       "Initial Version";
     reference
@@ -588,9 +623,9 @@ module ietf-isis-flex-algo-bw-con {
         leaf bandwidth-threshold {
           type rt-types:bandwidth-ieee-float32;
           description
-            "Maximum link bandwidth. A 32-bit field specifying the
-             link bandwidth in IEEE floating point format (IEEE754).
-             The units are bytes-per-second.";
+            "Maximum link bandwidth. A 32-bit field specifying
+             the link bandwidth in IEEE floating point format
+             (IEEE754). The units are bytes-per-second.";
         }
 
         leaf threshold-metric {
@@ -681,16 +716,16 @@ module ietf-isis-flex-algo-bw-con {
       }
       container bandwidth-thresholds {
         description
-          "Pre-define non-proportional metric values from the varying
-           ranges of link bandwidth.";
+          "Pre-define non-proportional metric values from the
+           varying ranges of link bandwidth.";
         list bandwidth-threshold {
           key bandwidth-threshold;
           leaf bandwidth-threshold {
             type rt-types:bandwidth-ieee-float32;
             description
-              "Maximum link bandwidth. A 32-bit field specifying the
-               link bandwidth in IEEE floating point format (IEEE754).
-               The units are bytes-per-second.";
+              "Maximum link bandwidth. A 32-bit field specifying
+               the link bandwidth in IEEE floating point format
+               (IEEE754). The units are bytes-per-second.";
           }  
           leaf threshold-metric {
             type rt-types:uint24;
@@ -811,6 +846,7 @@ module ietf-isis-flex-algo-bw-con {
     uses fadbt-sub-tlv;
   }
 }
+
         ]]></artwork>
     </section>
 
@@ -824,33 +860,36 @@ module ietf-isis-flex-algo-bw-con {
 
       <artwork align="left">
 module: ietf-isis-msd
+
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis/isis:database
-          /isis:levels/isis:lsp/isis:router-capabilities:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:router-capabilities
+            /isis:router-capability:
     +--ro node-msd-tlv
        +--ro node-msds* [msd-type]
           +--ro msd-type     identityref
           +--ro msd-value?   uint8
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis/isis:database
-          /isis:levels/isis:lsp/isis:extended-is-neighbor
-          /isis:neighbor/isis:instances/isis:instance:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:extended-is-neighbor
+            /isis:neighbor/isis:instances/isis:instance:
     +--ro link-msd-sub-tlv
        +--ro link-msds* [msd-type]
-          +--ro msd-type     identityref
-          +--ro msd-value?   uint8
+          +--ro msd-type         identityref
+          +--ro msd-value?       uint8
+          +--ro msd-raw-value?   uint8
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis/isis:database
-          /isis:levels/isis:lsp/isis:mt-is-neighbor/isis:neighbor
-          /isis:instances/isis:instance:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:mt-is-neighbor
+            /isis:neighbor/isis:instances/isis:instance:
     +--ro link-msd-sub-tlv
        +--ro link-msds* [msd-type]
-          +--ro msd-type     identityref
-          +--ro msd-value?   uint8
+          +--ro msd-type         identityref
+          +--ro msd-value?       uint8
+          +--ro msd-raw-value?   uint8
       </artwork>
-
       <artwork><![CDATA[
-<CODE BEGINS> file "ietf-isis-msd@2025-02-26.yang"
+      <CODE BEGINS> file "ietf-isis-msd@2025-10-06.yang"
 module ietf-isis-msd {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-msd";
@@ -867,6 +906,7 @@ module ietf-isis-msd {
     reference
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
+
   import ietf-mpls-msd {
     prefix mpls-msd;
   }
@@ -916,7 +956,7 @@ module ietf-isis-msd {
   reference
     "RFC XXXX: YANG Data Model for ISIS MSD";
 
-  revision 2025-02-26 {
+  revision 2025-10-06 {
     description
       "Initial Version";
     reference
@@ -930,6 +970,11 @@ module ietf-isis-msd {
       list link-msds {
         key "msd-type";
         uses mpls-msd:msd-type-value;
+        leaf msd-raw-value {
+          type uint8;
+          description
+            "MSD integer value.";
+        }
         description
           "List of link MSDs";
       }
@@ -943,8 +988,8 @@ module ietf-isis-msd {
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
-        + "/isis:router-capabilities" {
-    when "derived-from-or-self(../../../../../rt:type,"
+        + "/isis:router-capabilities/isis:router-capability" {
+    when "derived-from-or-self(../../../../../../rt:type,"
        + "'isis:isis')" {
       description
         "This augment ISIS routing protocol when used";
@@ -999,6 +1044,7 @@ module ietf-isis-msd {
     uses link-msd-sub-tlv;
   }
 }
+
 <CODE ENDS>
       ]]></artwork>
 
@@ -1091,9 +1137,10 @@ module ietf-isis-msd {
     </section>
     <section anchor="Acknowledgements" numbered="true" toc="default">
       <name>Acknowledgements</name>
-      <t>This document was produced using Marshall Rose's xml2rfc tool.</t>
       <t>The YANG model was developed using the suite of YANG tools written
          and maintained by numerous authors.</t>
+         <t>Thanks to Renato Westphal for review, comments, and
+            implementation.</t>
     </section>
   </middle>
   <!--  *****BACK MATTER ***** -->

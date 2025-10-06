@@ -14,6 +14,7 @@ module ietf-isis-msd {
     reference
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
+
   import ietf-mpls-msd {
     prefix mpls-msd;
   }
@@ -63,7 +64,7 @@ module ietf-isis-msd {
   reference
     "RFC XXXX: YANG Data Model for ISIS MSD";
 
-  revision 2025-02-26 {
+  revision 2025-10-06 {
     description
       "Initial Version";
     reference
@@ -77,6 +78,11 @@ module ietf-isis-msd {
       list link-msds {
         key "msd-type";
         uses mpls-msd:msd-type-value;
+        leaf msd-raw-value {
+          type uint8;
+          description
+            "MSD integer value.";
+        }
         description
           "List of link MSDs";
       }
@@ -90,8 +96,8 @@ module ietf-isis-msd {
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
-        + "/isis:router-capabilities" {
-    when "derived-from-or-self(../../../../../rt:type,"
+        + "/isis:router-capabilities/isis:router-capability" {
+    when "derived-from-or-self(../../../../../../rt:type,"
        + "'isis:isis')" {
       description
         "This augment ISIS routing protocol when used";
