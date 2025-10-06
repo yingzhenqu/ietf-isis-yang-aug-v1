@@ -33,7 +33,7 @@ module ietf-isis-flex-algo {
     "IETF LSR - Link State Routing Working Group";
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/lsr>
-     WG List:  <mailto:spring@ietf.org>
+     WG List:  <mailto:lsr@ietf.org>
 
 
      Author:    Yingzhen Qu
@@ -71,7 +71,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-09-11 {
+  revision 2025-10-06 {
     description
       "Initial Version";
     reference
@@ -171,7 +171,7 @@ module ietf-isis-flex-algo {
   grouping fad-tlvs {
     container fad-tlvs {
       list fad-tlv {
-        leaf flex-algo {
+        leaf algo-number {
           type uint8;
           description
             "Flex-algo number, value between 128 and 255 inclusive.";
@@ -216,7 +216,7 @@ module ietf-isis-flex-algo {
   grouping fapm-sub-tlvs {
     container fapm-sub-tlvs {
       list fapm-sub-tlv {
-        leaf flex-algo {
+        leaf algo-number {
           type uint8;
           description
             "Flex-algo number, value between 128 and 255
@@ -258,8 +258,8 @@ module ietf-isis-flex-algo {
             range "128..255";
           }
           description
-            "An identifier in the range 128-255 that's associated
-             with the Flexible Algorithm Definition.";
+            "An identifier associated with the Flexible Algorithm
+             Definition.";
         }
         leaf advertise-definition {
           type boolean;
@@ -427,7 +427,7 @@ module ietf-isis-flex-algo {
 
   notification flex-algo-not-supported {
     uses isis:notification-instance-hdr;
-    leaf flex-algo-number {
+    leaf algo-number {
       type uint8 {
         range "128..255";
       }

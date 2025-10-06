@@ -13,14 +13,14 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude" 
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-03" 
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-04" 
   ipr="trust200902" submissionType="IETF" xml:lang="en" 
   tocInclude="true" symRefs="true" sortRefs="true" 
   version="3" consensus="true">
 
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-03"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-04"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -623,7 +623,7 @@ module: ietf-isis-flex-algo
               /isis:router-capabilities:
     +--ro fad-tlvs
        +--ro fad-tlv* []
-          +--ro flex-algo?              uint8
+          +--ro algo-number?              uint8
           +--ro metric-type?            identityref
           +--ro calc-type?              identityref
           +--ro priority?               uint8
@@ -648,7 +648,7 @@ module: ietf-isis-flex-algo
           /isis:extended-ipv4-reachability/isis:prefixes:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
-          +--ro flex-algo?   uint8
+          +--ro algo-number?   uint8
           +--ro metric?      uint32
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/isis:isis
@@ -656,7 +656,7 @@ module: ietf-isis-flex-algo
           /isis:mt-extended-ipv4-reachability/isis:prefixes:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
-          +--ro flex-algo?   uint8
+          +--ro algo-number?   uint8
           +--ro metric?      uint32
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/isis:isis
@@ -664,7 +664,7 @@ module: ietf-isis-flex-algo
           /isis:ipv6-reachability/isis:prefixes:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
-          +--ro flex-algo?   uint8
+          +--ro algo-number?   uint8
           +--ro metric?      uint32
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/isis:isis
@@ -672,16 +672,16 @@ module: ietf-isis-flex-algo
           /isis:mt-ipv6-reachability/isis:prefixes:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
-          +--ro flex-algo?   uint8
+          +--ro algo-number?   uint8
           +--ro metric?      uint32
 
   notifications:
     +---n flex-algo-not-supported
        +--ro routing-protocol-name?   leafref
        +--ro isis-level?              level
-       +--ro flex-algo-number?        uint8  
+       +--ro algo-number?        uint8  
       ]]></artwork>
-<sourcecode name="ietf-isis-flex-algo@2025-09-11.yang" type="yang" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-flex-algo@2025-10-06.yang" type="yang" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -755,7 +755,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-09-11 {
+  revision 2025-10-06 {
     description
       "Initial Version";
     reference
@@ -855,7 +855,7 @@ module ietf-isis-flex-algo {
   grouping fad-tlvs {
     container fad-tlvs {
       list fad-tlv {
-        leaf flex-algo {
+        leaf algo-number {
           type uint8;
           description
             "Flex-algo number, value between 128 and 255 inclusive.";
@@ -900,7 +900,7 @@ module ietf-isis-flex-algo {
   grouping fapm-sub-tlvs {
     container fapm-sub-tlvs {
       list fapm-sub-tlv {
-        leaf flex-algo {
+        leaf algo-number {
           type uint8;
           description
             "Flex-algo number, value between 128 and 255
@@ -942,8 +942,8 @@ module ietf-isis-flex-algo {
             range "128..255";
           }
           description
-            "An identifier in the range 128-255 that's associated
-             with the Flexible Algorithm Definition.";
+            "An identifier associated with the Flexible Algorithm
+             Definition.";
         }
         leaf advertise-definition {
           type boolean;
@@ -1111,7 +1111,7 @@ module ietf-isis-flex-algo {
 
   notification flex-algo-not-supported {
     uses isis:notification-instance-hdr;
-    leaf flex-algo-number {
+    leaf algo-number {
       type uint8 {
         range "128..255";
       }
@@ -1234,6 +1234,8 @@ reference: RFC XXXX
      filing system or remote ones accessed by http (http://domain/dir/... ).-->
 
     <references>
+      <name>References</name>
+    <references>
       <name>Normative References</name>
       <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
@@ -1272,6 +1274,7 @@ reference: RFC XXXX
       <name>Informative References</name>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8792.xml"/>
     </references>
+  </references>
     <section numbered="false" toc="default">
       <name>Appendix A. Example IS-IS Flex-Algo Configuration</name>
       <t>
