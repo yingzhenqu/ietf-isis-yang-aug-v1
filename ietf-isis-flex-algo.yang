@@ -47,12 +47,12 @@ module ietf-isis-flex-algo {
     ";
   description
     "The YANG module defines the configuration and operational
-     state for ISIS Flexible Algorithm as defined in RFC 9350.
+     state for IS-IS Flexible Algorithm as defined in RFC 9350.
 
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -71,7 +71,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-10-06 {
+  revision 2026-03-31 {
     description
       "Initial Version";
     reference
@@ -83,7 +83,7 @@ module ietf-isis-flex-algo {
 
   identity fad-flags {
     description
-      "Base identity for ISIS FAD flags.";
+      "Base identity for IS-IS FAD flags.";
   }
 
   identity m-bit {
@@ -148,7 +148,7 @@ module ietf-isis-flex-algo {
           "Flex-algo definition flags list.";
       }
       description
-        "ISIS flex-algo definition flags.";
+        "IS-IS flex-algo definition flags.";
     }
     description
       "The flex-algo definition flags sub-tlv.";
@@ -174,7 +174,8 @@ module ietf-isis-flex-algo {
         leaf algo-number {
           type uint8;
           description
-            "Flex-algo number, value between 128 and 255 inclusive.";
+            "Flex-algo number - A value not in the inclusive range
+             of 128-255 is an invalid FAD TLV specification.";
         }
         leaf metric-type {
           type identityref {
@@ -207,10 +208,10 @@ module ietf-isis-flex-algo {
           "List of flex-algo definition TLVs.";
       }
       description
-        "ISIS Flexible Algorithm Definition TLV.";
+        "IS-IS Flexible Algorithm Definition TLV.";
     }
     description
-      "ISIS Flexible Algorithm Definition (FAD) TLV.";
+      "IS-IS Flexible Algorithm Definition (FAD) TLV.";
   }
 
   grouping fapm-sub-tlvs {
@@ -219,8 +220,8 @@ module ietf-isis-flex-algo {
         leaf algo-number {
           type uint8;
           description
-            "Flex-algo number, value between 128 and 255
-             inclusive.";
+            "Flex-algo number - A value not in the inclusive range
+             of 128-255 is an invalid FAPM sub-TLV specification.";
         }
         leaf metric {
           type uint32;
@@ -245,10 +246,10 @@ module ietf-isis-flex-algo {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol configuration
+      "This augments IS-IS protocol configuration
        with flexible algorithm.";
     container isis-flex-algo {
       list flex-algo {
@@ -258,8 +259,8 @@ module ietf-isis-flex-algo {
             range "128..255";
           }
           description
-            "An identifier associated with the Flexible Algorithm
-             Definition.";
+            "Flex-algo number - must in in the inclusive range
+             of 128-255.";
         }
         leaf advertise-definition {
           type boolean;
@@ -355,10 +356,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB router capability.";
+      "This augments IS-IS protocol LSDB router capability.";
     uses fad-tlvs;
   }
 
@@ -371,10 +372,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB prefix.";
+      "This augments IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -386,10 +387,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB prefix.";
+      "This augments IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -401,10 +402,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB prefix.";
+      "This augments IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -416,10 +417,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB prefix.";
+      "This augments IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -428,12 +429,11 @@ module ietf-isis-flex-algo {
   notification flex-algo-not-supported {
     uses isis:notification-instance-hdr;
     leaf algo-number {
-      type uint8 {
-        range "128..255";
-      }
+      type uint8;
       description
-        "Flex-algo identifier which is not supported by the IS-IS
-         instance.";
+        "Flex-algo identifier which is not supported by the OSPF
+         instance. A value not in the inclusive range of 128-255
+         is indicative of an invalid FAD algorithm specification.";
     }
     description
       "This notification is sent when an IS-IS instance does not

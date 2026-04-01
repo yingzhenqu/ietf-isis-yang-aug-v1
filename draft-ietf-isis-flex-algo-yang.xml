@@ -12,15 +12,15 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" 
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-05" 
-  ipr="trust200902" submissionType="IETF" xml:lang="en" 
-  tocInclude="true" symRefs="true" sortRefs="true" 
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-06"
+  ipr="trust200902" submissionType="IETF" xml:lang="en"
+  tocInclude="true" symRefs="true" sortRefs="true"
   version="3" consensus="true">
 
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-05"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-06"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -60,10 +60,10 @@
   <middle>
     <section numbered="true" toc="default">
       <name>Overview</name>
-      <t>This document defines two YANG <xref target="RFC7950"/> data modules. 
-        The first module is to provide support for configuration and 
-        operational state for IS-IS Application-Specific Link Attributes 
-        as defined in <xref target="RFC9479"/>, and the second module 
+      <t>This document defines two YANG <xref target="RFC7950"/> data modules.
+        The first module is to provide support for configuration and
+        operational state for IS-IS Application-Specific Link Attributes
+        as defined in <xref target="RFC9479"/>, and the second module
         is to support IS-IS Flexible Algorithm as defined in <xref target="RFC9350"/>.
         Both modules are augmenting the IETF IS-IS YANG model <xref target="RFC9130"/>.
       </t>
@@ -81,8 +81,13 @@
 
     <section numbered="true" toc="default">
       <name>YANG Module for IS-IS Application-Specific Link Attributes</name>
-      <t>This document defined a YANG module for IS-IS Application-Specific Link Attributes
-        as defined in <xref target="RFC9479"/>.</t>
+      <t>
+        This document defines a YANG module for IS-IS Application-Specific Link Attributes
+        as defined in <xref target="RFC9479"/>.
+        This YANG module references <xref target="RFC6991"/>,
+        <xref target="RFC8349"/>, <xref target="RFC8919"/>, <xref target="RFC9130"/>, and
+        <xref target="RFC9350"/>.
+      </t>
 
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-isis-link-attr
@@ -100,8 +105,8 @@ module: ietf-isis-link-attr
             /rt:control-plane-protocol/isis:isis/isis:interfaces
             /isis:interface:
     +--rw isis-asla
-       +--rw interface-asla* [app-id]
-          +--rw app-id                       uint16
+       +--rw interface-asla* [sabm-bit]
+          +--rw sabm-bit                     identityref
           +--rw unidirectional-link-delay?   uint32
           +--rw metric-type?                 uint8
           +--rw metric?                      uint32
@@ -171,8 +176,7 @@ module: ietf-isis-link-attr
           +--ro srlgs
              +--ro srlg*   uint32
 ]]></artwork>
-
-<sourcecode name="ietf-isis-link-attr@2025-09-11.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-link-attr@2026-03-31.yang" type="" markers="true"><![CDATA[
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -218,7 +222,7 @@ module ietf-isis-link-attr {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -237,7 +241,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-09-11 {
+  revision 2026-03-31 {
     description
       "Initial version";
     reference
@@ -247,7 +251,8 @@ module ietf-isis-link-attr {
 
   identity sabm-bit {
     description
-      "Base identity for sabm bits.";
+      "Base identity for Standard Application Identifier
+       Bit Mask (SABM) bits.";
     reference
       "RFC 8919: IS-IS Application-Specific Link Attributes";
   }
@@ -315,7 +320,7 @@ module ietf-isis-link-attr {
         description
           "SABM bits list. This list will contain
            identities for the bits which are set in the
-           SABA bits.";
+           SABM bits.";
       }
       description
         "Standard Application Identifier Bit Mask.";
@@ -456,10 +461,10 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol configuration
+      "This augments IS-IS protocol configuration
        with application specific link attributes.";
     container isis-link-attr {
       choice link-attr-op-mode {
@@ -495,21 +500,22 @@ module ietf-isis-link-attr {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used.";
+        "This augment IS-IS routing protocol when used.";
     }
     description
-      "This augments ISIS interface configuration
+      "This augments IS-IS interface configuration
        with application specific link attributes.";
     container isis-asla {
       list interface-asla {
-        key "app-id";
-        leaf app-id {
-          type uint16 {
-            range "0 .. 1023";
+        key "sabm-bit";
+        leaf sabm-bit {
+          type identityref {
+            base sabm-bit;
           }
           description
-            "Application ID.
-             0 - RSVP TE. 1 - Segment Routing Policy.
+            "Application-Specific Bit:
+             0 - RSVP TE.
+             1 - Segment Routing Policy.
              2 - Loop-Free Alternate.";
         }
         leaf unidirectional-link-delay {
@@ -550,10 +556,10 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB TLV22.";
+      "This augments IS-IS protocol LSDB TLV22.";
     uses application-specific-link-attributes-sub-tlv;
   }
 
@@ -567,14 +573,14 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB TLV223.";
+      "This augments IS-IS protocol LSDB TLV223.";
     uses application-specific-link-attributes-sub-tlv;
   }
 
-  /* application-specific SRLG TLV 238 */
+  /* Application-specific SRLG TLV 238 */
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
@@ -582,23 +588,27 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB.";
+      "This augments IS-IS protocol LSDB.";
     uses application-specific-srlg-tlv;
   }
 }
-        ]]></sourcecode>
+]]></sourcecode>
     </section>
 
     <section numbered="true" toc="default">
       <name>YANG Module for IS-IS Flexible Algorithm</name>
-      <t>This section defines the YANG module for IS-IS Flexible Algorithm.
+      <t>
+        This section defines the YANG module for IS-IS Flexible Algorithm.
         The module uses the identities defined in the IANA-maintained YANG
         modules for IGP Algorithm Types <xref target="IANA-IGP-ALGO-Types"/>
         and IGP Metric Type <xref target="IANA-IGP-Metric-Types"/>
-        in <xref target="I-D.ietf-lsr-ospf-flex-algo-yang"/>. </t>
+        in <xref target="I-D.ietf-lsr-ospf-flex-algo-yang"/>.
+        This YANG module references <xref target="RFC8349"/>,
+        <xref target="RFC8776"/>, and <xref target="RFC9130"/>.
+      </t>
       <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-isis-flex-algo
   augment /rt:routing/rt:control-plane-protocols
@@ -682,9 +692,9 @@ module: ietf-isis-flex-algo
     +---n flex-algo-not-supported
        +--ro routing-protocol-name?   leafref
        +--ro isis-level?              level
-       +--ro algo-number?        uint8  
+       +--ro algo-number?        uint8
       ]]></artwork>
-<sourcecode name="ietf-isis-flex-algo@2025-10-06.yang" type="yang" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-flex-algo@2026-03-31.yang" type="yang" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -734,12 +744,12 @@ module ietf-isis-flex-algo {
     ";
   description
     "The YANG module defines the configuration and operational
-     state for ISIS Flexible Algorithm as defined in RFC 9350.
+     state for IS-IS Flexible Algorithm as defined in RFC 9350.
 
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -758,7 +768,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-10-06 {
+  revision 2026-03-31 {
     description
       "Initial Version";
     reference
@@ -770,7 +780,7 @@ module ietf-isis-flex-algo {
 
   identity fad-flags {
     description
-      "Base identity for ISIS FAD flags.";
+      "Base identity for IS-IS FAD flags.";
   }
 
   identity m-bit {
@@ -835,7 +845,7 @@ module ietf-isis-flex-algo {
           "Flex-algo definition flags list.";
       }
       description
-        "ISIS flex-algo definition flags.";
+        "IS-IS flex-algo definition flags.";
     }
     description
       "The flex-algo definition flags sub-tlv.";
@@ -861,7 +871,8 @@ module ietf-isis-flex-algo {
         leaf algo-number {
           type uint8;
           description
-            "Flex-algo number, value between 128 and 255 inclusive.";
+            "Flex-algo number - A value not in the inclusive range
+             of 128-255 is an invalid FAD TLV specification.";
         }
         leaf metric-type {
           type identityref {
@@ -894,10 +905,10 @@ module ietf-isis-flex-algo {
           "List of flex-algo definition TLVs.";
       }
       description
-        "ISIS Flexible Algorithm Definition TLV.";
+        "IS-IS Flexible Algorithm Definition TLV.";
     }
     description
-      "ISIS Flexible Algorithm Definition (FAD) TLV.";
+      "IS-IS Flexible Algorithm Definition (FAD) TLV.";
   }
 
   grouping fapm-sub-tlvs {
@@ -906,8 +917,8 @@ module ietf-isis-flex-algo {
         leaf algo-number {
           type uint8;
           description
-            "Flex-algo number, value between 128 and 255
-             inclusive.";
+            "Flex-algo number - A value not in the inclusive range
+             of 128-255 is an invalid FAPM sub-TLV specification.";
         }
         leaf metric {
           type uint32;
@@ -932,10 +943,10 @@ module ietf-isis-flex-algo {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol configuration
+      "This augments IS-IS protocol configuration
        with flexible algorithm.";
     container isis-flex-algo {
       list flex-algo {
@@ -945,8 +956,8 @@ module ietf-isis-flex-algo {
             range "128..255";
           }
           description
-            "An identifier associated with the Flexible Algorithm
-             Definition.";
+            "Flex-algo number - must in in the inclusive range
+             of 128-255.";
         }
         leaf advertise-definition {
           type boolean;
@@ -1042,10 +1053,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB router capability.";
+      "This augments IS-IS protocol LSDB router capability.";
     uses fad-tlvs;
   }
 
@@ -1058,10 +1069,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB prefix.";
+      "This augments IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -1073,10 +1084,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB prefix.";
+      "This augments IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -1088,10 +1099,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB prefix.";
+      "This augments IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -1103,10 +1114,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB prefix.";
+      "This augments IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -1115,12 +1126,11 @@ module ietf-isis-flex-algo {
   notification flex-algo-not-supported {
     uses isis:notification-instance-hdr;
     leaf algo-number {
-      type uint8 {
-        range "128..255";
-      }
+      type uint8;
       description
-        "Flex-algo identifier which is not supported by the IS-IS
-         instance.";
+        "Flex-algo identifier which is not supported by the OSPF
+         instance. A value not in the inclusive range of 128-255
+         is indicative of an invalid FAD algorithm specification.";
     }
     description
       "This notification is sent when an IS-IS instance does not
@@ -1216,8 +1226,7 @@ reference: RFC XXXX
         Thanks to Michal Vasko for his YANG doctors review.
       </t>
       <t>
-        The YANG model was developed using the suite of YANG tools written
-        and maintained by numerous authors.
+        Thanks to Adrian Farrel for his OPS directorate review.
       </t>
     </section>
   </middle>
@@ -1245,11 +1254,15 @@ reference: RFC XXXX
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4252.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6241.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6991.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8040.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8349.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8776.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8919.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9130.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9350.xml"/>
@@ -1282,7 +1295,7 @@ reference: RFC XXXX
     <section numbered="false" toc="default">
       <name>Appendix A. Example IS-IS Flex-Algo Configuration</name>
       <t>
-        The following is an example configuration for 
+        The following is an example configuration for
         IS-IS Flexible Algorithm using the YANG model defined in this document.
       </t>
       <t>
@@ -1311,7 +1324,7 @@ reference: RFC XXXX
           <area-address>49.0001.0000.0000.0001</area-address>
           <isis-flex-algo xmlns="urn:ietf:params:xml:ns:yang:\
             ietf-isis-flex-algo">
-            <flex-algo> 
+            <flex-algo>
               <algo-number>200</algo-number>
               <admin-groups>
                 <exclude-admin-groups>blue</exclude-admin-groups>
@@ -1326,7 +1339,7 @@ reference: RFC XXXX
               <priority>100</priority>
             </flex-algo>
           </isis-flex-algo>
-        </isis>     
+        </isis>
       </control-plane-protocol>
     </control-plane-protocols>
   </routing>
@@ -1335,8 +1348,8 @@ reference: RFC XXXX
     <section numbered="false" toc="default">
       <name>Appendix B. Example IS-IS Flex-Algo Configuration (JSON)</name>
       <t>
-        The following is an example configuration for IS-IS 
-        Flexible Algorithm in JSON format using the YANG model 
+        The following is an example configuration for IS-IS
+        Flexible Algorithm in JSON format using the YANG model
         defined in this document.
       </t>
       <artwork name="Example IS-IS Flex-Algo Configuration (JSON)" type="json" align="left" alt=""><![CDATA[
@@ -1382,4 +1395,4 @@ reference: RFC XXXX
       ]]></artwork>
     </section>
   </back>
-</rfc> 
+</rfc>

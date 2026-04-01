@@ -43,7 +43,7 @@ module ietf-isis-link-attr {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2025 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -62,7 +62,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-09-11 {
+  revision 2026-03-31 {
     description
       "Initial version";
     reference
@@ -72,7 +72,8 @@ module ietf-isis-link-attr {
 
   identity sabm-bit {
     description
-      "Base identity for sabm bits.";
+      "Base identity for Standard Application Identifier
+       Bit Mask (SABM) bits.";
     reference
       "RFC 8919: IS-IS Application-Specific Link Attributes";
   }
@@ -140,7 +141,7 @@ module ietf-isis-link-attr {
         description
           "SABM bits list. This list will contain
            identities for the bits which are set in the
-           SABA bits.";
+           SABM bits.";
       }
       description
         "Standard Application Identifier Bit Mask.";
@@ -281,10 +282,10 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol configuration
+      "This augments IS-IS protocol configuration
        with application specific link attributes.";
     container isis-link-attr {
       choice link-attr-op-mode {
@@ -320,21 +321,22 @@ module ietf-isis-link-attr {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used.";
+        "This augment IS-IS routing protocol when used.";
     }
     description
-      "This augments ISIS interface configuration
+      "This augments IS-IS interface configuration
        with application specific link attributes.";
     container isis-asla {
       list interface-asla {
-        key "app-id";
-        leaf app-id {
-          type uint16 {
-            range "0 .. 1023";
+        key "sabm-bit";
+        leaf sabm-bit {
+          type identityref {
+            base sabm-bit;
           }
           description
-            "Application ID.
-             0 - RSVP TE. 1 - Segment Routing Policy.
+            "Application-Specific Bit:
+             0 - RSVP TE.
+             1 - Segment Routing Policy.
              2 - Loop-Free Alternate.";
         }
         leaf unidirectional-link-delay {
@@ -375,10 +377,10 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB TLV22.";
+      "This augments IS-IS protocol LSDB TLV22.";
     uses application-specific-link-attributes-sub-tlv;
   }
 
@@ -392,14 +394,14 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB TLV223.";
+      "This augments IS-IS protocol LSDB TLV223.";
     uses application-specific-link-attributes-sub-tlv;
   }
 
-  /* application-specific SRLG TLV 238 */
+  /* Application-specific SRLG TLV 238 */
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
@@ -407,10 +409,10 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment ISIS routing protocol when used";
+        "This augment IS-IS routing protocol when used";
     }
     description
-      "This augments ISIS protocol LSDB.";
+      "This augments IS-IS protocol LSDB.";
     uses application-specific-srlg-tlv;
   }
 }
