@@ -19,13 +19,12 @@ module ietf-isis-link-attr {
     reference
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
-
   import ietf-routing-types {
-    prefix "rt-types";
-    reference "RFC 8294: Common YANG Data Types for the
-               Routing Area";
+    prefix rt-types;
+    reference
+      "RFC 8294: Common YANG Data Types for the
+       Routing Area";
   }
-
   import iana-igp-link-attr-apps {
     prefix iana-link-attr-apps;
     reference
@@ -43,8 +42,6 @@ module ietf-isis-link-attr {
                <mailto:yingzhen.ietf@gmail.com>
      Author:   Acee Lindem
                <mailto:acee.ietf@gmail.com>
-     Author:   Stephane Litkowski
-               <mailto:slitkows.ietf@gmail.com>
      Author:    Madhavi Joshi
               <madhavi@arrcus.com>
     ";
@@ -75,7 +72,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-31 {
+  revision 2026-04-30 {
     description
       "Initial version";
     reference
@@ -90,26 +87,34 @@ module ietf-isis-link-attr {
     leaf te-metric {
       type uint32;
       description
-        "TE metric.";
+        "TE default metric.";
       reference
-        "RFC 5305: IS-IS Extensions for Traffic Engineering";
+        "RFC 5305: IS-IS Extensions for Traffic Engineering,
+         Section 3.7";
     }
     leaf admin-group {
       type uint32;
       description
         "Administrative Group / Resource Class/Color.";
       reference
-        "RFC 5305: IS-IS Extensions for Traffic Engineering";
+        "RFC 5305: IS-IS Extensions for Traffic Engineering,
+         Section 3.1";
     }
     leaf max-bandwidth {
-         type rt-types:bandwidth-ieee-float32;
+      type rt-types:bandwidth-ieee-float32;
       description
         "Maximum bandwidth.";
+      reference
+        "RFC 5305: IS-IS Extensions for Traffic Engineering,
+         Section 3.4";
     }
     leaf max-reservable-bandwidth {
       type rt-types:bandwidth-ieee-float32;
       description
         "Maximum reservable bandwidth.";
+      reference
+        "RFC 5305: IS-IS Extensions for Traffic Engineering,
+         Section 3.5";
     }
     container unreserved-bandwidths {
       description
@@ -129,8 +134,11 @@ module ietf-isis-link-attr {
         }
         description
           "List of unreserved bandwidths for different
-          priorities.";
+           priorities.";
       }
+      reference
+        "RFC 5305: IS-IS Extensions for Traffic Engineering,
+         Section 3.6";
     }
     reference
       "RFC 5305: IS-IS Extensions for Traffic Engineering";
@@ -152,12 +160,6 @@ module ietf-isis-link-attr {
       description
         "Standard Application Identifier Bit Mask Length in
          octets.";
-    }
-    leaf r-flag {
-      type boolean;
-      default "false";
-      description
-        "Reserved.";
     }
     leaf udabm-length {
       type uint8;
@@ -193,6 +195,8 @@ module ietf-isis-link-attr {
     container asla-sub-tlvs {
       list asla-sub-tlv {
         uses application-identifier-bit-mask;
+        uses isis-te-link-attrs;
+        uses isis:neighbor-extended-te-extensions;
         uses isis:unknown-tlvs;
         description
           "List of application specific link attributes sub-tlvs.";
@@ -304,8 +308,6 @@ module ietf-isis-link-attr {
       description
         "Application specific SRLG tlv.";
     }
-    uses isis-te-link-attrs;
-    uses isis:neighbor-extended-te-extensions;
   }
 
   /* Configuration */
@@ -323,7 +325,7 @@ module ietf-isis-link-attr {
        with application specific link attributes.";
     container isis-link-attr {
       choice link-attr-op-mode {
-        mandatory true;
+        default "legacy";
         leaf legacy {
           type empty;
           description
@@ -341,7 +343,8 @@ module ietf-isis-link-attr {
             "Only send application-specific advertisements.";
         }
         description
-          "Link attributes mode";
+          "Link attributes mode. Default to legacy mode for
+           backward compatibility.";
       }
       description
         "Link attributes operation mode.";
@@ -387,13 +390,13 @@ module ietf-isis-link-attr {
             "RFC 5305: IS-IS Extensions for Traffic Engineering";
         }
         container srlgs {
-             description
-               "List of SRLGs.";
-             leaf-list srlg {
-               type uint32;
-               description
-                 "SRLG value of the link.";
-             }
+          description
+            "List of SRLGs.";
+          leaf-list srlg {
+            type uint32;
+            description
+              "SRLG value of the link.";
+          }
         }
         description
           "ASLA interface configuration.";

@@ -85,17 +85,16 @@
         This document defines a YANG module for IS-IS Application-Specific Link Attributes
         as defined in <xref target="RFC9479"/>.
         This YANG module references <xref target="RFC6991"/>,
-        <xref target="RFC8349"/>, <xref target="RFC8919"/>, <xref target="RFC9130"/>, and
-        <xref target="RFC9350"/>.
+        <xref target="RFC8349"/>, <xref target="RFC9130"/>, and <xref target="RFC9350"/>.
       </t>
 
-      <artwork align="left" name="" type="" alt=""><![CDATA[
+<artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-isis-link-attr
 
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/isis:isis:
     +--rw isis-link-attr
-       +--rw (link-attr-op-mode)
+       +--rw (link-attr-op-mode)?
           +--:(legacy)
           |  +--rw legacy?         empty
           +--:(transition)
@@ -118,13 +117,47 @@ module: ietf-isis-link-attr
             /isis:neighbor/isis:instances/isis:instance:
     +--ro asla-sub-tlvs
        +--ro asla-sub-tlv* []
-          +--ro l-flag?         boolean
-          +--ro sabm-length?    uint8
-          +--ro r-flag?         boolean
-          +--ro udabm-length?   uint8
+          +--ro l-flag?                                    boolean
+          +--ro sabm-length?                               uint8
+          +--ro udabm-length?                              uint8
           +--ro sabm
           |  +--ro sabm-bits*   identityref
           +--ro udabm
+          +--ro te-metric?                                 uint32
+          +--ro admin-group?                               uint32
+          +--ro max-bandwidth?
+          |       rt-types:bandwidth-ieee-float32
+          +--ro max-reservable-bandwidth?
+          |       rt-types:bandwidth-ieee-float32
+          +--ro unreserved-bandwidths
+          |  +--ro unreserved-bandwidth* []
+          |     +--ro priority?               uint8
+          |     +--ro unreserved-bandwidth?
+          |             rt-types:bandwidth-ieee-float32
+          +--ro unidirectional-link-delay
+          |  +--ro flags
+          |  |  +--ro unidirectional-link-delay-subtlv-flags*
+          |  |          identityref
+          |  +--ro value?   uint32
+          +--ro min-max-unidirectional-link-delay
+          |  +--ro flags
+          |  |  +--ro min-max-unidirectional-link-delay-subtlv-flags*
+          |  |          identityref
+          |  +--ro min-value?   uint32
+          |  +--ro max-value?   uint32
+          +--ro unidirectional-link-delay-variation
+          |  +--ro value?   uint32
+          +--ro unidirectional-link-loss
+          |  +--ro flags
+          |  |  +--ro unidirectional-link-loss-subtlv-flags*
+          |  |          identityref
+          |  +--ro value?   uint32
+          +--ro unidirectional-link-residual-bandwidth
+          |  +--ro value?   rt-types:bandwidth-ieee-float32
+          +--ro unidirectional-link-available-bandwidth
+          |  +--ro value?   rt-types:bandwidth-ieee-float32
+          +--ro unidirectional-link-utilized-bandwidth
+          |  +--ro value?   rt-types:bandwidth-ieee-float32
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -136,13 +169,47 @@ module: ietf-isis-link-attr
             /isis:neighbor/isis:instances/isis:instance:
     +--ro asla-sub-tlvs
        +--ro asla-sub-tlv* []
-          +--ro l-flag?         boolean
-          +--ro sabm-length?    uint8
-          +--ro r-flag?         boolean
-          +--ro udabm-length?   uint8
+          +--ro l-flag?                                    boolean
+          +--ro sabm-length?                               uint8
+          +--ro udabm-length?                              uint8
           +--ro sabm
           |  +--ro sabm-bits*   identityref
           +--ro udabm
+          +--ro te-metric?                                 uint32
+          +--ro admin-group?                               uint32
+          +--ro max-bandwidth?
+          |       rt-types:bandwidth-ieee-float32
+          +--ro max-reservable-bandwidth?
+          |       rt-types:bandwidth-ieee-float32
+          +--ro unreserved-bandwidths
+          |  +--ro unreserved-bandwidth* []
+          |     +--ro priority?               uint8
+          |     +--ro unreserved-bandwidth?
+          |             rt-types:bandwidth-ieee-float32
+          +--ro unidirectional-link-delay
+          |  +--ro flags
+          |  |  +--ro unidirectional-link-delay-subtlv-flags*
+          |  |          identityref
+          |  +--ro value?   uint32
+          +--ro min-max-unidirectional-link-delay
+          |  +--ro flags
+          |  |  +--ro min-max-unidirectional-link-delay-subtlv-flags*
+          |  |          identityref
+          |  +--ro min-value?   uint32
+          |  +--ro max-value?   uint32
+          +--ro unidirectional-link-delay-variation
+          |  +--ro value?   uint32
+          +--ro unidirectional-link-loss
+          |  +--ro flags
+          |  |  +--ro unidirectional-link-loss-subtlv-flags*
+          |  |          identityref
+          |  +--ro value?   uint32
+          +--ro unidirectional-link-residual-bandwidth
+          |  +--ro value?   rt-types:bandwidth-ieee-float32
+          +--ro unidirectional-link-available-bandwidth
+          |  +--ro value?   rt-types:bandwidth-ieee-float32
+          +--ro unidirectional-link-utilized-bandwidth
+          |  +--ro value?   rt-types:bandwidth-ieee-float32
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -152,68 +219,32 @@ module: ietf-isis-link-attr
             /rt:control-plane-protocol/isis:isis/isis:database
             /isis:levels/isis:lsp:
     +--ro application-specific-srlg-tlv
-    |  +--ro as-srlg-tlv* []
-    |     +--ro neighbor-system-id?   isis:system-id
-    |     +--ro pseudo-node-id?       uint8
-    |     +--ro l-flag?               boolean
-    |     +--ro sabm-length?          uint8
-    |     +--ro r-flag?               boolean
-    |     +--ro udabm-length?         uint8
-    |     +--ro sabm
-    |     |  +--ro sabm-bits*   identityref
-    |     +--ro udabm
-    |     +--ro length-of-sub-tlvs?   uint8
-    |     +--ro link-id-sub-tlvs
-    |     |  +--ro link-local-remote-ids
-    |     |  |  +--ro link-local-id?    union
-    |     |  |  +--ro link-remote-id?   union
-    |     |  +--ro ipv4-interface-addr
-    |     |  |  +--ro ipv4-int-addr?   inet:ipv4-address
-    |     |  +--ro ipv4-neighbor-addr
-    |     |  |  +--ro ipv4-neighbor-addr?   inet:ipv4-address
-    |     |  +--ro ipv6-interface-addr
-    |     |  |  +--ro ipv6-int-addr?   inet:ipv6-address
-    |     |  +--ro ipv6-neighbor-addr
-    |     |     +--ro ipv6-neighbor-addr?   inet:ipv6-address
-    |     +--ro srlgs
-    |        +--ro srlg*   uint32
-    +--ro te-metric?                                 uint32
-    +--ro admin-group?                               uint32
-    +--ro max-bandwidth?
-    |       rt-types:bandwidth-ieee-float32
-    +--ro max-reservable-bandwidth?
-    |       rt-types:bandwidth-ieee-float32
-    +--ro unreserved-bandwidths
-    |  +--ro unreserved-bandwidth* []
-    |     +--ro priority?               uint8
-    |     +--ro unreserved-bandwidth?
-    |             rt-types:bandwidth-ieee-float32
-    +--ro unidirectional-link-delay
-    |  +--ro flags
-    |  |  +--ro unidirectional-link-delay-subtlv-flags*
-    |  |          identityref
-    |  +--ro value?   uint32
-    +--ro min-max-unidirectional-link-delay
-    |  +--ro flags
-    |  |  +--ro min-max-unidirectional-link-delay-subtlv-flags*
-    |  |          identityref
-    |  +--ro min-value?   uint32
-    |  +--ro max-value?   uint32
-    +--ro unidirectional-link-delay-variation
-    |  +--ro value?   uint32
-    +--ro unidirectional-link-loss
-    |  +--ro flags
-    |  |  +--ro unidirectional-link-loss-subtlv-flags*
-    |  |          identityref
-    |  +--ro value?   uint32
-    +--ro unidirectional-link-residual-bandwidth
-    |  +--ro value?   rt-types:bandwidth-ieee-float32
-    +--ro unidirectional-link-available-bandwidth
-    |  +--ro value?   rt-types:bandwidth-ieee-float32
-    +--ro unidirectional-link-utilized-bandwidth
-       +--ro value?   rt-types:bandwidth-ieee-float32
+       +--ro as-srlg-tlv* []
+          +--ro neighbor-system-id?   isis:system-id
+          +--ro pseudo-node-id?       uint8
+          +--ro l-flag?               boolean
+          +--ro sabm-length?          uint8
+          +--ro udabm-length?         uint8
+          +--ro sabm
+          |  +--ro sabm-bits*   identityref
+          +--ro udabm
+          +--ro length-of-sub-tlvs?   uint8
+          +--ro link-id-sub-tlvs
+          |  +--ro link-local-remote-ids
+          |  |  +--ro link-local-id?    union
+          |  |  +--ro link-remote-id?   union
+          |  +--ro ipv4-interface-addr
+          |  |  +--ro ipv4-int-addr?   inet:ipv4-address
+          |  +--ro ipv4-neighbor-addr
+          |  |  +--ro ipv4-neighbor-addr?   inet:ipv4-address
+          |  +--ro ipv6-interface-addr
+          |  |  +--ro ipv6-int-addr?   inet:ipv6-address
+          |  +--ro ipv6-neighbor-addr
+          |     +--ro ipv6-neighbor-addr?   inet:ipv6-address
+          +--ro srlgs
+             +--ro srlg*   uint32
 ]]></artwork>
-<sourcecode name="ietf-isis-link-attr@2026-04-26.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-link-attr@2026-04-30.yang" type="" markers="true"><![CDATA[
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -235,13 +266,12 @@ module ietf-isis-link-attr {
     reference
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
-
   import ietf-routing-types {
-    prefix "rt-types";
-    reference "RFC 8294: Common YANG Data Types for the
-               Routing Area";
+    prefix rt-types;
+    reference
+      "RFC 8294: Common YANG Data Types for the
+       Routing Area";
   }
-
   import iana-igp-link-attr-apps {
     prefix iana-link-attr-apps;
     reference
@@ -259,8 +289,6 @@ module ietf-isis-link-attr {
                <mailto:yingzhen.ietf@gmail.com>
      Author:   Acee Lindem
                <mailto:acee.ietf@gmail.com>
-     Author:   Stephane Litkowski
-               <mailto:slitkows.ietf@gmail.com>
      Author:    Madhavi Joshi
               <madhavi@arrcus.com>
     ";
@@ -291,7 +319,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-31 {
+  revision 2026-04-30 {
     description
       "Initial version";
     reference
@@ -306,26 +334,34 @@ module ietf-isis-link-attr {
     leaf te-metric {
       type uint32;
       description
-        "TE metric.";
+        "TE default metric.";
       reference
-        "RFC 5305: IS-IS Extensions for Traffic Engineering";
+        "RFC 5305: IS-IS Extensions for Traffic Engineering,
+         Section 3.7";
     }
     leaf admin-group {
       type uint32;
       description
         "Administrative Group / Resource Class/Color.";
       reference
-        "RFC 5305: IS-IS Extensions for Traffic Engineering";
+        "RFC 5305: IS-IS Extensions for Traffic Engineering,
+         Section 3.1";
     }
     leaf max-bandwidth {
-         type rt-types:bandwidth-ieee-float32;
+      type rt-types:bandwidth-ieee-float32;
       description
         "Maximum bandwidth.";
+      reference
+        "RFC 5305: IS-IS Extensions for Traffic Engineering,
+         Section 3.4";
     }
     leaf max-reservable-bandwidth {
       type rt-types:bandwidth-ieee-float32;
       description
         "Maximum reservable bandwidth.";
+      reference
+        "RFC 5305: IS-IS Extensions for Traffic Engineering,
+         Section 3.5";
     }
     container unreserved-bandwidths {
       description
@@ -345,8 +381,11 @@ module ietf-isis-link-attr {
         }
         description
           "List of unreserved bandwidths for different
-          priorities.";
+           priorities.";
       }
+      reference
+        "RFC 5305: IS-IS Extensions for Traffic Engineering,
+         Section 3.6";
     }
     reference
       "RFC 5305: IS-IS Extensions for Traffic Engineering";
@@ -368,12 +407,6 @@ module ietf-isis-link-attr {
       description
         "Standard Application Identifier Bit Mask Length in
          octets.";
-    }
-    leaf r-flag {
-      type boolean;
-      default "false";
-      description
-        "Reserved.";
     }
     leaf udabm-length {
       type uint8;
@@ -409,6 +442,8 @@ module ietf-isis-link-attr {
     container asla-sub-tlvs {
       list asla-sub-tlv {
         uses application-identifier-bit-mask;
+        uses isis-te-link-attrs;
+        uses isis:neighbor-extended-te-extensions;
         uses isis:unknown-tlvs;
         description
           "List of application specific link attributes sub-tlvs.";
@@ -520,8 +555,6 @@ module ietf-isis-link-attr {
       description
         "Application specific SRLG tlv.";
     }
-    uses isis-te-link-attrs;
-    uses isis:neighbor-extended-te-extensions;
   }
 
   /* Configuration */
@@ -539,7 +572,7 @@ module ietf-isis-link-attr {
        with application specific link attributes.";
     container isis-link-attr {
       choice link-attr-op-mode {
-        mandatory true;
+        default "legacy";
         leaf legacy {
           type empty;
           description
@@ -557,7 +590,8 @@ module ietf-isis-link-attr {
             "Only send application-specific advertisements.";
         }
         description
-          "Link attributes mode";
+          "Link attributes mode. Default to legacy mode for
+           backward compatibility.";
       }
       description
         "Link attributes operation mode.";
@@ -603,13 +637,13 @@ module ietf-isis-link-attr {
             "RFC 5305: IS-IS Extensions for Traffic Engineering";
         }
         container srlgs {
-             description
-               "List of SRLGs.";
-             leaf-list srlg {
-               type uint32;
-               description
-                 "SRLG value of the link.";
-             }
+          description
+            "List of SRLGs.";
+          leaf-list srlg {
+            type uint32;
+            description
+              "SRLG value of the link.";
+          }
         }
         description
           "ASLA interface configuration.";
@@ -682,8 +716,9 @@ module ietf-isis-link-attr {
         This YANG module references <xref target="RFC8349"/>,
         <xref target="RFC8776"/>, and <xref target="RFC9130"/>.
       </t>
-      <artwork align="left" name="" type="" alt=""><![CDATA[
+<artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-isis-flex-algo
+
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/isis:isis:
     +--rw isis-flex-algo
@@ -704,12 +739,11 @@ module: ietf-isis-flex-algo
           +--rw prefix-metric!
           +--rw priority?               uint8
   augment /rt:routing/rt:control-plane-protocols
-              /rt:control-plane-protocol/isis:isis
-              /isis:database/isis:levels/isis:lsp
-              /isis:router-capabilities:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:router-capabilities:
     +--ro fad-tlvs
        +--ro fad-tlv* []
-          +--ro algo-number?              uint8
+          +--ro algo-number?            uint8
           +--ro metric-type?            identityref
           +--ro calc-type?              identityref
           +--ro priority?               uint8
@@ -729,45 +763,45 @@ module: ietf-isis-flex-algo
                 +--ro length?   uint16
                 +--ro value?    yang:hex-string
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis
-          /isis:database/isis:levels/isis:lsp
-          /isis:extended-ipv4-reachability/isis:prefixes:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:extended-ipv4-reachability
+            /isis:prefixes:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
           +--ro algo-number?   uint8
-          +--ro metric?      uint32
+          +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis
-          /isis:database/isis:levels/isis:lsp
-          /isis:mt-extended-ipv4-reachability/isis:prefixes:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp
+            /isis:mt-extended-ipv4-reachability/isis:prefixes:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
           +--ro algo-number?   uint8
-          +--ro metric?      uint32
+          +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis
-          /isis:database/isis:levels/isis:lsp
-          /isis:ipv6-reachability/isis:prefixes:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:ipv6-reachability
+            /isis:prefixes:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
           +--ro algo-number?   uint8
-          +--ro metric?      uint32
+          +--ro metric?        uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/isis:isis
-          /isis:database/isis:levels/isis:lsp
-          /isis:mt-ipv6-reachability/isis:prefixes:
+            /rt:control-plane-protocol/isis:isis/isis:database
+            /isis:levels/isis:lsp/isis:mt-ipv6-reachability
+            /isis:prefixes:
     +--ro fapm-sub-tlvs
        +--ro fapm-sub-tlv* []
           +--ro algo-number?   uint8
-          +--ro metric?      uint32
+          +--ro metric?        uint32
 
   notifications:
     +---n flex-algo-not-supported
        +--ro routing-protocol-name?   leafref
        +--ro isis-level?              level
-       +--ro algo-number?        uint8
-      ]]></artwork>
-<sourcecode name="ietf-isis-flex-algo@2026-03-31.yang" type="yang" markers="true"><![CDATA[
+       +--ro algo-number?             uint8
+]]></artwork>
+<sourcecode name="ietf-isis-flex-algo@2026-04-30.yang" type="yang" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -791,12 +825,21 @@ module ietf-isis-flex-algo {
   }
   import ietf-te {
     prefix te;
+    reference
+      "RFC XXXX: A YANG Data Model for Traffic Engineering
+                 Tunnels, Label Switched Paths, and Interfaces";
   }
   import iana-igp-algo-types {
     prefix iana-algo-types;
+    reference
+      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+                 Link Attributes and Flexible Algorithm";
   }
   import iana-igp-metric-types {
     prefix iana-metric-type;
+    reference
+      "RFC XXXX: YANG Data Model for OSPF Application-Specific
+                 Link Attributes and Flexible Algorithm";
   }
 
   organization
@@ -810,8 +853,6 @@ module ietf-isis-flex-algo {
                <mailto:yingzhen.ietf@gmail.com>
      Author:    Acee Lindem
                <mailto:acee.ietf@gmail.com>
-     Author:    Stephane Litkowski
-               <mailto:slitkows.ietf@gmail.com>
      Author:    Madhavi Joshi
                <madhavi@arrcus.com>
     ";
@@ -841,7 +882,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-31 {
+  revision 2026-04-30 {
     description
       "Initial Version";
     reference
@@ -1094,7 +1135,7 @@ module ietf-isis-flex-algo {
           }
           default "iana-algo-types:algo-spf";
           description
-            "Calcuation-type. Value from 0-127 inclusive from the
+            "Calculation-type. Value from 0-127 inclusive from the
              IANA 'IGP Algorithm Types' registry defined under the
              'Interior Gateway Protocol (IGP) Parameters' registry.";
         }
@@ -1194,14 +1235,14 @@ module ietf-isis-flex-algo {
     uses fapm-sub-tlvs;
   }
 
-  /* notification */
+  /* Notification */
 
   notification flex-algo-not-supported {
     uses isis:notification-instance-hdr;
     leaf algo-number {
       type uint8;
       description
-        "Flex-algo identifier which is not supported by the OSPF
+        "Flex-algo identifier which is not supported by the IS-IS
          instance. A value not in the inclusive range of 128-255
          is indicative of an invalid FAD algorithm specification.";
     }
@@ -1335,7 +1376,6 @@ reference: RFC XXXX
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8349.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8776.xml"/>
-      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8919.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9130.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9350.xml"/>
@@ -1436,9 +1476,7 @@ reference: RFC XXXX
         }
       }
     }
-  }
-}
-{
+  },
   "routing": {
     "router-id": "1.1.1.1",
     "control-plane-protocols": {
