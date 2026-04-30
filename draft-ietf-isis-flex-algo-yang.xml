@@ -13,14 +13,14 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-07"
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-08"
   ipr="trust200902" submissionType="IETF" xml:lang="en"
   tocInclude="true" symRefs="true" sortRefs="true"
   version="3" consensus="true">
 
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-07"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-08"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -1341,6 +1341,9 @@ reference: RFC XXXX
       </t>
       <t>
         Thanks to Adrian Farrel for his OPS directorate review.
+      </t>
+      <t>
+        Thanks to Renato Westphal for review and comments.
       </t>
     </section>
   </middle>
