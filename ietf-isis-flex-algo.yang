@@ -281,7 +281,7 @@ module ietf-isis-flex-algo {
             range "128..255";
           }
           description
-            "Flex-algo number - must in in the inclusive range
+            "Flex-algo number - must be in the inclusive range
              of 128-255.";
         }
         leaf advertise-definition {

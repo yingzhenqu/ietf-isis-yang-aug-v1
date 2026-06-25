@@ -13,13 +13,13 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-09"
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-11"
   ipr="trust200902" submissionType="IETF" xml:lang="en"
   tocInclude="true" symRefs="true" sortRefs="true"
   version="3" consensus="true">
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">A YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-09"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-11"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -102,8 +102,9 @@
       <t>
         This document defines a YANG module for IS-IS Application-Specific Link Attributes
         as defined in <xref target="RFC9479"/>.
-        This YANG module references <xref target="RFC9911"/>,
-        <xref target="RFC8349"/>, <xref target="RFC9130"/>, and <xref target="RFC9350"/>.
+        This YANG module references <xref target="RFC9479"/>, <xref target="RFC9911"/>,
+        <xref target="RFC8349"/>, <xref target="RFC9130"/>, <xref target="RFC5305"/>,
+        and <xref target="IANA-Link-Attr-Apps"/>.
       </t>
 
 <artwork align="left" name="" type="" alt=""><![CDATA[
@@ -125,10 +126,10 @@ module: ietf-isis-link-attr
     +--rw isis-asla
        +--rw interface-asla* [link-attr-app]
           +--rw link-attr-app    identityref
-          +--rw te-metric?       uint32
+          +--rw te-metric?       te-types:te-metric
           +--rw admin-group?     te-types:admin-group
           +--rw srlgs
-             +--rw srlg*   uint32
+             +--rw srlg*   te-types:srlg
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/isis:isis/isis:database
             /isis:levels/isis:lsp/isis:extended-is-neighbor
@@ -290,8 +291,7 @@ module ietf-isis-link-attr {
   import ietf-te-types {
     prefix te-types;
     reference
-      "RFC 8776: Common YANG Data Types for the
-       Traffic Engineering";
+      "RFC 8776: Common YANG Data Types for Traffic Engineering";
   }
   import iana-igp-link-attr-apps {
     prefix iana-link-attr-apps;
@@ -310,8 +310,8 @@ module ietf-isis-link-attr {
                <mailto:yingzhen.ietf@gmail.com>
      Author:   Acee Lindem
                <mailto:acee.ietf@gmail.com>
-     Author:    Madhavi Joshi
-              <madhavi@arrcus.com>
+     Author:   Madhavi Joshi
+               <madhavi@arrcus.com>
     ";
   description
     "This YANG module defines the configuration and operational
@@ -424,7 +424,7 @@ module ietf-isis-link-attr {
       type boolean;
       description
         "Legacy Flag. When the SABM Length or UDABM Length is
-         non-zero and the L-flag is notset, all applications
+         non-zero and the L-flag is not set, all applications
          specified in the bit mask use the link
          attribute advertisements in the sub-TLV.";
       reference
@@ -643,7 +643,7 @@ module ietf-isis-link-attr {
              attributes may be included in the same sub-TLV.";
         }
         leaf te-metric {
-          type uint32;
+          type te-types:te-metric;
           description
             "TE metric.";
           reference
@@ -660,7 +660,7 @@ module ietf-isis-link-attr {
           description
             "List of SRLGs.";
           leaf-list srlg {
-            type uint32;
+            type te-types:srlg;
             description
               "SRLG value of the link.";
           }
@@ -730,12 +730,13 @@ module ietf-isis-link-attr {
       <t>
         This section defines the YANG module for IS-IS Flexible Algorithm.
         The module uses the identities defined in the IANA-maintained YANG
-        modules for IGP Algorithm Types <xref target="IANA-IGP-ALGO-Types"/>
+        modules for IGP Algorithm Types <xref target="IANA-IGP-Algo-Types"/>
         and IGP Metric Type <xref target="IANA-IGP-Metric-Types"/>
         in <xref target="I-D.ietf-lsr-ospf-flex-algo-yang"/>.
         This YANG module references <xref target="RFC7308"/>, <xref target="RFC8349"/>,
-        <xref target="RFC8776"/>, <xref target="RFC9130"/>, and
-        <xref target="I-D.ietf-teas-yang-te"/>.
+        <xref target="RFC8776"/>, <xref target="RFC9130"/>, <xref target="I-D.ietf-teas-yang-te"/>,
+        <xref target="IANA-IGP-Algo-Types"/>, and  <xref target="IANA-IGP-Metric-Types"/>.
+
       </t>
 <artwork align="left" name="" type="" alt=""><![CDATA[
 module: ietf-isis-flex-algo
@@ -1107,7 +1108,7 @@ module ietf-isis-flex-algo {
             range "128..255";
           }
           description
-            "Flex-algo number - must in in the inclusive range
+            "Flex-algo number - must be in the inclusive range
              of 128-255.";
         }
         leaf advertise-definition {
@@ -1330,7 +1331,7 @@ module ietf-isis-flex-algo {
     protocol operation mode may result in traffic disruption.
    </li>
    <li>
-    /isis:isis/flex-algo - Modification to flex-algo configuration
+    /isis:isis/isis-flex-algo/flex-algo - Modification to flex-algo configuration
     could be used to mount a DoS attack. For example, changing of
     calc-type may result in routing loops.
    </li>
@@ -1340,7 +1341,7 @@ module ietf-isis-flex-algo {
       important to control read access (e.g., via get, get-config, or notification)
       to these data nodes. The exposure of the Link State Database (LSDB) will
       expose the detailed topology of the network. This may be undesirable since
-      both due to the fact that exposure may facilitate other attacks. Additionally,
+      exposure may facilitate other attacks. Additionally,
       network operators may consider their topologies to be sensitive confidential
       data.</t>
       <t>The flex-algo-not-supported notification defined in this document
@@ -1354,33 +1355,31 @@ module ietf-isis-flex-algo {
         <xref target="RFC3688" format="default"/>.  Following the format in <xref target="RFC3688" format="default"/>,
         the following registrations are requested:
       </t>
-      <artwork name="" type="" align="left" alt=""><![CDATA[
+<artwork align="left" name="" type="" alt=""><![CDATA[
    URI: urn:ietf:params:xml:ns:yang:ietf-isis-link-attr
    Registrant Contact: The IESG.
    XML: N/A, the requested URI is an XML namespace.
-   ]]></artwork>
-      <artwork name="" type="" align="left" alt=""><![CDATA[
-URI: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
-Registrant Contact: The IESG.
-XML: N/A, the requested URI is an XML namespace.
-      ]]></artwork>
+
+   URI: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+]]></artwork>
       <t>This document registers the YANG modules in the YANG Module Names
         registry <xref target="RFC7950" format="default"/>.
       </t>
-      <artwork name="" type="" align="left" alt=""><![CDATA[
+<artwork align="left" name="" type="" alt=""><![CDATA[
    name: ietf-isis-link-attr
    Maintained by IANA?  N
    namespace: urn:ietf:params:xml:ns:yang:ietf-isis-link-attr
    prefix: isis-link-attr
    reference: RFC XXXX
-   ]]></artwork>
-      <artwork name="" type="" align="left" alt=""><![CDATA[
-name: ietf-isis-flex-algo
-Maintained by IANA?  N
-namespace: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
-prefix: isis-flex-algo
-reference: RFC XXXX
-      ]]></artwork>
+
+   name: ietf-isis-flex-algo
+   Maintained by IANA?  N
+   namespace: urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo
+   prefix: isis-flex-algo
+   reference: RFC XXXX
+]]></artwork>
     </section>
     <section anchor="Acknowledgements" numbered="true" toc="default">
       <name>Acknowledgements</name>
@@ -1394,7 +1393,7 @@ reference: RFC XXXX
         Thanks to Renato Westphal for review and comments.
       </t>
       <t>
-        Thanks to Med Boucadair for review and comments.
+        Thanks to Med Boucadair for extensive review and comments.
       </t>
     </section>
   </middle>
@@ -1433,7 +1432,7 @@ reference: RFC XXXX
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9911.xml"/>
       <xi:include href='https://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.draft-ietf-lsr-ospf-flex-algo-yang-08.xml'/>
       <xi:include href='https://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.draft-ietf-teas-yang-te-44.xml'/>  
-      <reference anchor="IANA-IGP-ALGO-Types" target="https://www.iana.org/assignments/igp-parameters" quoteTitle="true" derivedAnchor="IANA-IGP-ALGO-Types">
+      <reference anchor="IANA-IGP-Algo-Types" target="https://www.iana.org/assignments/igp-parameters" quoteTitle="true" derivedAnchor="IANA-IGP-Algo-Types">
           <front>
             <title>IGP Algorithm Types</title>
             <author>
@@ -1451,6 +1450,16 @@ reference: RFC XXXX
             <date/>
           </front>
         </reference>
+     <reference anchor="IANA-Link-Attr-Apps" target="https://www.iana.org/assignments/igp-parameters"
+                quoteTitle="true" derivedAnchor="IANA-Link-Attribute-Application-Identifiers">
+       <front>
+         <title>Link Attribute Application Identifiers</title>
+         <author>
+           <organization showOnFrontPage="true">IANA</organization>
+         </author>
+         <date/>
+       </front>
+     </reference>
     </references>
     <references>
       <name>Informative References</name>

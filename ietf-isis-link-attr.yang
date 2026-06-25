@@ -28,8 +28,7 @@ module ietf-isis-link-attr {
   import ietf-te-types {
     prefix te-types;
     reference
-      "RFC 8776: Common YANG Data Types for the
-       Traffic Engineering";
+      "RFC 8776: Common YANG Data Types for Traffic Engineering";
   }
   import iana-igp-link-attr-apps {
     prefix iana-link-attr-apps;
@@ -48,8 +47,8 @@ module ietf-isis-link-attr {
                <mailto:yingzhen.ietf@gmail.com>
      Author:   Acee Lindem
                <mailto:acee.ietf@gmail.com>
-     Author:    Madhavi Joshi
-              <madhavi@arrcus.com>
+     Author:   Madhavi Joshi
+               <madhavi@arrcus.com>
     ";
   description
     "This YANG module defines the configuration and operational
@@ -162,7 +161,7 @@ module ietf-isis-link-attr {
       type boolean;
       description
         "Legacy Flag. When the SABM Length or UDABM Length is
-         non-zero and the L-flag is notset, all applications
+         non-zero and the L-flag is not set, all applications
          specified in the bit mask use the link
          attribute advertisements in the sub-TLV.";
       reference
@@ -381,7 +380,7 @@ module ietf-isis-link-attr {
              attributes may be included in the same sub-TLV.";
         }
         leaf te-metric {
-          type uint32;
+          type te-types:te-metric;
           description
             "TE metric.";
           reference
@@ -398,7 +397,7 @@ module ietf-isis-link-attr {
           description
             "List of SRLGs.";
           leaf-list srlg {
-            type uint32;
+            type te-types:srlg;
             description
               "SRLG value of the link.";
           }
