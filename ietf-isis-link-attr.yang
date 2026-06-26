@@ -325,10 +325,10 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used";
+        "This augments the IS-IS routing protocol when used";
     }
     description
-      "This augments IS-IS protocol management
+      "This augments the IS-IS protocol management
        with application specific link attributes.";
     container isis-link-attr {
       choice link-attr-op-mode {
@@ -365,10 +365,10 @@ module ietf-isis-link-attr {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used.";
+        "This augments the IS-IS routing protocol when used.";
     }
     description
-      "This augments IS-IS interface management
+      "This augments the IS-IS interface management
        with application specific link attributes.";
     container isis-asla {
       list interface-asla {
@@ -423,10 +423,10 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used";
+        "This augments the IS-IS routing protocol when used";
     }
     description
-      "This augments IS-IS protocol LSDB TLV22.";
+      "This augments the IS-IS protocol LSDB TLV22.";
     uses application-specific-link-attributes-sub-tlv;
   }
 
@@ -440,10 +440,10 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used";
+        "This augments the IS-IS routing protocol when used";
     }
     description
-      "This augments IS-IS protocol LSDB TLV223.";
+      "This augments the IS-IS protocol LSDB TLV223.";
     uses application-specific-link-attributes-sub-tlv;
   }
 
@@ -455,10 +455,10 @@ module ietf-isis-link-attr {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used";
+        "This augments the IS-IS routing protocol when used";
     }
     description
-      "This augments IS-IS protocol LSDB.";
+      "This augments the IS-IS protocol LSDB.";
     uses application-specific-srlg-tlv;
   }
 }
