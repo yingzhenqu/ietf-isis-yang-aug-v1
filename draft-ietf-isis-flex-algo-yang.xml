@@ -13,13 +13,13 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-11"
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-12"
   ipr="trust200902" submissionType="IETF" xml:lang="en"
   tocInclude="true" symRefs="true" sortRefs="true"
   version="3" consensus="true">
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">A YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-11"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-12"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -260,7 +260,7 @@ module: ietf-isis-link-attr
           +--ro srlgs
              +--ro srlg*   te-types:srlg
 ]]></artwork>
-<sourcecode name="ietf-isis-link-attr@2026-06-25.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-link-attr@2026-06-26.yang" type="" markers="true"><![CDATA[
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -341,7 +341,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-25 {
+  revision 2026-06-26 {
     description
       "Initial version";
     reference
@@ -396,7 +396,8 @@ module ietf-isis-link-attr {
             range "0..7";
           }
           description
-            "Priority from 0 to 7.";
+            "Priority from 0 to 7. There should on be a single
+             unreserved-bandwidth per priority.";
         }
         leaf unreserved-bandwidth {
           type rt-types:bandwidth-ieee-float32;
@@ -500,7 +501,9 @@ module ietf-isis-link-attr {
             "Link Identifier sub-TLVs.";
           container link-local-remote-ids {
             description
-              "Link local/remote identifier sub-tlv.";
+              "Link local/remote identifier sub-tlv. Address
+               family consistency (IPv4 or IPv6) is expected
+               between interface and neighbor addresses.";
             leaf link-local-id {
               type union {
                 type inet:ipv4-address;
@@ -734,7 +737,7 @@ module ietf-isis-link-attr {
         and IGP Metric Type <xref target="IANA-IGP-Metric-Types"/>
         in <xref target="I-D.ietf-lsr-ospf-flex-algo-yang"/>.
         This YANG module references <xref target="RFC7308"/>, <xref target="RFC8349"/>,
-        <xref target="RFC8776"/>, <xref target="RFC9130"/>, <xref target="I-D.ietf-teas-yang-te"/>,
+        <xref target="RFC8776"/>, <xref target="RFC9130"/>,
         <xref target="IANA-IGP-Algo-Types"/>, and  <xref target="IANA-IGP-Metric-Types"/>.
 
       </t>
@@ -747,15 +750,14 @@ module: ietf-isis-flex-algo
        +--rw flex-algo* [algo-number]
           +--rw algo-number             uint8
           +--rw advertise-definition?   boolean
-          +--rw admin-groups
-          |       {te-types:extended-admin-groups,
-          |        te-types:named-extended-admin-groups}?
-          |  +--rw exclude-admin-groups*       leafref
-          |  +--rw include-any-admin-groups*   leafref
-          |  +--rw include-all-admin-groups*   leafref
-          +--rw exclude-srlgs*
-          |       -> /te:te/globals/named-srlgs/named-srlg/name
-          |       {te-types:named-srlg-groups}?
+          +--rw admin-groups {te-types:extended-admin-groups}?
+          |  +--rw exclude-admin-groups*
+          |  |       te-types:extended-admin-group
+          |  +--rw include-any-admin-groups*
+          |  |       te-types:extended-admin-group
+          |  +--rw include-all-admin-groups*
+          |          te-types:extended-admin-group
+          +--rw exclude-srlgs*          te-types:srlg
           +--rw metric-type?            identityref
           +--rw calc-type?              identityref
           +--rw prefix-metric!
@@ -823,8 +825,9 @@ module: ietf-isis-flex-algo
        +--ro routing-protocol-name?   leafref
        +--ro isis-level?              level
        +--ro algo-number?             uint8
+
 ]]></artwork>
-<sourcecode name="ietf-isis-flex-algo@2026-06-25.yang" type="yang" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-flex-algo@2026-06-26.yang" type="yang" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -845,12 +848,6 @@ module ietf-isis-flex-algo {
     prefix isis;
     reference
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
-  }
-  import ietf-te {
-    prefix te;
-    reference
-      "RFC XXXX: A YANG Data Model for Traffic Engineering
-                 Tunnels, Label Switched Paths, and Interfaces";
   }
   import iana-igp-algo-types {
     prefix iana-algo-types;
@@ -906,7 +903,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-25 {
+  revision 2026-06-26 {
     description
       "Initial Version";
     reference
@@ -1022,7 +1019,8 @@ module ietf-isis-flex-algo {
             "Flex-algo number - A value not in the inclusive range
              of 128-255 is an invalid FAD TLV specification.  Valid
              Flex-Algorithm numbers are in the inclusive range
-             128-255 as specified in RFC 9350.";
+             128-255 as specified in RFC 9350. There should only be
+             a single FAD TLV per algorithm number.";
           reference
             "RFC 9350: IGP Flexible Algorithm, Section 5";
         }
@@ -1121,30 +1119,20 @@ module ietf-isis-flex-algo {
         }
         container admin-groups {
           if-feature "te-types:extended-admin-groups";
-          if-feature "te-types:named-extended-admin-groups";
           leaf-list exclude-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+            type te-types:extended-admin-group;
             description
               "Exclude rule used during the flex-algo
                path computation.";
           }
           leaf-list include-any-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+            type te-types:extended-admin-group;
             description
               "Include-any rule used during the flex-algo
                path computation.";
           }
           leaf-list include-all-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+            type te-types:extended-admin-group;
             description
               "Include-all rule used during the flex-algo
                path computation.";
@@ -1153,11 +1141,7 @@ module ietf-isis-flex-algo {
             "Specify links for the flex-algo path computation.";
         }
         leaf-list exclude-srlgs {
-          if-feature "te-types:named-srlg-groups";
-          type leafref {
-            path "/te:te/te:globals/te:named-srlgs/te:named-srlg/"
-               + "te:name";
-          }
+          type te-types:srlg;
           description
             "Shared Risk Link Groups (SRLGs) to be excluded during
              the flex-algo path computation.";
@@ -1296,7 +1280,7 @@ module ietf-isis-flex-algo {
   }
 }
 ]]></sourcecode>
-    </section>
+</section>
 
     <section anchor="Security" numbered="true" toc="default">
       <name>Security Considerations</name>
@@ -1431,7 +1415,6 @@ module ietf-isis-flex-algo {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9479.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9911.xml"/>
       <xi:include href='https://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.draft-ietf-lsr-ospf-flex-algo-yang-08.xml'/>
-      <xi:include href='https://xml.resource.org/public/rfc/bibxml-ids/reference.I-D.draft-ietf-teas-yang-te-44.xml'/>  
       <reference anchor="IANA-IGP-Algo-Types" target="https://www.iana.org/assignments/igp-parameters" quoteTitle="true" derivedAnchor="IANA-IGP-Algo-Types">
           <front>
             <title>IGP Algorithm Types</title>

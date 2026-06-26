@@ -78,7 +78,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-25 {
+  revision 2026-06-26 {
     description
       "Initial version";
     reference
@@ -133,7 +133,8 @@ module ietf-isis-link-attr {
             range "0..7";
           }
           description
-            "Priority from 0 to 7.";
+            "Priority from 0 to 7. There should on be a single
+             unreserved-bandwidth per priority.";
         }
         leaf unreserved-bandwidth {
           type rt-types:bandwidth-ieee-float32;
@@ -237,7 +238,9 @@ module ietf-isis-link-attr {
             "Link Identifier sub-TLVs.";
           container link-local-remote-ids {
             description
-              "Link local/remote identifier sub-tlv.";
+              "Link local/remote identifier sub-tlv. Address
+               family consistency (IPv4 or IPv6) is expected
+               between interface and neighbor addresses.";
             leaf link-local-id {
               type union {
                 type inet:ipv4-address;

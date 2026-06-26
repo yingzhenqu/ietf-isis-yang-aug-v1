@@ -19,12 +19,6 @@ module ietf-isis-flex-algo {
     reference
       "RFC 9130: YANG Data Model for the IS-IS Protocol";
   }
-  import ietf-te {
-    prefix te;
-    reference
-      "RFC XXXX: A YANG Data Model for Traffic Engineering
-                 Tunnels, Label Switched Paths, and Interfaces";
-  }
   import iana-igp-algo-types {
     prefix iana-algo-types;
     reference
@@ -79,7 +73,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-25 {
+  revision 2026-06-26 {
     description
       "Initial Version";
     reference
@@ -195,7 +189,8 @@ module ietf-isis-flex-algo {
             "Flex-algo number - A value not in the inclusive range
              of 128-255 is an invalid FAD TLV specification.  Valid
              Flex-Algorithm numbers are in the inclusive range
-             128-255 as specified in RFC 9350.";
+             128-255 as specified in RFC 9350. There should only be
+             a single FAD TLV per algorithm number.";
           reference
             "RFC 9350: IGP Flexible Algorithm, Section 5";
         }
@@ -294,30 +289,20 @@ module ietf-isis-flex-algo {
         }
         container admin-groups {
           if-feature "te-types:extended-admin-groups";
-          if-feature "te-types:named-extended-admin-groups";
           leaf-list exclude-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+            type te-types:extended-admin-group;
             description
               "Exclude rule used during the flex-algo
                path computation.";
           }
           leaf-list include-any-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+            type te-types:extended-admin-group;
             description
               "Include-any rule used during the flex-algo
                path computation.";
           }
           leaf-list include-all-admin-groups {
-            type leafref {
-              path "/te:te/te:globals/te:named-admin-groups/"
-                 + "te:named-admin-group/te:name";
-            }
+            type te-types:extended-admin-group;
             description
               "Include-all rule used during the flex-algo
                path computation.";
@@ -326,11 +311,7 @@ module ietf-isis-flex-algo {
             "Specify links for the flex-algo path computation.";
         }
         leaf-list exclude-srlgs {
-          if-feature "te-types:named-srlg-groups";
-          type leafref {
-            path "/te:te/te:globals/te:named-srlgs/te:named-srlg/"
-               + "te:name";
-          }
+          type te-types:srlg;
           description
             "Shared Risk Link Groups (SRLGs) to be excluded during
              the flex-algo path computation.";
