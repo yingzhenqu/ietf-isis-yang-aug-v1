@@ -263,10 +263,10 @@ module ietf-isis-flex-algo {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augments IS-IS routing protocol when used";
+        "This augments the IS-IS routing protocol when used";
     }
     description
-      "This augments IS-IS protocol management
+      "This augments the IS-IS protocol management
        with flexible algorithm.";
     container isis-flex-algo {
       list flex-algo {
@@ -361,10 +361,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augments IS-IS routing protocol when used";
+        "This augments the IS-IS routing protocol when used";
     }
     description
-      "This augments IS-IS protocol LSDB router capability.";
+      "This augments the IS-IS protocol LSDB router capability.";
     uses fad-tlvs;
   }
 
@@ -377,10 +377,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augments IS-IS routing protocol when used";
+        "This augments the IS-IS routing protocol when used";
     }
     description
-      "This augments IS-IS protocol LSDB prefix.";
+      "This augments the IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -392,10 +392,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augments IS-IS routing protocol when used";
+        "This augments the IS-IS routing protocol when used";
     }
     description
-      "This augments IS-IS protocol LSDB prefix.";
+      "This augments the IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -407,10 +407,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augments IS-IS routing protocol when used";
+        "This augments the IS-IS routing protocol when used";
     }
     description
-      "This augments IS-IS protocol LSDB prefix.";
+      "This augments the IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
@@ -422,10 +422,10 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augments IS-IS routing protocol when used";
+        "This augments the IS-IS routing protocol when used";
     }
     description
-      "This augments IS-IS protocol LSDB prefix.";
+      "This augments the IS-IS protocol LSDB prefix.";
     uses fapm-sub-tlvs;
   }
 
