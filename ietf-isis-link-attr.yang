@@ -336,7 +336,8 @@ module ietf-isis-link-attr {
         leaf legacy {
           type empty;
           description
-            "Only send legacy advertisements.";
+            "Only send legacy advertisements, and no ASLA
+             advertisement.";
         }
         leaf transition {
           type empty;
@@ -351,7 +352,9 @@ module ietf-isis-link-attr {
         }
         description
           "Link attributes mode. Default to legacy mode for
-           backward compatibility.";
+           backward compatibility. This is the enablement knob
+           for ASLA advertisement at the protocol level. Please
+           refer to Section 6.3 of RFC9479 for details.";
       }
       description
         "Link attributes operation mode.";
