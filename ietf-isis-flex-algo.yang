@@ -263,7 +263,7 @@ module ietf-isis-flex-algo {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used";
+        "This augments IS-IS routing protocol when used";
     }
     description
       "This augments IS-IS protocol management
@@ -361,7 +361,7 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used";
+        "This augments IS-IS routing protocol when used";
     }
     description
       "This augments IS-IS protocol LSDB router capability.";
@@ -377,7 +377,7 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used";
+        "This augments IS-IS routing protocol when used";
     }
     description
       "This augments IS-IS protocol LSDB prefix.";
@@ -392,7 +392,7 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used";
+        "This augments IS-IS routing protocol when used";
     }
     description
       "This augments IS-IS protocol LSDB prefix.";
@@ -407,7 +407,7 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used";
+        "This augments IS-IS routing protocol when used";
     }
     description
       "This augments IS-IS protocol LSDB prefix.";
@@ -422,7 +422,7 @@ module ietf-isis-flex-algo {
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
       description
-        "This augment IS-IS routing protocol when used";
+        "This augments IS-IS routing protocol when used";
     }
     description
       "This augments IS-IS protocol LSDB prefix.";
