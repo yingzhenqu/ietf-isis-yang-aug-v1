@@ -332,7 +332,7 @@ module ietf-isis-link-attr {
        with application specific link attributes.";
     container isis-link-attr {
       choice link-attr-op-mode {
-        default "legacy";
+        default "app-specific";
         leaf legacy {
           type empty;
           description
