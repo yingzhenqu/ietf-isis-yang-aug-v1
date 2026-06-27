@@ -78,7 +78,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-26 {
+  revision 2026-06-27 {
     description
       "Initial version";
     reference
@@ -343,7 +343,8 @@ module ietf-isis-link-attr {
           type empty;
           description
             "Send both application-specific and legacy
-             advertisements.";
+             advertisements,and they should have identical
+             information.";
         }
         leaf app-specific {
           type empty;
@@ -357,10 +358,9 @@ module ietf-isis-link-attr {
            refer to Section 6.3 of RFC9479 for details.";
       }
       description
-        "Link attributes operation mode.";
+        "Application specific link attributes.";
       reference
-        "RFC 9479 - IS-IS Application-Specific Link Attributes,
-         Section 6.3.";
+        "RFC 9479 - IS-IS Application-Specific Link Attributes";
     }
   }
 
