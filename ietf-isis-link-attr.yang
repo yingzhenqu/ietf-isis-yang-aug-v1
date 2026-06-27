@@ -351,13 +351,16 @@ module ietf-isis-link-attr {
             "Only send application-specific advertisements.";
         }
         description
-          "Link attributes mode. Default to legacy mode for
-           backward compatibility. This is the enablement knob
+          "Link attributes mode. Default to app-specific consistent
+           with implementations. This is the enablement knob
            for ASLA advertisement at the protocol level. Please
            refer to Section 6.3 of RFC9479 for details.";
       }
       description
         "Link attributes operation mode.";
+      reference
+        "RFC 9479 - IS-IS Application-Specific Link Attributes,
+         Section 6.3.";
     }
   }
 
