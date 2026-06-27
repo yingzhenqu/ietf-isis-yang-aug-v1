@@ -358,6 +358,9 @@ module ietf-isis-link-attr {
       }
       description
         "Link attributes operation mode.";
+      reference
+        "RFC 9479 - IS-IS Application-Specific Link Attributes,
+         Section 6.3.";
     }
   }
 
