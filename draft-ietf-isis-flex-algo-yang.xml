@@ -13,13 +13,13 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-14"
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-15"
   ipr="trust200902" submissionType="IETF" xml:lang="en"
   tocInclude="true" symRefs="true" sortRefs="true"
   version="3" consensus="true">
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">A YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-14"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-15"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -770,7 +770,8 @@ module: ietf-isis-flex-algo
           +--rw priority?               uint8
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/isis:isis/isis:database
-            /isis:levels/isis:lsp/isis:router-capabilities:
+            /isis:levels/isis:lsp/isis:router-capabilities
+            /isis:router-capability:
     +--ro fad-tlvs
        +--ro fad-tlv* []
           +--ro algo-number?            uint8
@@ -778,16 +779,18 @@ module: ietf-isis-flex-algo
           +--ro calc-type?              identityref
           +--ro priority?               uint8
           +--ro fa-ex-ag-sub-tlv
-          |  +--ro extended-admin-group*
+          |  +--ro extended-admin-group?
           |          te-types:extended-admin-group
           +--ro fa-in-any-ag-sub-tlv
-          |  +--ro extended-admin-group*   uint64
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fa-in-all-ag-sub-tlv
-          |  +--ro extended-admin-group*   uint64
+          |  +--ro extended-admin-group?
+          |          te-types:extended-admin-group
           +--ro fad-flags-sub-tlv
           |  +--ro fad-flags*   identityref
           +--ro fa-ex-srlg-sub-tlv
-          |  +--ro srlgs*   uint32
+          |  +--ro srlgs*   te-types:srlg
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
                 +--ro type?     uint16
@@ -831,9 +834,8 @@ module: ietf-isis-flex-algo
        +--ro routing-protocol-name?   leafref
        +--ro isis-level?              level
        +--ro algo-number?             uint8
-
 ]]></artwork>
-<sourcecode name="ietf-isis-flex-algo@2026-06-27.yang" type="yang" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-flex-algo@2026-06-29.yang" type="yang" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -909,7 +911,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-27 {
+  revision 2026-06-29 {
     description
       "Initial Version";
     reference
@@ -940,7 +942,7 @@ module ietf-isis-flex-algo {
 
   grouping fa-ex-ag-sub-tlv {
     container fa-ex-ag-sub-tlv {
-      leaf-list extended-admin-group {
+      leaf extended-admin-group {
         type te-types:extended-admin-group;
         description
           "Extended administrative group value.";
@@ -948,7 +950,9 @@ module ietf-isis-flex-algo {
           "RFC 7308: Extended Administrative Groups in MPLS-TE";
       }
       description
-        "The flex-algo exclude admin group sub-tlv.";
+        "The flex-algo exclude admin group sub-tlv. Note that the
+         presence of more than one Exclude Extended Admin Group
+         sub-TLV will result in an invalid FAD TLV.";
     }
     description
       "The flex-algo exclude admin group sub-tlv.";
@@ -956,15 +960,17 @@ module ietf-isis-flex-algo {
 
   grouping fa-in-any-ag-sub-tlv {
     container fa-in-any-ag-sub-tlv {
-      leaf-list extended-admin-group {
-        type uint64;
+      leaf extended-admin-group {
+        type te-types:extended-admin-group;
         description
           "Extended administrative group value.";
         reference
           "RFC 7308: Extended Administrative Groups in MPLS-TE";
       }
       description
-        "The flex-algo include-any admin group sub-tlv.";
+        "The flex-algo include-any admin group sub-tlv. Note that
+         the presence of more than one Include-Any Extended Admin
+         Group sub-TLV will result in an invalid FAD TLV.";
     }
     description
       "The flex-algo include-any admin group sub-tlv.";
@@ -972,16 +978,18 @@ module ietf-isis-flex-algo {
 
   grouping fa-in-all-ag-sub-tlv {
     container fa-in-all-ag-sub-tlv {
-      leaf-list extended-admin-group {
-        type uint64;
+      leaf extended-admin-group {
+        type te-types:extended-admin-group;
         description
           "Extended administrative group value.";
         reference
           "RFC 7308: Extended Administrative Groups in MPLS-TE";
       }
       description
-        "The flex-algo include-all admin group sub-tlv.";
-    }
+        "The flex-algo include-all admin group sub-tlv. Note that
+         the presence of more than one Include-Any Extended Admin
+         Group sub-TLV will result in an invalid FAD TLV.";
+      }
     description
       "The flex-algo include-all admin group sub-tlv.";
   }
@@ -1005,7 +1013,7 @@ module ietf-isis-flex-algo {
   grouping fa-ex-srlg-sub-tlv {
     container fa-ex-srlg-sub-tlv {
       leaf-list srlgs {
-        type uint32;
+        type te-types:srlg;
         description
           "SRLG value as defined in RFC 4203.";
       }
@@ -1192,7 +1200,7 @@ module ietf-isis-flex-algo {
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
-        + "/isis:router-capabilities" {
+        + "/isis:router-capabilities/isis:router-capability" {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {

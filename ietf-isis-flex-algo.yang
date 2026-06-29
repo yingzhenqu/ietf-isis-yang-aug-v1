@@ -73,7 +73,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-27 {
+  revision 2026-06-29 {
     description
       "Initial Version";
     reference
@@ -104,7 +104,7 @@ module ietf-isis-flex-algo {
 
   grouping fa-ex-ag-sub-tlv {
     container fa-ex-ag-sub-tlv {
-      leaf-list extended-admin-group {
+      leaf extended-admin-group {
         type te-types:extended-admin-group;
         description
           "Extended administrative group value.";
@@ -112,7 +112,9 @@ module ietf-isis-flex-algo {
           "RFC 7308: Extended Administrative Groups in MPLS-TE";
       }
       description
-        "The flex-algo exclude admin group sub-tlv.";
+        "The flex-algo exclude admin group sub-tlv. Note that the
+         presence of more than one Exclude Extended Admin Group
+         sub-TLV will result in an invalid FAD TLV.";
     }
     description
       "The flex-algo exclude admin group sub-tlv.";
@@ -120,15 +122,17 @@ module ietf-isis-flex-algo {
 
   grouping fa-in-any-ag-sub-tlv {
     container fa-in-any-ag-sub-tlv {
-      leaf-list extended-admin-group {
-        type uint64;
+      leaf extended-admin-group {
+        type te-types:extended-admin-group;
         description
           "Extended administrative group value.";
         reference
           "RFC 7308: Extended Administrative Groups in MPLS-TE";
       }
       description
-        "The flex-algo include-any admin group sub-tlv.";
+        "The flex-algo include-any admin group sub-tlv. Note that
+         the presence of more than one Include-Any Extended Admin
+         Group sub-TLV will result in an invalid FAD TLV.";
     }
     description
       "The flex-algo include-any admin group sub-tlv.";
@@ -136,16 +140,18 @@ module ietf-isis-flex-algo {
 
   grouping fa-in-all-ag-sub-tlv {
     container fa-in-all-ag-sub-tlv {
-      leaf-list extended-admin-group {
-        type uint64;
+      leaf extended-admin-group {
+        type te-types:extended-admin-group;
         description
           "Extended administrative group value.";
         reference
           "RFC 7308: Extended Administrative Groups in MPLS-TE";
       }
       description
-        "The flex-algo include-all admin group sub-tlv.";
-    }
+        "The flex-algo include-all admin group sub-tlv. Note that
+         the presence of more than one Include-Any Extended Admin
+         Group sub-TLV will result in an invalid FAD TLV.";
+      }
     description
       "The flex-algo include-all admin group sub-tlv.";
   }
@@ -169,7 +175,7 @@ module ietf-isis-flex-algo {
   grouping fa-ex-srlg-sub-tlv {
     container fa-ex-srlg-sub-tlv {
       leaf-list srlgs {
-        type uint32;
+        type te-types:srlg;
         description
           "SRLG value as defined in RFC 4203.";
       }
@@ -356,7 +362,7 @@ module ietf-isis-flex-algo {
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
-        + "/isis:router-capabilities" {
+        + "/isis:router-capabilities/isis:router-capability" {
     when "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/"
        + "rt:type = 'isis:isis'" {
