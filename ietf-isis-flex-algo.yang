@@ -40,11 +40,11 @@ module ietf-isis-flex-algo {
 
 
      Author:    Yingzhen Qu
-               <mailto:yingzhen.ietf@gmail.com>
+                <mailto:yingzhen.ietf@gmail.com>
      Author:    Acee Lindem
-               <mailto:acee.ietf@gmail.com>
+                <mailto:acee.ietf@gmail.com>
      Author:    Madhavi Joshi
-               <madhavi@arrcus.com>
+                <mailto:madhavi@arrcus.com>
     ";
   description
     "The YANG module defines the configuration and operational
@@ -73,7 +73,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-29 {
+  revision 2026-06-30 {
     description
       "Initial Version";
     reference
@@ -149,9 +149,9 @@ module ietf-isis-flex-algo {
       }
       description
         "The flex-algo include-all admin group sub-tlv. Note that
-         the presence of more than one Include-Any Extended Admin
+         the presence of more than one Include-All Extended Admin
          Group sub-TLV will result in an invalid FAD TLV.";
-      }
+    }
     description
       "The flex-algo include-all admin group sub-tlv.";
   }
@@ -295,26 +295,27 @@ module ietf-isis-flex-algo {
         }
         container admin-groups {
           if-feature "te-types:extended-admin-groups";
-          leaf-list exclude-admin-groups {
+          leaf exclude-admin-groups {
             type te-types:extended-admin-group;
             description
               "Exclude rule used during the flex-algo
                path computation.";
           }
-          leaf-list include-any-admin-groups {
+          leaf include-any-admin-groups {
             type te-types:extended-admin-group;
             description
               "Include-any rule used during the flex-algo
                path computation.";
           }
-          leaf-list include-all-admin-groups {
+          leaf include-all-admin-groups {
             type te-types:extended-admin-group;
             description
               "Include-all rule used during the flex-algo
                path computation.";
           }
           description
-            "Specify links for the flex-algo path computation.";
+            "Specify adminstrative groups for the flex-algo
+             path computation.";
         }
         leaf-list exclude-srlgs {
           type te-types:srlg;

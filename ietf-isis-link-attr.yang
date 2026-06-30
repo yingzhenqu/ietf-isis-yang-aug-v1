@@ -48,7 +48,7 @@ module ietf-isis-link-attr {
      Author:   Acee Lindem
                <mailto:acee.ietf@gmail.com>
      Author:   Madhavi Joshi
-               <madhavi@arrcus.com>
+               <mailto:madhavi@arrcus.com>
     ";
   description
     "This YANG module defines the configuration and operational
@@ -78,7 +78,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-27 {
+  revision 2026-06-30 {
     description
       "Initial version";
     reference
@@ -133,7 +133,7 @@ module ietf-isis-link-attr {
             range "0..7";
           }
           description
-            "Priority from 0 to 7. There should on be a single
+            "Priority from 0 to 7. There should only be a single
              unreserved-bandwidth per priority.";
         }
         leaf unreserved-bandwidth {
@@ -238,27 +238,17 @@ module ietf-isis-link-attr {
             "Link Identifier sub-TLVs.";
           container link-local-remote-ids {
             description
-              "Link local/remote identifier sub-tlv. Address
-               family consistency (IPv4 or IPv6) is expected
-               between interface and neighbor addresses.";
+              "Link local/remote identifiers sub-tlv.";
             leaf link-local-id {
-              type union {
-                type inet:ipv4-address;
-                type uint32;
-              }
+              type uint32;
               description
-                "Local identifier of the link.
-                 It could be an IPv4 address or a local identifier.";
+                "Local identifier of the link.";
             }
             leaf link-remote-id {
-              type union {
-                type inet:ipv4-address;
-                type uint32;
-              }
+              type uint32;
               description
-                "Remote identifier of the link.
-                 It could be an IPv4 address or a remotely learned
-                 identifier.";
+                "Remote identifier of the link. If the Link
+                 Remote Identifier is unknown, it is set to 0.";
             }
           }
           container ipv4-interface-addr {
@@ -299,6 +289,9 @@ module ietf-isis-link-attr {
             description
               "IPv6 neighbor address sub-tlv.";
           }
+          reference
+            "RFC 5307 - IS-IS Extensions in Support of Generalized
+             Multi-Protocol Label Switching (GMPLS)";
         }
         container srlgs {
           description

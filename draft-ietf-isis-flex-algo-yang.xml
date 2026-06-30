@@ -13,13 +13,13 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-15"
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-16"
   ipr="trust200902" submissionType="IETF" xml:lang="en"
   tocInclude="true" symRefs="true" sortRefs="true"
   version="3" consensus="true">
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">A YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-15"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-16"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -104,6 +104,7 @@
         as defined in <xref target="RFC9479"/>.
         This YANG module references <xref target="RFC9479"/>, <xref target="RFC9911"/>,
         <xref target="RFC8349"/>, <xref target="RFC9130"/>, <xref target="RFC5305"/>,
+        <xref target="RFC8294"/>, <xref target="RFC5307"/>,
         and <xref target="IANA-Link-Attr-Apps"/>.
       </t>
 
@@ -247,8 +248,8 @@ module: ietf-isis-link-attr
           +--ro udabm
           +--ro link-id-sub-tlvs
           |  +--ro link-local-remote-ids
-          |  |  +--ro link-local-id?    union
-          |  |  +--ro link-remote-id?   union
+          |  |  +--ro link-local-id?    uint32
+          |  |  +--ro link-remote-id?   uint32
           |  +--ro ipv4-interface-addr
           |  |  +--ro ipv4-int-addr?   inet:ipv4-address
           |  +--ro ipv4-neighbor-addr
@@ -260,7 +261,7 @@ module: ietf-isis-link-attr
           +--ro srlgs
              +--ro srlg*   te-types:srlg
 ]]></artwork>
-<sourcecode name="ietf-isis-link-attr@2026-06-27.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-link-attr@2026-06-30.yang" type="" markers="true"><![CDATA[
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -311,7 +312,7 @@ module ietf-isis-link-attr {
      Author:   Acee Lindem
                <mailto:acee.ietf@gmail.com>
      Author:   Madhavi Joshi
-               <madhavi@arrcus.com>
+               <mailto:madhavi@arrcus.com>
     ";
   description
     "This YANG module defines the configuration and operational
@@ -341,7 +342,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-27 {
+  revision 2026-06-30 {
     description
       "Initial version";
     reference
@@ -396,7 +397,7 @@ module ietf-isis-link-attr {
             range "0..7";
           }
           description
-            "Priority from 0 to 7. There should on be a single
+            "Priority from 0 to 7. There should only be a single
              unreserved-bandwidth per priority.";
         }
         leaf unreserved-bandwidth {
@@ -501,27 +502,17 @@ module ietf-isis-link-attr {
             "Link Identifier sub-TLVs.";
           container link-local-remote-ids {
             description
-              "Link local/remote identifier sub-tlv. Address
-               family consistency (IPv4 or IPv6) is expected
-               between interface and neighbor addresses.";
+              "Link local/remote identifiers sub-tlv.";
             leaf link-local-id {
-              type union {
-                type inet:ipv4-address;
-                type uint32;
-              }
+              type uint32;
               description
-                "Local identifier of the link.
-                 It could be an IPv4 address or a local identifier.";
+                "Local identifier of the link.";
             }
             leaf link-remote-id {
-              type union {
-                type inet:ipv4-address;
-                type uint32;
-              }
+              type uint32;
               description
-                "Remote identifier of the link.
-                 It could be an IPv4 address or a remotely learned
-                 identifier.";
+                "Remote identifier of the link. If the Link
+                 Remote Identifier is unknown, it is set to 0.";
             }
           }
           container ipv4-interface-addr {
@@ -562,6 +553,9 @@ module ietf-isis-link-attr {
             description
               "IPv6 neighbor address sub-tlv.";
           }
+          reference
+            "RFC 5307 - IS-IS Extensions in Support of Generalized
+             Multi-Protocol Label Switching (GMPLS)";
         }
         container srlgs {
           description
@@ -757,11 +751,11 @@ module: ietf-isis-flex-algo
           +--rw algo-number             uint8
           +--rw advertise-definition?   boolean
           +--rw admin-groups {te-types:extended-admin-groups}?
-          |  +--rw exclude-admin-groups*
+          |  +--rw exclude-admin-groups?
           |  |       te-types:extended-admin-group
-          |  +--rw include-any-admin-groups*
+          |  +--rw include-any-admin-groups?
           |  |       te-types:extended-admin-group
-          |  +--rw include-all-admin-groups*
+          |  +--rw include-all-admin-groups?
           |          te-types:extended-admin-group
           +--rw exclude-srlgs*          te-types:srlg
           +--rw metric-type?            identityref
@@ -835,7 +829,7 @@ module: ietf-isis-flex-algo
        +--ro isis-level?              level
        +--ro algo-number?             uint8
 ]]></artwork>
-<sourcecode name="ietf-isis-flex-algo@2026-06-29.yang" type="yang" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-flex-algo@2026-06-30.yang" type="yang" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -878,11 +872,11 @@ module ietf-isis-flex-algo {
 
 
      Author:    Yingzhen Qu
-               <mailto:yingzhen.ietf@gmail.com>
+                <mailto:yingzhen.ietf@gmail.com>
      Author:    Acee Lindem
-               <mailto:acee.ietf@gmail.com>
+                <mailto:acee.ietf@gmail.com>
      Author:    Madhavi Joshi
-               <madhavi@arrcus.com>
+                <mailto:madhavi@arrcus.com>
     ";
   description
     "The YANG module defines the configuration and operational
@@ -911,7 +905,7 @@ module ietf-isis-flex-algo {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-29 {
+  revision 2026-06-30 {
     description
       "Initial Version";
     reference
@@ -987,9 +981,9 @@ module ietf-isis-flex-algo {
       }
       description
         "The flex-algo include-all admin group sub-tlv. Note that
-         the presence of more than one Include-Any Extended Admin
+         the presence of more than one Include-All Extended Admin
          Group sub-TLV will result in an invalid FAD TLV.";
-      }
+    }
     description
       "The flex-algo include-all admin group sub-tlv.";
   }
@@ -1133,26 +1127,27 @@ module ietf-isis-flex-algo {
         }
         container admin-groups {
           if-feature "te-types:extended-admin-groups";
-          leaf-list exclude-admin-groups {
+          leaf exclude-admin-groups {
             type te-types:extended-admin-group;
             description
               "Exclude rule used during the flex-algo
                path computation.";
           }
-          leaf-list include-any-admin-groups {
+          leaf include-any-admin-groups {
             type te-types:extended-admin-group;
             description
               "Include-any rule used during the flex-algo
                path computation.";
           }
-          leaf-list include-all-admin-groups {
+          leaf include-all-admin-groups {
             type te-types:extended-admin-group;
             description
               "Include-all rule used during the flex-algo
                path computation.";
           }
           description
-            "Specify links for the flex-algo path computation.";
+            "Specify adminstrative groups for the flex-algo
+             path computation.";
         }
         leaf-list exclude-srlgs {
           type te-types:srlg;
@@ -1323,10 +1318,14 @@ module ietf-isis-flex-algo {
    effect on network operations.  The following subtrees and data nodes
    have particular sensitivities/vulnerabilities:
  </t>
-  <ul empty="true" spacing="normal">
+ <ul empty="true" spacing="normal">
    <li>
     /isis:isis/isis-link-attr/link-attr-op-mode - Modification to the
     protocol operation mode may result in traffic disruption.
+   </li>
+   <li>
+    /isis:isis/isis:interfaces:isis:interface/isis-asla/interface-asla - Modification to the
+    configured ASLA interface attributes may result in disruption of rerouting of traffic.
    </li>
    <li>
     /isis:isis/isis-flex-algo/flex-algo - Modification to flex-algo configuration
@@ -1334,18 +1333,27 @@ module ietf-isis-flex-algo {
     calc-type may result in routing loops.
    </li>
   </ul>
-      <t>Some of the readable data nodes in the modules
-      may be considered sensitive or vulnerable in some network environments. It is thus
-      important to control read access (e.g., via get, get-config, or notification)
-      to these data nodes. The exposure of the Link State Database (LSDB) will
-      expose the detailed topology of the network. This may be undesirable since
-      exposure may facilitate other attacks. Additionally,
-      network operators may consider their topologies to be sensitive confidential
-      data.</t>
-      <t>The flex-algo-not-supported notification defined in this document
-      may reveal information about the local IS-IS instance's algorithm
-      capabilities.  Access to this notification SHOULD be restricted
-      using NACM <xref target="RFC8341"/> to authorized management stations.</t>
+  <t>
+    Some of the readable data nodes in the modules
+    may be considered sensitive or vulnerable in some network environments. It is thus
+    important to control read access (e.g., via get, get-config, or notification)
+    to these data nodes. The exposure of the Link State Database (LSDB) will
+    expose the detailed topology of the network. This may be undesirable since
+    exposure may facilitate other attacks. Additionally,
+    network operators may consider their topologies to be sensitive confidential
+    data.
+  </t>
+  <t>
+    The flex-algo-not-supported notification defined in this document
+    may reveal information about the local IS-IS instance's algorithm
+    capabilities.  Access to this notification SHOULD be restricted
+    using NACM <xref target="RFC8341"/> to authorized management stations.
+  </t>
+  <t>
+    The YANG modules defined in this document do not include any RPC or
+    action operations. Hence, there are no security considerations associated
+    with these YANG constructs.
+  </t>
     </section>
     <section numbered="true" toc="default">
       <name>IANA Considerations</name>
@@ -1391,10 +1399,12 @@ module ietf-isis-flex-algo {
         Thanks to Renato Westphal for review and comments.
       </t>
       <t>
-        Thanks to Eric Vyncke, Mike Bishop, and Ketan Talauikar for comments.
+        Thanks to Eric Vyncke, Mike Bishop, and Ketan Talauikar
+        for comments.
       </t>
       <t>
-        Thanks to Med Boucadair for extensive review and comments.
+        Thanks to Med Boucadair and Mahesh Jethanandani for extensive
+        review and comments.
       </t>
     </section>
   </middle>
@@ -1421,9 +1431,11 @@ module ietf-isis-flex-algo {
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5305.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5307.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7308.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+      <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8294.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8349.xml"/>
       <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8776.xml"/>
