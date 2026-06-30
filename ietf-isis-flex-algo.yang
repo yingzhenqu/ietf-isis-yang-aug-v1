@@ -97,7 +97,7 @@ module ietf-isis-flex-algo {
        and external prefix calculation.  Note that this flag is not
        applicable to prefixes advertised as SRv6 locators.";
     reference
-      "RFC 9350: IGP Flexible Algorithm, Section 9.1";
+      "RFC 9350: IGP Flexible Algorithm, Section 6.4";
   }
 
   /* Groupings */
@@ -295,19 +295,19 @@ module ietf-isis-flex-algo {
         }
         container admin-groups {
           if-feature "te-types:extended-admin-groups";
-          leaf exclude-admin-groups {
+          leaf exclude-admin-group {
             type te-types:extended-admin-group;
             description
               "Exclude rule used during the flex-algo
                path computation.";
           }
-          leaf include-any-admin-groups {
+          leaf include-any-admin-group {
             type te-types:extended-admin-group;
             description
               "Include-any rule used during the flex-algo
                path computation.";
           }
-          leaf include-all-admin-groups {
+          leaf include-all-admin-group {
             type te-types:extended-admin-group;
             description
               "Include-all rule used during the flex-algo

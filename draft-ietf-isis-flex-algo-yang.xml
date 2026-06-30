@@ -13,13 +13,13 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-16"
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-17"
   ipr="trust200902" submissionType="IETF" xml:lang="en"
   tocInclude="true" symRefs="true" sortRefs="true"
   version="3" consensus="true">
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">A YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-16"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-17"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -751,11 +751,11 @@ module: ietf-isis-flex-algo
           +--rw algo-number             uint8
           +--rw advertise-definition?   boolean
           +--rw admin-groups {te-types:extended-admin-groups}?
-          |  +--rw exclude-admin-groups?
+          |  +--rw exclude-admin-group?
           |  |       te-types:extended-admin-group
-          |  +--rw include-any-admin-groups?
+          |  +--rw include-any-admin-group?
           |  |       te-types:extended-admin-group
-          |  +--rw include-all-admin-groups?
+          |  +--rw include-all-admin-group?
           |          te-types:extended-admin-group
           +--rw exclude-srlgs*          te-types:srlg
           +--rw metric-type?            identityref
@@ -929,7 +929,7 @@ module ietf-isis-flex-algo {
        and external prefix calculation.  Note that this flag is not
        applicable to prefixes advertised as SRv6 locators.";
     reference
-      "RFC 9350: IGP Flexible Algorithm, Section 9.1";
+      "RFC 9350: IGP Flexible Algorithm, Section 6.4";
   }
 
   /* Groupings */
@@ -1127,19 +1127,19 @@ module ietf-isis-flex-algo {
         }
         container admin-groups {
           if-feature "te-types:extended-admin-groups";
-          leaf exclude-admin-groups {
+          leaf exclude-admin-group {
             type te-types:extended-admin-group;
             description
               "Exclude rule used during the flex-algo
                path computation.";
           }
-          leaf include-any-admin-groups {
+          leaf include-any-admin-group {
             type te-types:extended-admin-group;
             description
               "Include-any rule used during the flex-algo
                path computation.";
           }
-          leaf include-all-admin-groups {
+          leaf include-all-admin-group {
             type te-types:extended-admin-group;
             description
               "Include-all rule used during the flex-algo
