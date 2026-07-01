@@ -1325,7 +1325,7 @@ module ietf-isis-flex-algo {
    </li>
    <li>
     /isis:isis/isis:interfaces:isis:interface/isis-asla/interface-asla - Modification to the
-    configured ASLA interface attributes may result in disruption of rerouting of traffic.
+    configured ASLA interface attributes may result in the disruption or rerouting of traffic.
    </li>
    <li>
     /isis:isis/isis-flex-algo/flex-algo - Modification to flex-algo configuration
