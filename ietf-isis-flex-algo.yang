@@ -65,15 +65,9 @@ module ietf-isis-flex-algo {
      (https://www.iana.org/assignments/yang-parameters).
 
      This version of this YANG module is part of RFC XXXX; see
-     the RFC itself for full legal notices.
+     the RFC itself for full legal notices.";
 
-     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
-     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
-     'MAY', and 'OPTIONAL' in this document are to be interpreted as
-     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
-     they appear in all capitals, as shown here.";
-
-  revision 2026-06-30 {
+  revision 2026-07-01 {
     description
       "Initial Version";
     reference

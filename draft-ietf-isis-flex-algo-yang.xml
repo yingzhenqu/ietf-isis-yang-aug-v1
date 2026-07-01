@@ -13,13 +13,13 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-17"
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-18"
   ipr="trust200902" submissionType="IETF" xml:lang="en"
   tocInclude="true" symRefs="true" sortRefs="true"
   version="3" consensus="true">
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">A YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-17"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-18"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -829,7 +829,7 @@ module: ietf-isis-flex-algo
        +--ro isis-level?              level
        +--ro algo-number?             uint8
 ]]></artwork>
-<sourcecode name="ietf-isis-flex-algo@2026-06-30.yang" type="yang" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-flex-algo@2026-07-01.yang" type="yang" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -897,15 +897,9 @@ module ietf-isis-flex-algo {
      (https://www.iana.org/assignments/yang-parameters).
 
      This version of this YANG module is part of RFC XXXX; see
-     the RFC itself for full legal notices.
+     the RFC itself for full legal notices.";
 
-     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
-     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
-     'MAY', and 'OPTIONAL' in this document are to be interpreted as
-     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
-     they appear in all capitals, as shown here.";
-
-  revision 2026-06-30 {
+  revision 2026-07-01 {
     description
       "Initial Version";
     reference
@@ -1288,6 +1282,7 @@ module ietf-isis-flex-algo {
        support this flex-algo.";
   }
 }
+
 ]]></sourcecode>
 </section>
 
