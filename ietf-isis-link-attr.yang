@@ -78,7 +78,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-30 {
+  revision 2026-07-02 {
     description
       "Initial version";
     reference
@@ -171,9 +171,7 @@ module ietf-isis-link-attr {
     }
     container sabm {
       leaf-list sabm-bit {
-        type identityref {
-          base iana-link-attr-apps:igp-link-attr-app;
-        }
+        type iana-link-attr-apps:igp-link-attr-app;
         description
           "Standard Application Identifier Bit Mask bits. This
            leaf-list contains identities for the bits which are
@@ -373,9 +371,7 @@ module ietf-isis-link-attr {
       list interface-asla {
         key "link-attr-app";
         leaf link-attr-app {
-          type identityref {
-            base iana-link-attr-apps:igp-link-attr-app;
-          }
+          type iana-link-attr-apps:igp-link-attr-app;
           description
             "Application-specific attributes. Note that
              when encoded, applications with identical

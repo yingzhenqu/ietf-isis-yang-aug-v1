@@ -26,7 +26,7 @@ module ietf-isis-flex-algo {
        <https://www.iana.org/assignments/igp-parameters>.";
   }
   import iana-igp-metric-types {
-    prefix iana-metric-type;
+    prefix iana-metric-types;
     reference
       "IANA IGP Metric-Type registry,
        <https://www.iana.org/assignments/igp-parameters>.";
@@ -67,7 +67,7 @@ module ietf-isis-flex-algo {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2026-07-01 {
+  revision 2026-07-02 {
     description
       "Initial Version";
     reference
@@ -152,7 +152,7 @@ module ietf-isis-flex-algo {
 
   grouping fad-flags-sub-tlv {
     container fad-flags-sub-tlv {
-      leaf-list fad-flags {
+      leaf-list fad-flag {
         type identityref {
           base fad-flags;
         }
@@ -168,7 +168,7 @@ module ietf-isis-flex-algo {
 
   grouping fa-ex-srlg-sub-tlv {
     container fa-ex-srlg-sub-tlv {
-      leaf-list srlgs {
+      leaf-list srlg {
         type te-types:srlg;
         description
           "SRLG value as defined in RFC 4203.";
@@ -195,16 +195,12 @@ module ietf-isis-flex-algo {
             "RFC 9350: IGP Flexible Algorithm, Section 5";
         }
         leaf metric-type {
-          type identityref {
-            base iana-metric-type:metric-type;
-          }
+          type iana-metric-types:metric-type;
           description
             "Type of metric to be used during the calculation.";
         }
         leaf calc-type {
-          type identityref {
-            base iana-algo-types:algo-type;
-          }
+          type iana-algo-types:algo-type;
           description
             "IGP algorithm types, value from 0 to 127 as
              defined under 'Interior Gateway Protocol (IGP)
@@ -311,24 +307,19 @@ module ietf-isis-flex-algo {
             "Specify adminstrative groups for the flex-algo
              path computation.";
         }
-        leaf-list exclude-srlgs {
+        leaf-list exclude-srlg {
           type te-types:srlg;
           description
             "Shared Risk Link Groups (SRLGs) to be excluded during
              the flex-algo path computation.";
         }
         leaf metric-type {
-          type identityref {
-            base iana-metric-type:metric-type;
-          }
+          type iana-metric-types:metric-type;
           description
             "Type of metric to be used during the calculation.";
         }
         leaf calc-type {
-          type identityref {
-            base iana-algo-types:algo-type;
-          }
-          default "iana-algo-types:algo-spf";
+          type iana-algo-types:algo-type;
           description
             "Calculation-type. Value from 0-127 inclusive from the
              IANA 'IGP Algorithm Types' registry defined under the
