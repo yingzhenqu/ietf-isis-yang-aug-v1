@@ -95,17 +95,8 @@ module ietf-isis-link-attr {
            advertisement. Legacy advertisements will be
            used for the application.";
       }
-      enum transition {
-        value 1;
-        description
-          "Send both application-specific and legacy
-           advertisements. Both application-specific and
-           legacy attribute advertisements will be used
-           by the application with advertised legacy attributes
-           taking precedence.";
-      }
       enum app-specific {
-        value 2;
+        value 1;
         description
           "Application-specific advertisements are advertised
            exclusively except for RSVP-TE in certain situations.
@@ -394,6 +385,15 @@ module ietf-isis-link-attr {
           reference
             "RFC 9479: IS-IS Application-Specific Link Attributes,
              Section 4.3.";
+        }
+        leaf flex-algo {
+          type attr-advertise-mode;
+          default "app-specific";
+          description
+            "Advertisement for Flexible Algorithm APplication -
+             The default will be 'app-specific'.";
+          reference
+            "RFC 9350: IGP Flexible Algorithm, Section 12.";          
         }
       }
       description
