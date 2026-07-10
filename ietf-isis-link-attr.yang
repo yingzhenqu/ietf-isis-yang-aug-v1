@@ -358,7 +358,7 @@ module ietf-isis-link-attr {
       "This augments the IS-IS protocol management
        with application specific link attributes.";
     container isis-link-attr {
-      choice link-attr-op-mode {
+      container link-attr-op-mode {
         description
           "Configuration of application attribute advertisement
            and usage.";
@@ -417,6 +417,7 @@ module ietf-isis-link-attr {
         "RFC 9479 - IS-IS Application-Specific Link Attributes";
     }
   }
+  
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
