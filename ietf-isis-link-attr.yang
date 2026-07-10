@@ -112,6 +112,7 @@ module ietf-isis-link-attr {
            Refer to the reference for the specific rules.";
       }
     }
+    default "legacy";
     description
       "Link attributes operation mode.";
     reference
@@ -363,44 +364,49 @@ module ietf-isis-link-attr {
            and usage.";
         leaf rsvp-te-advertise {
           type attr-advertise-mode;
-          default "legacy";
           description
-            "Advertisement for RSVP-TE - The default will be
-             'legacy' and RSVP-TE advertisement.";
+            "Advertisement for RSVP-TE.";
           reference
             "RFC 9479: IS-IS Application-Specific Link Attributes,
              Section 3.";
         }
         leaf lfa-advertise {
           type attr-advertise-mode;
-          default "app-specific";
           description
-            "Advertisement for Link Free Alternates (LFA) - The
-             default will be 'app-specific'. ASLA advertisements will
-             be advertised and used by default unless specified
-             otherwise.";
+            "Advertisement for Link Free Alternates (LFA). ASLA 
+             advertisements will be advertised and used if 
+             specified.";
           reference
              "RFC 9479: IS-IS Application-Specific Link Attributes,
               Section 4.3.";
         }
         leaf sr-policy-advertise {
           type attr-advertise-mode;
-          default "app-specific";
           description
-            "Advertisement for Segment Routing Policy (SR-Policy) -
-             The default will be 'app-specific'. ASLA advertisements
-             will be advertised and used by default unless specified
-             otherwise.";
+            "Advertisement for Segment Routing Policy (SR-Policy).
+             ASLA advertisements will be advertised and used if
+             specified.";
           reference
             "RFC 9479: IS-IS Application-Specific Link Attributes,
              Section 4.3.";
         }
         leaf flex-algo {
-          type attr-advertise-mode;
+          type enumeration {
+            enum legacy {
+              value 0;
+              description
+                "Legacy advertisements are used for the application.";
+            }
+            enum app-specific {
+              value 2;
+              description
+                "Application-specific advertisements are advertised
+                 and used.";
+            }      
+          }
           default "app-specific";
           description
-            "Advertisement for Flexible Algorithm APplication -
-             The default will be 'app-specific'.";
+            "Advertisement for Flexible Algorithm APplication.";
           reference
             "RFC 9350: IGP Flexible Algorithm, Section 12.";          
         }
