@@ -95,8 +95,17 @@ module ietf-isis-link-attr {
            advertisement. Legacy advertisements will be
            used for the application.";
       }
-      enum app-specific {
+      enum transition {
         value 1;
+        description
+          "Send both application-specific and legacy
+           advertisements. Both application-specific and
+           legacy attribute advertisements will be used
+           by the application with advertised legacy attributes
+           taking precedence.";
+      }
+      enum app-specific {
+        value 2;
         description
           "Application-specific advertisements are advertised
            exclusively except for RSVP-TE in certain situations.
