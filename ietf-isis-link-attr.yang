@@ -78,7 +78,7 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-07-09 {
+  revision 2026-07-11 {
     description
       "Initial version";
     reference
@@ -349,8 +349,9 @@ module ietf-isis-link-attr {
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -373,8 +374,8 @@ module ietf-isis-link-attr {
         leaf lfa-advertise {
           type attr-advertise-mode;
           description
-            "Advertisement for Link Free Alternates (LFA). ASLA 
-             advertisements will be advertised and used if 
+            "Advertisement for Link Free Alternates (LFA). ASLA
+             advertisements will be advertised and used if
              specified.";
           reference
              "RFC 9479: IS-IS Application-Specific Link Attributes,
@@ -395,20 +396,21 @@ module ietf-isis-link-attr {
             enum legacy {
               value 0;
               description
-                "Legacy advertisements are used for the application.";
+                "Legacy advertisements are used for the
+                 application.";
             }
             enum app-specific {
               value 2;
               description
                 "Application-specific advertisements are advertised
                  and used.";
-            }      
+            }
           }
           default "app-specific";
           description
-            "Advertisement for Flexible Algorithm APplication.";
+            "Advertisement for Flexible Algorithm Application.";
           reference
-            "RFC 9350: IGP Flexible Algorithm, Section 12.";          
+            "RFC 9350: IGP Flexible Algorithm, Section 12.";
         }
       }
       description
@@ -417,14 +419,14 @@ module ietf-isis-link-attr {
         "RFC 9479 - IS-IS Application-Specific Link Attributes";
     }
   }
-  
+
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:interfaces/isis:interface" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/"
-       + "rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used.";
     }
@@ -433,7 +435,7 @@ module ietf-isis-link-attr {
        with application specific link attributes.";
     container isis-asla {
       list interface-asla {
-        key "link-attr-app";  
+        key "link-attr-app";
         leaf link-attr-app {
           type iana-link-attr-apps:igp-link-attr-app;
           description
@@ -479,8 +481,9 @@ module ietf-isis-link-attr {
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
         + "/isis:extended-is-neighbor/isis:neighbor"
         + "/isis:instances/isis:instance" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -496,8 +499,9 @@ module ietf-isis-link-attr {
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
         + "/isis:mt-is-neighbor/isis:neighbor"
         + "/isis:instances/isis:instance" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -511,8 +515,9 @@ module ietf-isis-link-attr {
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:database/isis:levels/isis:lsp" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }

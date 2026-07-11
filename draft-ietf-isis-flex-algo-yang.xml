@@ -104,7 +104,7 @@
         as defined in <xref target="RFC9479"/>.
         This YANG module references <xref target="RFC9479"/>, <xref target="RFC9911"/>,
         <xref target="RFC8349"/>, <xref target="RFC9130"/>, <xref target="RFC5305"/>,
-        <xref target="RFC8294"/>, <xref target="RFC5307"/>,
+        <xref target="RFC8294"/>, <xref target="RFC5307"/>, <xref target="RFC8776"/>,
         and <xref target="IANA-Link-Attr-Apps"/>.
       </t>
 
@@ -114,13 +114,11 @@ module: ietf-isis-link-attr
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/isis:isis:
     +--rw isis-link-attr
-       +--rw (link-attr-op-mode)?
-          +--:(legacy)
-          |  +--rw legacy?         empty
-          +--:(transition)
-          |  +--rw transition?     empty
-          +--:(app-specific)
-             +--rw app-specific?   empty
+       +--rw link-attr-op-mode
+          +--rw rsvp-te-advertise?     attr-advertise-mode
+          +--rw lfa-advertise?         attr-advertise-mode
+          +--rw sr-policy-advertise?   attr-advertise-mode
+          +--rw flex-algo?             enumeration
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/isis:isis/isis:interfaces
             /isis:interface:
@@ -140,7 +138,8 @@ module: ietf-isis-link-attr
        +--ro asla-sub-tlv* []
           +--ro l-flag?                                    boolean
           +--ro sabm
-          |  +--ro sabm-bit*   iana-link-attr-apps:igp-link-attr-app
+          |  +--ro sabm-bit*
+          |          iana-link-attr-apps:igp-link-attr-app
           +--ro udabm
           +--ro te-metric?
           |       te-types:te-metric
@@ -186,13 +185,14 @@ module: ietf-isis-link-attr
                 +--ro value?    yang:hex-string
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/isis:isis/isis:database
-            /isis:levels/isis:lsp/isis:mt-is-neighbor/isis:neighbor
-            /isis:instances/isis:instance:
+            /isis:levels/isis:lsp/isis:mt-is-neighbor
+            /isis:neighbor/isis:instances/isis:instance:
     +--ro asla-sub-tlvs
        +--ro asla-sub-tlv* []
           +--ro l-flag?                                    boolean
           +--ro sabm
-          |  +--ro sabm-bit*   iana-link-attr-apps:igp-link-attr-app
+          |  +--ro sabm-bit*
+          |          iana-link-attr-apps:igp-link-attr-app
           +--ro udabm
           +--ro te-metric?
           |       te-types:te-metric
@@ -245,7 +245,8 @@ module: ietf-isis-link-attr
           +--ro pseudo-node-id?       uint8
           +--ro l-flag?               boolean
           +--ro sabm
-          |  +--ro sabm-bit*   iana-link-attr-apps:igp-link-attr-app
+          |  +--ro sabm-bit*
+          |          iana-link-attr-apps:igp-link-attr-app
           +--ro udabm
           +--ro link-id-sub-tlvs
           |  +--ro link-local-remote-ids
@@ -262,7 +263,7 @@ module: ietf-isis-link-attr
           +--ro srlgs
              +--ro srlg*   te-types:srlg
 ]]></artwork>
-<sourcecode name="ietf-isis-link-attr@2026-07-02.yang" type="" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-link-attr@2026-07-11.yang" type="" markers="true"><![CDATA[
 module ietf-isis-link-attr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-link-attr";
@@ -343,12 +344,46 @@ module ietf-isis-link-attr {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-07-02 {
+  revision 2026-07-11 {
     description
       "Initial version";
     reference
       "RFC XXXX: A YANG Data Model for IS-IS Application-Specific
                  Link Attributes and Flexible Algorithm";
+  }
+
+  typedef attr-advertise-mode {
+    type enumeration {
+      enum legacy {
+        value 0;
+        description
+          "Only send legacy advertisements, and no ASLA
+           advertisement. Legacy advertisements will be
+           used for the application.";
+      }
+      enum transition {
+        value 1;
+        description
+          "Send both application-specific and legacy
+           advertisements. Both application-specific and
+           legacy attribute advertisements will be used
+           by the application with advertised legacy attributes
+           taking precedence.";
+      }
+      enum app-specific {
+        value 2;
+        description
+          "Application-specific advertisements are advertised
+           exclusively except for RSVP-TE in certain situations.
+           Refer to the reference for the specific rules.";
+      }
+    }
+    default "legacy";
+    description
+      "Link attributes operation mode.";
+    reference
+      "RFC 9479 - IS-IS Application-Specific Link Attributes,
+       Section 6.3.";
   }
 
   grouping isis-te-link-attrs {
@@ -553,7 +588,7 @@ module ietf-isis-link-attr {
               "IPv6 neighbor address sub-tlv.";
           }
           reference
-            "RFC 5307 - IS-IS Extensions in Support of Generalized
+            "RFC 5307: IS-IS Extensions in Support of Generalized
              Multi-Protocol Label Switching (GMPLS)";
         }
         container srlgs {
@@ -573,13 +608,16 @@ module ietf-isis-link-attr {
     }
   }
 
+
+
   /* Management */
 
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -587,31 +625,59 @@ module ietf-isis-link-attr {
       "This augments the IS-IS protocol management
        with application specific link attributes.";
     container isis-link-attr {
-      choice link-attr-op-mode {
-        default "app-specific";
-        leaf legacy {
-          type empty;
-          description
-            "Only send legacy advertisements, and no ASLA
-             advertisement.";
-        }
-        leaf transition {
-          type empty;
-          description
-            "Send both application-specific and legacy
-             advertisements,and they should have identical
-             information.";
-        }
-        leaf app-specific {
-          type empty;
-          description
-            "Only send application-specific advertisements.";
-        }
+      container link-attr-op-mode {
         description
-          "Link attributes mode. Default to app-specific consistent
-           with implementations. This is the enablement knob
-           for ASLA advertisement at the protocol level. Please
-           refer to Section 6.3 of RFC9479 for details.";
+          "Configuration of application attribute advertisement
+           and usage.";
+        leaf rsvp-te-advertise {
+          type attr-advertise-mode;
+          description
+            "Advertisement for RSVP-TE.";
+          reference
+            "RFC 9479: IS-IS Application-Specific Link Attributes,
+             Section 3.";
+        }
+        leaf lfa-advertise {
+          type attr-advertise-mode;
+          description
+            "Advertisement for Link Free Alternates (LFA). ASLA
+             advertisements will be advertised and used if
+             specified.";
+          reference
+             "RFC 9479: IS-IS Application-Specific Link Attributes,
+              Section 4.3.";
+        }
+        leaf sr-policy-advertise {
+          type attr-advertise-mode;
+          description
+            "Advertisement for Segment Routing Policy (SR-Policy).
+             ASLA advertisements will be advertised and used if
+             specified.";
+          reference
+            "RFC 9479: IS-IS Application-Specific Link Attributes,
+             Section 4.3.";
+        }
+        leaf flex-algo {
+          type enumeration {
+            enum legacy {
+              value 0;
+              description
+                "Legacy advertisements are used for the
+                 application.";
+            }
+            enum app-specific {
+              value 2;
+              description
+                "Application-specific advertisements are advertised
+                 and used.";
+            }
+          }
+          default "app-specific";
+          description
+            "Advertisement for Flexible Algorithm Application.";
+          reference
+            "RFC 9350: IGP Flexible Algorithm, Section 12.";
+        }
       }
       description
         "Application specific link attributes.";
@@ -620,12 +686,13 @@ module ietf-isis-link-attr {
     }
   }
 
+
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:interfaces/isis:interface" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/"
-       + "rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used.";
     }
@@ -680,8 +747,9 @@ module ietf-isis-link-attr {
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
         + "/isis:extended-is-neighbor/isis:neighbor"
         + "/isis:instances/isis:instance" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -697,8 +765,9 @@ module ietf-isis-link-attr {
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
         + "/isis:mt-is-neighbor/isis:neighbor"
         + "/isis:instances/isis:instance" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -712,8 +781,9 @@ module ietf-isis-link-attr {
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:database/isis:levels/isis:lsp" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -733,8 +803,8 @@ module ietf-isis-link-attr {
         modules for IGP Algorithm Types <xref target="IANA-IGP-Algo-Types"/>
         and IGP Metric Type <xref target="IANA-IGP-Metric-Types"/>
         in <xref target="I-D.ietf-lsr-ospf-flex-algo-yang"/>.
-        This YANG module references <xref target="RFC7308"/>, <xref target="RFC8349"/>,
-        <xref target="RFC8776"/>, <xref target="RFC9130"/>,
+        This YANG module references <xref target="RFC5307"/>, <xref target="RFC7308"/>,
+        <xref target="RFC8349"/>, <xref target="RFC8776"/>, <xref target="RFC9130"/>,
         <xref target="IANA-IGP-Algo-Types"/>, and  <xref target="IANA-IGP-Metric-Types"/>.
 
       </t>
@@ -826,7 +896,7 @@ module: ietf-isis-flex-algo
        +--ro isis-level?              level
        +--ro algo-number?             uint8
 ]]></artwork>
-<sourcecode name="ietf-isis-flex-algo@2026-07-01.yang" type="yang" markers="true"><![CDATA[
+<sourcecode name="ietf-isis-flex-algo@2026-07-11.yang" type="yang" markers="true"><![CDATA[
 module ietf-isis-flex-algo {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-isis-flex-algo";
@@ -841,7 +911,7 @@ module ietf-isis-flex-algo {
   import ietf-te-types {
     prefix te-types;
     reference
-      "RFC8776: Common YANG Data Types for Traffic Engineering.";
+      "RFC 8776: Common YANG Data Types for Traffic Engineering.";
   }
   import ietf-isis {
     prefix isis;
@@ -896,7 +966,7 @@ module ietf-isis-flex-algo {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2026-07-02 {
+  revision 2026-07-11 {
     description
       "Initial Version";
     reference
@@ -1000,10 +1070,13 @@ module ietf-isis-flex-algo {
       leaf-list srlg {
         type te-types:srlg;
         description
-          "SRLG value as defined in RFC 4203.";
+          "SRLG value as defined in RFC 5307.";
       }
       description
         "The flex-algo exclude SRLG sub-tlv.";
+      reference
+        "RFC 5307: IS-IS Extensions in Support of
+         Generalized Multi-Protocol Label Switching (GMPLS)";
     }
     description
       "The flex-algo exclude SRLG sub-tlv.";
@@ -1020,8 +1093,6 @@ module ietf-isis-flex-algo {
              Flex-Algorithm numbers are in the inclusive range
              128-255 as specified in RFC 9350. There should only be
              a single FAD TLV per algorithm number.";
-          reference
-            "RFC 9350: IGP Flexible Algorithm, Section 5";
         }
         leaf metric-type {
           type iana-metric-types:metric-type;
@@ -1051,6 +1122,8 @@ module ietf-isis-flex-algo {
       }
       description
         "IS-IS Flexible Algorithm Definition TLV.";
+      reference
+        "RFC 9350: IGP Flexible Algorithm, Section 5";
     }
     description
       "IS-IS Flexible Algorithm Definition (FAD) TLV.";
@@ -1085,8 +1158,9 @@ module ietf-isis-flex-algo {
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -1133,7 +1207,7 @@ module ietf-isis-flex-algo {
                path computation.";
           }
           description
-            "Specify adminstrative groups for the flex-algo
+            "Specify administrative groups for the flex-algo
              path computation.";
         }
         leaf-list exclude-srlg {
@@ -1166,6 +1240,8 @@ module ietf-isis-flex-algo {
         }
         description
           "List of flex-algo configurations.";
+        reference
+          "RFC 9350: IGP Flexible Algorithm, Section 5";
       }
       description
         "Flexible Algorithm configuration.";
@@ -1178,9 +1254,9 @@ module ietf-isis-flex-algo {
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
         + "/isis:router-capabilities/isis:router-capability" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/"
-       + "rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -1194,9 +1270,9 @@ module ietf-isis-flex-algo {
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
         + "/isis:extended-ipv4-reachability/"
         + "isis:prefixes" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/"
-       + "rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -1209,9 +1285,9 @@ module ietf-isis-flex-algo {
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
         + "/isis:mt-extended-ipv4-reachability/isis:prefixes" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/"
-       + "rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -1224,9 +1300,9 @@ module ietf-isis-flex-algo {
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
         + "/isis:ipv6-reachability/isis:prefixes" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/"
-       + "rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -1239,9 +1315,9 @@ module ietf-isis-flex-algo {
         + "rt:control-plane-protocols/rt:control-plane-protocol"
         + "/isis:isis/isis:database/isis:levels/isis:lsp"
         + "/isis:mt-ipv6-reachability/isis:prefixes" {
-    when "/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/"
-       + "rt:type = 'isis:isis'" {
+    when "derived-from-or-self(/rt:routing"
+       + "/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/rt:type, 'isis:isis')" {
       description
         "This augments the IS-IS routing protocol when used";
     }
@@ -1310,7 +1386,7 @@ module ietf-isis-flex-algo {
     protocol operation mode may result in traffic disruption.
    </li>
    <li>
-    /isis:isis/isis:interfaces:isis:interface/isis-asla/interface-asla - Modification to the
+    /isis:isis/isis:interfaces/isis:interface/isis-asla/interface-asla - Modification to the
     configured ASLA interface attributes may result in the disruption or rerouting of traffic.
    </li>
    <li>
