@@ -95,21 +95,19 @@ module ietf-isis-link-attr {
            advertisement. Legacy advertisements will be
            used for the application.";
       }
-      enum transition {
+      enum app-specific {
         value 1;
         description
-          "Send both application-specific and legacy
-           advertisements. Both application-specific and
-           legacy attribute advertisements will be used
-           by the application with advertised legacy attributes
-           taking precedence.";
+          "Application-specific advertisements are sent
+           and used with L-flag clear.";
       }
-      enum app-specific {
+      enum transition {
         value 2;
         description
-          "Application-specific advertisements are advertised
-           exclusively except for RSVP-TE in certain situations.
-           Refer to the reference for the specific rules.";
+          "Send both application-specific and legacy
+           advertisements. Either application-specific or 
+           legacy attribute advertisements can be used
+           by the application.";
       }
     }
     default "legacy";
@@ -393,17 +391,18 @@ module ietf-isis-link-attr {
         }
         leaf flex-algo {
           type enumeration {
-            enum legacy {
+            enum asla-legacy {
               value 0;
               description
-                "Legacy advertisements are used for the
+                "The L-flag is set in the ALSA advertisement, and 
+                 legacy advertisements are used for the
                  application.";
             }
             enum app-specific {
-              value 2;
+              value 1;
               description
-                "Application-specific advertisements are advertised
-                 and used.";
+                "Application-specific advertisements with the L-flag
+                 clear are sent and used. ";
             }
           }
           default "app-specific";
