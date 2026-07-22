@@ -13,13 +13,13 @@
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-20"
+  category="std" docName="draft-ietf-lsr-isis-flex-algo-yang-21"
   ipr="trust200902" submissionType="IETF" xml:lang="en"
   tocInclude="true" symRefs="true" sortRefs="true"
   version="3" consensus="true">
   <front>
     <title abbrev="IS-IS ASLA and Flex-Algo YANG">A YANG Data Model for IS-IS Application-Specific Link Attributes and Flexible Algorithm</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-20"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-isis-flex-algo-yang-21"/>
     <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
       <organization>Futurewei Technologies</organization>
       <address>
@@ -371,7 +371,7 @@ module ietf-isis-link-attr {
         value 2;
         description
           "Send both application-specific and legacy
-           advertisements. Either application-specific or 
+           advertisements. Either application-specific or
            legacy attribute advertisements can be used
            by the application.";
       }
@@ -660,7 +660,7 @@ module ietf-isis-link-attr {
             enum asla-legacy {
               value 0;
               description
-                "The L-flag is set in the ALSA advertisement, and 
+                "The L-flag is set in the ALSA advertisement, and
                  legacy advertisements are used for the
                  application.";
             }
@@ -1460,8 +1460,7 @@ module ietf-isis-flex-algo {
         Thanks to Renato Westphal for review and comments.
       </t>
       <t>
-        Thanks to Eric Vyncke, Mike Bishop, and Ketan Talauikar
-        for comments.
+        Thanks to Eric Vyncke and Mike Bishop for comments.
       </t>
       <t>
         Thanks to Med Boucadair, Ketan Talaulikar, Les Ginsberg,

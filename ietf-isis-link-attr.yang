@@ -105,7 +105,7 @@ module ietf-isis-link-attr {
         value 2;
         description
           "Send both application-specific and legacy
-           advertisements. Either application-specific or 
+           advertisements. Either application-specific or
            legacy attribute advertisements can be used
            by the application.";
       }
@@ -394,7 +394,7 @@ module ietf-isis-link-attr {
             enum asla-legacy {
               value 0;
               description
-                "The L-flag is set in the ALSA advertisement, and 
+                "The L-flag is set in the ALSA advertisement, and
                  legacy advertisements are used for the
                  application.";
             }
